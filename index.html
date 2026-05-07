@@ -125,10 +125,16 @@
   .card-img {
     width: 100%;
     aspect-ratio: 1;
-    object-fit: cover;
     background: var(--accent2);
     display: flex; align-items: center; justify-content: center;
     font-size: 48px;
+    overflow: hidden;
+  }
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .card-body { padding: 10px 10px 12px; }
   .card-name {
@@ -402,19 +408,25 @@ tg.ready();
 tg.expand();
 
 // ── Products Data ───────────────────────────────────────────────────────────
+// 📸 RASM QO'SHISH:
+// image: "" — bu yerga rasm URL sini kiriting
+// Masalan: image: "https://yourusername.github.io/beautylish-app/images/krem.jpg"
+// Yoki: image: "https://i.imgur.com/xxxxxx.jpg"
+// Rasm bo'lmasa emoji ko'rsatiladi (zaxira)
+
 const products = [
-  { id:1, name:"Hydra Boost Krem", brand:"CeraVe", price:89000, oldPrice:120000, emoji:"💧", cat:"yuz", sale:true },
-  { id:2, name:"Vitamin C Serum", brand:"The Ordinary", price:145000, emoji:"✨", cat:"yuz" },
-  { id:3, name:"Retinol Eye Krem", brand:"Olay", price:210000, oldPrice:280000, emoji:"👁", cat:"yuz", sale:true },
-  { id:4, name:"Niacinamide 10%", brand:"The Ordinary", price:95000, emoji:"🧪", cat:"yuz" },
-  { id:5, name:"Argan Oil Shampun", brand:"Moroccanoil", price:175000, emoji:"🌿", cat:"soch" },
-  { id:6, name:"Keratin Maska", brand:"Schwarzkopf", price:130000, oldPrice:165000, emoji:"💆", cat:"soch", sale:true },
-  { id:7, name:"La Vie Est Belle", brand:"Lancôme", price:890000, emoji:"🌸", cat:"parfum" },
-  { id:8, name:"Black Opium EDP", brand:"YSL", price:1100000, emoji:"🖤", cat:"parfum" },
-  { id:9, name:"Lipstick Matte", brand:"MAC", price:145000, emoji:"💄", cat:"makiyaj" },
-  { id:10, name:"Foundation SPF", brand:"Fenty Beauty", price:320000, oldPrice:395000, emoji:"🎨", cat:"makiyaj", sale:true },
-  { id:11, name:"Body Lotion", brand:"Nivea", price:65000, emoji:"🧴", cat:"tana" },
-  { id:12, name:"Rose Body Scrub", brand:"The Body Shop", price:185000, emoji:"🌹", cat:"tana" },
+  { id:1,  name:"Hydra Boost Krem",   brand:"CeraVe",       price:89000,   oldPrice:120000, emoji:"💧", image:"", cat:"yuz",    sale:true },
+  { id:2,  name:"Vitamin C Serum",    brand:"The Ordinary", price:145000,  emoji:"✨",       image:"", cat:"yuz"   },
+  { id:3,  name:"Retinol Eye Krem",   brand:"Olay",         price:210000,  oldPrice:280000, emoji:"👁", image:"", cat:"yuz",    sale:true },
+  { id:4,  name:"Niacinamide 10%",    brand:"The Ordinary", price:95000,   emoji:"🧪",       image:"", cat:"yuz"   },
+  { id:5,  name:"Argan Oil Shampun",  brand:"Moroccanoil",  price:175000,  emoji:"🌿",       image:"", cat:"soch"  },
+  { id:6,  name:"Keratin Maska",      brand:"Schwarzkopf",  price:130000,  oldPrice:165000, emoji:"💆", image:"", cat:"soch",   sale:true },
+  { id:7,  name:"La Vie Est Belle",   brand:"Lancôme",      price:890000,  emoji:"🌸",       image:"", cat:"parfum"},
+  { id:8,  name:"Black Opium EDP",    brand:"YSL",          price:1100000, emoji:"🖤",       image:"", cat:"parfum"},
+  { id:9,  name:"Lipstick Matte",     brand:"MAC",          price:145000,  emoji:"💄",       image:"", cat:"makiyaj"},
+  { id:10, name:"Foundation SPF",     brand:"Fenty Beauty", price:320000,  oldPrice:395000, emoji:"🎨", image:"", cat:"makiyaj",sale:true },
+  { id:11, name:"Body Lotion",        brand:"Nivea",        price:65000,   emoji:"🧴",       image:"", cat:"tana"  },
+  { id:12, name:"Rose Body Scrub",    brand:"The Body Shop",price:185000,  emoji:"🌹",       image:"", cat:"tana"  },
 ];
 
 let cart = {};
@@ -431,7 +443,11 @@ function renderProducts() {
     return `
       <div class="card">
         ${p.sale ? '<span class="badge">SALE</span>' : ''}
-        <div class="card-img">${p.emoji}</div>
+        <div class="card-img">
+            ${p.image
+              ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentElement.innerHTML='${p.emoji}'">`
+              : p.emoji}
+          </div>
         <div class="card-body">
           <div class="card-name">${p.name}</div>
           <div class="card-brand">${p.brand}</div>
