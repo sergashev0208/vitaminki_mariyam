@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Beautylish – Katalog</title>
+<title>🌱Vitaminki_maryam🌱 – Katalog</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #faf8f5;
+    --bg: #f4faf4;
     --surface: #ffffff;
-    --text: #1a1208;
-    --muted: #8c7b6b;
-    --accent: #c4956a;
-    --accent2: #e8d5c0;
-    --border: #ede8e1;
+    --text: #1a2e1a;
+    --muted: #6b8c6b;
+    --accent: #3a8c4a;
+    --accent2: #c8e6c9;
+    --accent-light: #e8f5e9;
+    --border: #d4e8d4;
     --danger: #c0392b;
-    --green: #27ae60;
+    --gold: #f4a62a;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,7 +34,7 @@
   .header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 14px 16px;
+    padding: 12px 16px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -42,13 +43,19 @@
     justify-content: space-between;
   }
   .logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.5px;
-    color: var(--text);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.2;
   }
-  .logo span { color: var(--accent); font-style: italic; }
+  .logo-leaf { font-size: 17px; }
+  .logo-name { color: var(--text); }
+  .logo-name span { color: var(--accent); font-style: italic; }
+
   .cart-btn {
     background: var(--accent);
     color: white;
@@ -64,7 +71,7 @@
     gap: 6px;
     transition: background 0.2s;
   }
-  .cart-btn:hover { background: #b07d52; }
+  .cart-btn:hover { background: #2e7a3a; }
   .cart-count {
     background: white;
     color: var(--accent);
@@ -138,18 +145,17 @@
   }
   .card-body { padding: 10px 10px 12px; }
   .card-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 15px;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.3;
     margin-bottom: 3px;
   }
   .card-brand {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
     margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
   }
   .card-price {
     font-size: 15px;
@@ -190,6 +196,16 @@
     padding: 2px 7px;
     border-radius: 10px;
   }
+  .badge-new {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: var(--gold);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
 
   /* ── Cart Panel ── */
   .overlay {
@@ -221,7 +237,7 @@
     margin: 0 auto 16px;
   }
   .panel-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 22px;
     font-weight: 600;
     margin-bottom: 16px;
@@ -238,9 +254,7 @@
   .ci-info { flex: 1; }
   .ci-name { font-size: 14px; font-weight: 500; }
   .ci-price { font-size: 13px; color: var(--accent); }
-  .ci-qty {
-    display: flex; align-items: center; gap: 8px;
-  }
+  .ci-qty { display: flex; align-items: center; gap: 8px; }
   .qty-btn {
     width: 28px; height: 28px;
     border-radius: 50%;
@@ -294,19 +308,20 @@
     font-weight: 500;
   }
   .total-sum {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 22px;
     font-weight: 600;
     color: var(--accent);
   }
 
   .delivery-note {
-    background: #eafaf1;
+    background: #e8f5e9;
     border-radius: 8px;
     padding: 8px 12px;
     font-size: 12px;
-    color: var(--green);
+    color: var(--accent);
     margin-bottom: 12px;
+    border: 1px solid var(--border);
   }
 
   .order-btn {
@@ -324,7 +339,7 @@
     letter-spacing: 0.3px;
   }
   .order-btn:disabled { background: var(--muted); cursor: not-allowed; }
-  .order-btn:hover:not(:disabled) { background: #b07d52; }
+  .order-btn:hover:not(:disabled) { background: #2e7a3a; }
 
   /* ── Success ── */
   .success-screen {
@@ -335,7 +350,7 @@
   .success-screen.show { display: block; }
   .success-icon { font-size: 60px; margin-bottom: 16px; }
   .success-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 26px;
     font-weight: 600;
     margin-bottom: 8px;
@@ -347,7 +362,11 @@
 
 <!-- Header -->
 <div class="header">
-  <div class="logo">Beauty<span>lish</span></div>
+  <div class="logo">
+    <span class="logo-leaf">🌱</span>
+    <span class="logo-name">Vitaminki_<span>maryam</span></span>
+    <span class="logo-leaf">🌱</span>
+  </div>
   <button class="cart-btn" onclick="toggleCart()">
     🛒 Savat <span class="cart-count" id="cartCount">0</span>
   </button>
@@ -356,11 +375,12 @@
 <!-- Categories -->
 <div class="categories">
   <button class="cat-btn active" onclick="filterCat('all', this)">Barchasi</button>
-  <button class="cat-btn" onclick="filterCat('yuz', this)">💆 Yuz parvarishi</button>
-  <button class="cat-btn" onclick="filterCat('soch', this)">💇 Soch parvarishi</button>
-  <button class="cat-btn" onclick="filterCat('parfum', this)">🌸 Parfyumeriya</button>
-  <button class="cat-btn" onclick="filterCat('makiyaj', this)">💄 Makiyaj</button>
-  <button class="cat-btn" onclick="filterCat('tana', this)">🧴 Tana parvarishi</button>
+  <button class="cat-btn" onclick="filterCat('vitamin', this)">💊 Vitaminlar</button>
+  <button class="cat-btn" onclick="filterCat('mineral', this)">🪨 Minerallar</button>
+  <button class="cat-btn" onclick="filterCat('omega', this)">🐟 Omega & Yog'lar</button>
+  <button class="cat-btn" onclick="filterCat('immunitet', this)">🛡️ Immunitet</button>
+  <button class="cat-btn" onclick="filterCat('gozallik', this)">✨ Go'zallik</button>
+  <button class="cat-btn" onclick="filterCat('energiya', this)">⚡ Energiya</button>
 </div>
 
 <!-- Product Grid -->
@@ -398,7 +418,7 @@
   <div class="success-screen" id="successScreen">
     <div class="success-icon">🎉</div>
     <div class="success-title">Buyurtma qabul qilindi!</div>
-    <div class="success-text">Menejer tez orada siz bilan bog'lanadi.<br>Rahmat va xaridingiz uchun minnatdormiz! 💕</div>
+    <div class="success-text">Menejer tez orada siz bilan bog'lanadi.<br>Sog'lom va baquvvat bo'ling! 🌱💚</div>
   </div>
 </div>
 
@@ -410,44 +430,65 @@ tg.expand();
 // ── Products Data ───────────────────────────────────────────────────────────
 // 📸 RASM QO'SHISH:
 // image: "" — bu yerga rasm URL sini kiriting
-// Masalan: image: "https://yourusername.github.io/beautylish-app/images/krem.jpg"
-// Yoki: image: "https://i.imgur.com/xxxxxx.jpg"
+// Masalan: image: "https://yourusername.github.io/vitaminki/images/vitaminC.jpg"
 // Rasm bo'lmasa emoji ko'rsatiladi (zaxira)
 
+const BRAND = "🌱Vitaminki_maryam🌱";
+
 const products = [
-  { id:1,  name:"Hydra Boost Krem",   brand:"CeraVe",       price:89000,   oldPrice:120000, emoji:"💧", image:"", cat:"yuz",    sale:true },
-  { id:2,  name:"Vitamin C Serum",    brand:"The Ordinary", price:145000,  emoji:"✨",       image:"", cat:"yuz"   },
-  { id:3,  name:"Retinol Eye Krem",   brand:"Olay",         price:210000,  oldPrice:280000, emoji:"👁", image:"", cat:"yuz",    sale:true },
-  { id:4,  name:"Niacinamide 10%",    brand:"The Ordinary", price:95000,   emoji:"🧪",       image:"", cat:"yuz"   },
-  { id:5,  name:"Argan Oil Shampun",  brand:"Moroccanoil",  price:175000,  emoji:"🌿",       image:"", cat:"soch"  },
-  { id:6,  name:"Keratin Maska",      brand:"Schwarzkopf",  price:130000,  oldPrice:165000, emoji:"💆", image:"", cat:"soch",   sale:true },
-  { id:7,  name:"La Vie Est Belle",   brand:"Lancôme",      price:890000,  emoji:"🌸",       image:"", cat:"parfum"},
-  { id:8,  name:"Black Opium EDP",    brand:"YSL",          price:1100000, emoji:"🖤",       image:"", cat:"parfum"},
-  { id:9,  name:"Lipstick Matte",     brand:"MAC",          price:145000,  emoji:"💄",       image:"", cat:"makiyaj"},
-  { id:10, name:"Foundation SPF",     brand:"Fenty Beauty", price:320000,  oldPrice:395000, emoji:"🎨", image:"", cat:"makiyaj",sale:true },
-  { id:11, name:"Body Lotion",        brand:"Nivea",        price:65000,   emoji:"🧴",       image:"", cat:"tana"  },
-  { id:12, name:"Rose Body Scrub",    brand:"The Body Shop",price:185000,  emoji:"🌹",       image:"", cat:"tana"  },
+  // 💊 Vitaminlar
+  { id:1,  name:"Vitamin C 1000mg",       brand:BRAND, price:85000,  oldPrice:110000, emoji:"🍋", image:"https://iili.io/BDgJWSS.jpg", cat:"vitamin",   sale:true  },
+  { id:2,  name:"Vitamin D3 2000 IU",     brand:BRAND, price:95000,                   emoji:"☀️", image:"", cat:"vitamin"              },
+  { id:3,  name:"Vitamin B12",            brand:BRAND, price:75000,  oldPrice:98000,  emoji:"💊", image:"", cat:"vitamin",   sale:true  },
+  { id:4,  name:"Multivitamin Complex",   brand:BRAND, price:145000,                  emoji:"🌈", image:"", cat:"vitamin",   isnew:true },
+
+  // 🪨 Minerallar
+  { id:5,  name:"Magniy B6",              brand:BRAND, price:89000,                   emoji:"🪨", image:"", cat:"mineral"              },
+  { id:6,  name:"Temir (Iron) 18mg",      brand:BRAND, price:72000,  oldPrice:90000,  emoji:"🔴", image:"", cat:"mineral",   sale:true  },
+  { id:7,  name:"Kalsiy + Vitamin D",     brand:BRAND, price:98000,                   emoji:"🦷", image:"", cat:"mineral"              },
+  { id:8,  name:"Sink (Zinc) 25mg",       brand:BRAND, price:65000,                   emoji:"⚪", image:"", cat:"mineral",   isnew:true },
+
+  // 🐟 Omega & Yog'lar
+  { id:9,  name:"Omega-3 Fish Oil",       brand:BRAND, price:125000, oldPrice:160000, emoji:"🐟", image:"", cat:"omega",     sale:true  },
+  { id:10, name:"Omega 3-6-9 Complex",    brand:BRAND, price:148000,                  emoji:"💛", image:"", cat:"omega"                },
+  { id:11, name:"Krill Oil Premium",      brand:BRAND, price:195000,                  emoji:"🦐", image:"", cat:"omega",     isnew:true },
+
+  // 🛡️ Immunitet
+  { id:12, name:"Echinacea Ekstrakti",    brand:BRAND, price:78000,                   emoji:"🌸", image:"", cat:"immunitet"            },
+  { id:13, name:"Propolis + Asal",        brand:BRAND, price:92000,  oldPrice:115000, emoji:"🍯", image:"", cat:"immunitet", sale:true  },
+  { id:14, name:"Probiotik Complex",      brand:BRAND, price:135000,                  emoji:"🦠", image:"", cat:"immunitet", isnew:true },
+
+  // ✨ Go'zallik
+  { id:15, name:"Kollagen Peptidlar",     brand:BRAND, price:185000, oldPrice:230000, emoji:"✨", image:"", cat:"gozallik",  sale:true  },
+  { id:16, name:"Biotin 5000 mcg",        brand:BRAND, price:98000,                   emoji:"💇", image:"", cat:"gozallik"             },
+  { id:17, name:"Gialuron Kislota",       brand:BRAND, price:145000,                  emoji:"💧", image:"", cat:"gozallik",  isnew:true },
+
+  // ⚡ Energiya
+  { id:18, name:"Koenzim Q10",            brand:BRAND, price:168000,                  emoji:"⚡", image:"", cat:"energiya"             },
+  { id:19, name:"L-Karnitin 1000mg",      brand:BRAND, price:115000, oldPrice:145000, emoji:"🔥", image:"", cat:"energiya",  sale:true  },
+  { id:20, name:"Ginseng Ekstrakti",      brand:BRAND, price:125000,                  emoji:"🌿", image:"", cat:"energiya",  isnew:true },
 ];
 
 let cart = {};
 let currentCat = 'all';
 
-function fmt(n) { return n.toLocaleString('uz-UZ') + ' so\'m'; }
+function fmt(n) { return n.toLocaleString('uz-UZ') + " so'm"; }
 
 // ── Render Products ─────────────────────────────────────────────────────────
 function renderProducts() {
   const grid = document.getElementById('productGrid');
   const filtered = currentCat === 'all' ? products : products.filter(p => p.cat === currentCat);
   grid.innerHTML = filtered.map(p => {
-    const inCart = cart[p.id] ? true : false;
+    const inCart = !!cart[p.id];
     return `
       <div class="card">
-        ${p.sale ? '<span class="badge">SALE</span>' : ''}
+        ${p.sale  ? '<span class="badge">SALE</span>'   : ''}
+        ${p.isnew ? '<span class="badge-new">YANGI</span>' : ''}
         <div class="card-img">
-            ${p.image
-              ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentElement.innerHTML='${p.emoji}'">`
-              : p.emoji}
-          </div>
+          ${p.image
+            ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentElement.innerHTML='${p.emoji}'">`
+            : p.emoji}
+        </div>
         <div class="card-body">
           <div class="card-name">${p.name}</div>
           <div class="card-brand">${p.brand}</div>
@@ -474,11 +515,8 @@ function filterCat(cat, btn) {
 // ── Cart ────────────────────────────────────────────────────────────────────
 function addToCart(id) {
   const p = products.find(x => x.id === id);
-  if (cart[id]) {
-    cart[id].qty++;
-  } else {
-    cart[id] = { ...p, qty: 1 };
-  }
+  if (cart[id]) { cart[id].qty++; }
+  else { cart[id] = { ...p, qty: 1 }; }
   updateCartUI();
   renderProducts();
 }
@@ -499,11 +537,11 @@ function updateCartUI() {
 
 function renderCartItems() {
   const items = Object.values(cart);
-  const el = document.getElementById('cartItems');
+  const el   = document.getElementById('cartItems');
   const form = document.getElementById('orderForm');
 
   if (items.length === 0) {
-    el.innerHTML = '<div class="empty-cart">🛒 Savat bo\'sh<br><small>Katalogdan mahsulot qo\'shing</small></div>';
+    el.innerHTML = "<div class=\"empty-cart\">🛒 Savat bo'sh<br><small>Katalogdan mahsulot qo'shing</small></div>";
     form.style.display = 'none';
     return;
   }
@@ -520,10 +558,9 @@ function renderCartItems() {
         <span class="qty-num">${i.qty}</span>
         <button class="qty-btn" onclick="changeQty(${i.id}, +1)">+</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 
-  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const total    = items.reduce((s, i) => s + i.price * i.qty, 0);
   const totalQty = items.reduce((s, i) => s + i.qty, 0);
   document.getElementById('totalSum').textContent = fmt(total);
   document.getElementById('deliveryNote').style.display = totalQty >= 3 ? 'block' : 'none';
@@ -531,9 +568,9 @@ function renderCartItems() {
 }
 
 function toggleCart() {
-  const panel = document.getElementById('cartPanel');
+  const panel   = document.getElementById('cartPanel');
   const overlay = document.getElementById('overlay');
-  const isOpen = panel.classList.contains('open');
+  const isOpen  = panel.classList.contains('open');
   if (!isOpen) renderCartItems();
   panel.classList.toggle('open');
   overlay.classList.toggle('open');
@@ -541,7 +578,7 @@ function toggleCart() {
 
 // ── Submit Order ─────────────────────────────────────────────────────────────
 function submitOrder() {
-  const phone = document.getElementById('phoneInput').value.trim();
+  const phone   = document.getElementById('phoneInput').value.trim();
   const address = document.getElementById('addressInput').value.trim();
 
   if (!phone || !address) {
@@ -549,31 +586,20 @@ function submitOrder() {
     return;
   }
 
-  const items = Object.values(cart).map(i => ({
-    id: i.id, name: i.name, price: i.price, qty: i.qty
-  }));
+  const items = Object.values(cart).map(i => ({ id:i.id, name:i.name, price:i.price, qty:i.qty }));
   const total = items.reduce((s, i) => s + i.price * i.qty, 0);
 
-  const data = {
-    items,
-    total,
-    phone,
-    address,
+  tg.sendData(JSON.stringify({
+    items, total, phone, address,
     comment: document.getElementById('commentInput').value.trim()
-  };
+  }));
 
-  // Send to bot
-  tg.sendData(JSON.stringify(data));
-
-  // Show success
   document.getElementById('cartContent').style.display = 'none';
   document.getElementById('successScreen').classList.add('show');
 
-  // Reset
   cart = {};
   updateCartUI();
   renderProducts();
-
   setTimeout(() => tg.close(), 3000);
 }
 
