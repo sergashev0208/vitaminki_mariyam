@@ -562,36 +562,50 @@ const BRAND = "🌱Vitaminki_maryam🌱";
 
 const products = [
   // 💊 Vitaminlar
-  { id:1,  name:"Vitamin C 1000mg",       brand:BRAND, price:85000,                   emoji:"🍋", image:"https://iili.io/BDgJWSS.jpg", cat:"vitamin",   sale:true  },
+  { id:1,  name:"Vitamin C 1000mg",       brand:BRAND, price:85000,                   emoji:"🍋", image:"", cat:"vitamin",   sale:true  },
   { id:2,  name:"Vitamin D3 2000 IU",     brand:BRAND, price:95000,                   emoji:"☀️", image:"", cat:"vitamin"              },
   { id:3,  name:"Vitamin B12",            brand:BRAND, price:75000,  oldPrice:98000,  emoji:"💊", image:"", cat:"vitamin",   sale:true  },
-  { id:4,  name:"Multivitamin Complex",   brand:BRAND, price:145000,                  emoji:"🌈", image:"", cat:"vitamin",   isnew:true },
+  { id:4,  name:"Multivitamin Complex",   brand:BRAND, price:145000,                  emoji:"🌈", image:"", cat:"vitamin",   sale:true },
 
   // 🪨 Minerallar
   { id:5,  name:"Magniy B6",              brand:BRAND, price:89000,                   emoji:"🪨", image:"", cat:"mineral"              },
   { id:6,  name:"Temir (Iron) 18mg",      brand:BRAND, price:72000,  oldPrice:90000,  emoji:"🔴", image:"", cat:"mineral",   sale:true  },
   { id:7,  name:"Kalsiy + Vitamin D",     brand:BRAND, price:98000,                   emoji:"🦷", image:"", cat:"mineral"              },
-  { id:8,  name:"Sink (Zinc) 25mg",       brand:BRAND, price:65000,                   emoji:"⚪", image:"", cat:"mineral",   isnew:true },
+  { id:8,  name:"Sink (Zinc) 25mg",       brand:BRAND, price:65000,                   emoji:"⚪", image:"", cat:"mineral",   sale:true },
 
   // 🐟 Omega & Yog'lar
-  { id:9,  name:"Omega-3 Fish Oil",       brand:BRAND, price:125000, oldPrice:160000, emoji:"🐟", image:"", cat:"omega",     sale:true  },
-  { id:10, name:"Omega 3-6-9 Complex",    brand:BRAND, price:148000,                  emoji:"💛", image:"", cat:"omega"                },
-  { id:11, name:"Krill Oil Premium",      brand:BRAND, price:195000,                  emoji:"🦐", image:"", cat:"omega",     isnew:true },
+  { id:9,  name:"BURIED TREASURE",       brand:BRAND, price:380000,                  emoji:"🐟", image:"https://iili.io/BDgJWSS.jpg", cat:"omega",     sale:true  },
+  { id:10, name:"Focusvit Kids",         brand:BRAND, price:210000,                  emoji:"💛", image:"https://iili.io/BDr64N2.jpg", cat:"omega"                },
+  { id:11, name:"OMEGA 3",               brand:BRAND, price:270000,                  emoji:"🦐", image:"https://iili.io/BDrbXAg.jpg", cat:"omega",     sale:true },
+  { id:12, name:"Balen OMEGA 3•6•9 SOFT",               brand:BRAND, price:250000,                  emoji:"🦐", image:"https://iili.io/BD4qj2a.jpg", cat:"omega",     sale:true },
+  { id:13, name:"Carlson kid's",               brand:BRAND, price:330000,                  emoji:"🦐", image:"https://iili.io/BD4I3ua.jpg", cat:"omega",     sale:true },
+  { id:14, name:"Norwitella Omega-3",               brand:BRAND, price:300000,                  emoji:"🦐", image:"https://iili.io/BD4uZjs.jpg", cat:"omega",     sale:true },
+  { id:15, name:"novomins KIDS OMEGA 3-6-9 + MULTI GUMMIES",               brand:BRAND, price:180000,                  emoji:"🦐", image:"https://iili.io/BD4aUnn.jpg", cat:"omega",     sale:true },
+  { id:11, name:"Ausvit Norway Fish Oil",               brand:BRAND, price:300000,                  emoji:"🦐", image:"https://iili.io/BD40dhP.jpg", cat:"omega",     sale:true },
+  { id:11, name:"NORDIC BORK PURE OMEGA-3 NORWAY COD LIVER OIL",               brand:BRAND, price:160000,                  emoji:"🦐", image:"https://iili.io/BD4Gdj2.jpg", cat:"omega",     sale:true },
+  { id:11, name:"Mini Drops DHA",               brand:BRAND, price:160000,                  emoji:"🦐", image:"https://iili.io/BD4MD5G.jpg", cat:"omega",     sale:true },
+  { id:11, name:"Ausvit Focus Formula KIDS",               brand:BRAND, price:210000,                  emoji:"🦐", image:"https://iili.io/BD4WL9s.jpg", cat:"omega",     sale:true },
+  { id:11, name:"now Omega-3 Fish Oil",               brand:BRAND, price:180000,                  emoji:"🦐", image:"https://iili.io/BD4hjpa.jpg", cat:"omega",     sale:true },
 
+
+
+
+
+  
   // 🛡️ Immunitet
-  { id:12, name:"Echinacea Ekstrakti",    brand:BRAND, price:78000,                   emoji:"🌸", image:"", cat:"immunitet"            },
-  { id:13, name:"Propolis + Asal",        brand:BRAND, price:92000,  oldPrice:115000, emoji:"🍯", image:"", cat:"immunitet", sale:true  },
-  { id:14, name:"Probiotik Complex",      brand:BRAND, price:135000,                  emoji:"🦠", image:"", cat:"immunitet", isnew:true },
+  { id:, name:"Echinacea Ekstrakti",    brand:BRAND, price:78000,                   emoji:"🌸", image:"", cat:"immunitet"            },
+  { id:, name:"Propolis + Asal",        brand:BRAND, price:92000,  oldPrice:115000, emoji:"🍯", image:"", cat:"immunitet", sale:true  },
+  { id:, name:"Probiotik Complex",      brand:BRAND, price:135000,                  emoji:"🦠", image:"", cat:"immunitet", isnew:true },
 
   // ✨ Go'zallik
-  { id:15, name:"Kollagen Peptidlar",     brand:BRAND, price:185000, oldPrice:230000, emoji:"✨", image:"", cat:"gozallik",  sale:true  },
-  { id:16, name:"Biotin 5000 mcg",        brand:BRAND, price:98000,                   emoji:"💇", image:"", cat:"gozallik"             },
-  { id:17, name:"Gialuron Kislota",       brand:BRAND, price:145000,                  emoji:"💧", image:"", cat:"gozallik",  isnew:true },
+  { id:, name:"Kollagen Peptidlar",     brand:BRAND, price:185000, oldPrice:230000, emoji:"✨", image:"", cat:"gozallik",  sale:true  },
+  { id:, name:"Biotin 5000 mcg",        brand:BRAND, price:98000,                   emoji:"💇", image:"", cat:"gozallik"             },
+  { id:, name:"Gialuron Kislota",       brand:BRAND, price:145000,                  emoji:"💧", image:"", cat:"gozallik",  isnew:true },
 
   // ⚡ Energiya
-  { id:18, name:"Koenzim Q10",            brand:BRAND, price:168000,                  emoji:"⚡", image:"", cat:"energiya"             },
-  { id:19, name:"L-Karnitin 1000mg",      brand:BRAND, price:115000, oldPrice:145000, emoji:"🔥", image:"", cat:"energiya",  sale:true  },
-  { id:20, name:"Ginseng Ekstrakti",      brand:BRAND, price:125000,                  emoji:"🌿", image:"", cat:"energiya",  isnew:true },
+  { id:, name:"Koenzim Q10",            brand:BRAND, price:168000,                  emoji:"⚡", image:"", cat:"energiya"             },
+  { id:, name:"L-Karnitin 1000mg",      brand:BRAND, price:115000, oldPrice:145000, emoji:"🔥", image:"", cat:"energiya",  sale:true  },
+  { id:, name:"Ginseng Ekstrakti",      brand:BRAND, price:125000,                  emoji:"🌿", image:"", cat:"energiya",  isnew:true },
 ];
 
 let cart = {};
