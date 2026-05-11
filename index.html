@@ -207,6 +207,98 @@
     border-radius: 10px;
   }
 
+  /* ── Lightbox (rasm zoom) ── */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    animation: lbFadeIn 0.2s ease;
+  }
+  .lightbox.open {
+    display: flex;
+  }
+  @keyframes lbFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .lightbox-img {
+    max-width: 100%;
+    max-height: 75vh;
+    border-radius: 16px;
+    object-fit: contain;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: lbZoomIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes lbZoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+  .lightbox-name {
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .lightbox-brand {
+    color: #a0c8a0;
+    font-size: 13px;
+    margin-top: 4px;
+    margin-bottom: 20px;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.3); }
+  .lightbox-add {
+    padding: 12px 32px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .lightbox-add:hover { background: #2e7a3a; }
+  .lightbox-add.in-cart { background: #27ae60; }
+
+  /* rasm bosilishi uchun cursor */
+  .card-img.has-image {
+    cursor: zoom-in;
+    position: relative;
+  }
+  .card-img.has-image::after {
+    content: "🔍";
+    position: absolute;
+    bottom: 6px; right: 6px;
+    font-size: 14px;
+    background: rgba(0,0,0,0.35);
+    border-radius: 6px;
+    padding: 2px 5px;
+    opacity: 0.85;
+  }
+
   /* ── Cart Panel ── */
   .overlay {
     display: none;
@@ -422,6 +514,15 @@
   </div>
 </div>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  <div class="lightbox-name" id="lightboxName"></div>
+  <div class="lightbox-brand">🌱Vitaminki_maryam🌱</div>
+  <button class="lightbox-add" id="lightboxAddBtn" onclick="lightboxAddToCart()">+ Savatga qo'shish</button>
+</div>
+
 <script>
 const tg = window.Telegram.WebApp;
 tg.ready();
@@ -484,9 +585,9 @@ function renderProducts() {
       <div class="card">
         ${p.sale  ? '<span class="badge">SALE</span>'   : ''}
         ${p.isnew ? '<span class="badge-new">YANGI</span>' : ''}
-        <div class="card-img">
+        <div class="card-img ${p.image ? 'has-image' : ''}" ${p.image ? `onclick="openLightbox(${p.id})"` : ''}>
           ${p.image
-            ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentElement.innerHTML='${p.emoji}'">`
+            ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentElement.classList.remove('has-image'); this.parentElement.removeAttribute('onclick'); this.parentElement.innerHTML='${p.emoji}'">`
             : p.emoji}
         </div>
         <div class="card-body">
@@ -601,6 +702,46 @@ function submitOrder() {
   updateCartUI();
   renderProducts();
   setTimeout(() => tg.close(), 3000);
+}
+
+// ── Lightbox ─────────────────────────────────────────────────────────────────
+let lightboxProductId = null;
+
+function openLightbox(id) {
+  const p = products.find(x => x.id === id);
+  if (!p || !p.image) return;
+  lightboxProductId = id;
+
+  document.getElementById('lightboxImg').src = p.image;
+  document.getElementById('lightboxName').textContent = p.name;
+
+  const btn = document.getElementById('lightboxAddBtn');
+  if (cart[id]) {
+    btn.textContent = '✓ Savatda';
+    btn.classList.add('in-cart');
+  } else {
+    btn.textContent = '+ Savatga qo\'shish';
+    btn.classList.remove('in-cart');
+  }
+
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+  // faqat background yoki close tugmasi bosilsa yopilsin
+  if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+  lightboxProductId = null;
+}
+
+function lightboxAddToCart() {
+  if (!lightboxProductId) return;
+  addToCart(lightboxProductId);
+  const btn = document.getElementById('lightboxAddBtn');
+  btn.textContent = '✓ Savatda';
+  btn.classList.add('in-cart');
 }
 
 // ── Init ────────────────────────────────────────────────────────────────────
