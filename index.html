@@ -209,23 +209,24 @@
 
   /* ── Lightbox (rasm zoom) ── */
   .lightbox {
-    display: none;
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.92);
     z-index: 999;
+    display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     padding: 20px;
-    animation: lbFadeIn 0.2s ease;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
   }
   .lightbox.open {
-    display: flex;
-  }
-  @keyframes lbFadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
   }
   .lightbox-img {
     max-width: 100%;
@@ -343,6 +344,15 @@
     border-bottom: 1px solid var(--border);
   }
   .ci-emoji { font-size: 32px; flex-shrink: 0; }
+  .ci-img {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    background: var(--accent2);
+  }
   .ci-info { flex: 1; }
   .ci-name { font-size: 14px; font-weight: 500; }
   .ci-price { font-size: 13px; color: var(--accent); }
@@ -649,7 +659,9 @@ function renderCartItems() {
 
   el.innerHTML = items.map(i => `
     <div class="cart-item">
-      <div class="ci-emoji">${i.emoji}</div>
+      ${i.image
+        ? `<img class="ci-img" src="${i.image}" alt="${i.name}" onerror="this.outerHTML='<div class=ci-emoji>${i.emoji}</div>'">`
+        : `<div class="ci-emoji">${i.emoji}</div>`}
       <div class="ci-info">
         <div class="ci-name">${i.name}</div>
         <div class="ci-price">${fmt(i.price)}</div>
@@ -729,8 +741,13 @@ function openLightbox(id) {
 }
 
 function closeLightbox(e) {
-  // faqat background yoki close tugmasi bosilsa yopilsin
-  if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+  // Fon yoki close tugmasi bosilganda yopilsin
+  if (e) {
+    const lb = document.getElementById('lightbox');
+    const isBackground = e.target === lb;
+    const isCloseBtn = e.target.closest('.lightbox-close');
+    if (!isBackground && !isCloseBtn) return;
+  }
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
   lightboxProductId = null;
@@ -745,6 +762,11 @@ function lightboxAddToCart() {
 }
 
 // ── Init ────────────────────────────────────────────────────────────────────
+// Escape tugmasi bilan lightboxni yopish (MacBook uchun)
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
 renderProducts();
 </script>
 </body>
