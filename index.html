@@ -822,7 +822,7 @@ function submitOrder() {
   }
 
   const items = Object.values(cart).map(function(i) {
-    return { id: i.id, name: i.name, price: i.price, qty: i.qty };
+    return { id: i.id, name: i.name, price: i.price, qty: i.qty, image: i.image || '' };
   });
   const total = items.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
 
