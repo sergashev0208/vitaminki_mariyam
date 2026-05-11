@@ -475,7 +475,11 @@
   <button class="cat-btn" onclick="filterCat('omega', this)">🐟 Omega & Yog'lar</button>
   <button class="cat-btn" onclick="filterCat('d3', this)">☀️ Vitamin D3</button>
   <button class="cat-btn" onclick="filterCat('calcium', this)">🦷 Calcium</button>
-  <button class="cat-btn" onclick="filterCat('energiya', this)">⚡ Energiya</button>
+  <button class="cat-btn" onclick="filterCat('gozallik', this)">💖 Go'zallik</button>
+  <button class="cat-btn" onclick="filterCat('jigar', this)">🫀Jigar</button>
+  <button class="cat-btn" onclick="filterCat('qon', this)">🩸Gemoglabin & Qon</button>
+  <button class="cat-btn" onclick="filterCat('magniy', this)">💆🏻‍♀️ Magniy</button>
+  <button class="cat-btn" onclick="filterCat('complex', this)">🛡️Complex </button>
 </div>
 
 <!-- Product Grid -->
@@ -601,11 +605,43 @@ const products = [
   { id:56, name:"now Kids - KID CAL Orange U Delicious",    brand:BRAND, price:240000, emoji:"⚡", image:"https://iili.io/BDmoVvj.jpg", cat:"calcium", sale:true },
   { id:57, name:"Swiss Bone Care 30 tablets",               brand:BRAND, price:130000, emoji:"⚡", image:"https://iili.io/BDmzdOv.jpg", cat:"calcium", sale:true },
   { id:58, name:"Solaray Calcium Citrate 1000 mg",          brand:BRAND, price:200000, emoji:"⚡", image:"https://iili.io/BDmIDcF.jpg", cat:"calcium", sale:true },
+  { id:59, name:"Swiss Move Up Step Two 60 Tablets",          brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/BbKFJgS.jpg", cat:"calcium", sale:true },
 
-  // ⚡ Energiya
-  { id:555, name:"Koenzim Q10",      brand:BRAND, price:168000,                   emoji:"⚡", image:"", cat:"energiya" },
-  { id:456, name:"L-Karnitin 1000mg",brand:BRAND, price:115000, oldPrice:145000,  emoji:"🔥", image:"", cat:"energiya", sale:true },
-  { id:87,  name:"Ginseng Ekstrakti",brand:BRAND, price:125000,                   emoji:"🌿", image:"", cat:"energiya", isnew:true },
+  // 💖 Go'zallik
+  { id:60, name:"CHLOROPHYLLIN ICHKI DEZODORANT TABIIY TOZALOVCHI VA DETOKS EFFEKT 40 kapsula",      brand:BRAND, price:100000,                   emoji:"⚡", image:"https://iili.io/BbFx0aR.jpg", cat:"gozallik", sale:true },
+  { id:61, name:"now Psyllium Husk Caps 500 mg",brand:BRAND, price:200000,   emoji:"🔥", image:"https://iili.io/BbFjeLX.jpg", cat:"gozallik", sale:true },
+  { id:62,  name:"now Whole Psyllium Husks Powder",brand:BRAND, price:250000,                   emoji:"🌿", image:"https://iili.io/BbFeku4.jpg", cat:"gozallik", sale:true },
+  { id:63,  name:"Norwitella INOSITOL 60 tablets 1000 mg",brand:BRAND, price:170000,                   emoji:"🌿", image:"https://iili.io/BbFS7xR.jpg", cat:"gozallik", sale:true },
+
+  // 🫀Jigar
+  { id:555, name:"Collagen Life ARTICHOKE HERBAL TEA & PASTE ",      brand:BRAND, price:280000,                   emoji:"⚡", image:"https://iili.io/BbFL4I9.jpg", cat:"jigar" },
+  { id:555, name:"VITAUCT Гепатроп 350mg",      brand:BRAND, price:230000,                   emoji:"⚡", image:"https://iili.io/BbFDK2j.jpg", cat:"jigar" },
+  { id:555, name:"Swiss MILK THISTLE COMPLEX",      brand:BRAND, price:150000,                   emoji:"⚡", image:"https://iili.io/BbK9PQ2.jpg", cat:"jigar" },
+  { id:555, name:"",      brand:BRAND, price:168000,                   emoji:"⚡", image:"", cat:"jigar" },
+
+  
+  // 🩸Gemoglabin & Qon
+  { id:555, name:"",      brand:BRAND, price:168000,                   emoji:"⚡", image:"", cat:"qon" },
+
+
+
+
+
+  
+  // 💆🏻‍♀️ Magniy
+  { id:555, name:"MAGNESIUM VITAMIN B6 100 tablets",      brand:BRAND, price:200000,                   emoji:"⚡", image:"https://iili.io/BbFGqOX.jpg", cat:"magniy" },
+  { id:555, name:"Swiss Bork Magnesium Complex + Vitamin B6 (P5P)",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbFGX5P.jpg", cat:"magniy" },
+  { id:555, name:"now Ashwagandha 450 mg",      brand:BRAND, price:160000,                   emoji:"⚡", image:"https://iili.io/BbFMZwF.jpg", cat:"magniy" },
+  { id:555, name:"Swiss Bork Magnesium Complex for Children 150 ml",      brand:BRAND, price:150000,                   emoji:"⚡", image:"https://iili.io/BbFVWDF.jpg", cat:"magniy" },
+
+
+
+      
+
+  // 🛡️Complex
+  { id:555, name:"",      brand:BRAND, price:168000,                   emoji:"⚡", image:"", cat:"complex" },
+
+  
 ];
 
 let cart = {};
