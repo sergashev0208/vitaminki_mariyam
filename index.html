@@ -143,10 +143,6 @@
     object-fit: cover;
     display: block;
   }
-  .card-img .emoji-fallback {
-    font-size: 48px;
-    display: none;
-  }
   .card-body { padding: 10px 10px 12px; }
   .card-name {
     font-family: 'Playfair Display', serif;
@@ -213,14 +209,10 @@
     z-index: 2;
   }
 
-  /* ── Zoom hint ── */
-  .card-img.has-image {
-    cursor: zoom-in;
-  }
+  .card-img.has-image { cursor: zoom-in; }
   .zoom-hint {
     position: absolute;
-    bottom: 6px;
-    right: 6px;
+    bottom: 6px; right: 6px;
     font-size: 14px;
     background: rgba(0,0,0,0.35);
     border-radius: 6px;
@@ -351,21 +343,17 @@
     border-bottom: 1px solid var(--border);
   }
   .ci-thumb {
-    width: 52px;
-    height: 52px;
+    width: 52px; height: 52px;
     flex-shrink: 0;
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid var(--border);
     background: var(--accent2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     font-size: 26px;
   }
   .ci-img {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
     display: block;
     border-radius: 10px;
@@ -430,16 +418,6 @@
     font-size: 22px;
     font-weight: 600;
     color: var(--accent);
-  }
-
-  .delivery-note {
-    background: #e8f5e9;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 12px;
-    color: var(--accent);
-    margin-bottom: 12px;
-    border: 1px solid var(--border);
   }
 
   .order-btn {
@@ -509,8 +487,19 @@
 <!-- Cart Panel -->
 <div class="cart-panel" id="cartPanel">
   <div class="panel-handle"></div>
+
+  <!-- Cart Content -->
   <div id="cartContent">
     <div class="panel-title">🛒 Savatcham</div>
+    <!-- Cart items rendered here -->
+    <div id="cartItems"></div>
+
+    <!-- Order Form -->
+    <div class="order-form" id="orderForm" style="display:none;">
+      <div class="total-row">
+        <span>Jami:</span>
+        <span class="total-sum" id="totalSum">0 so'm</span>
+      </div>
       <label class="form-label">Telefon raqam *</label>
       <input class="form-input" id="phoneInput" type="tel" placeholder="+998 90 000 00 00">
       <label class="form-label">Manzil *</label>
@@ -520,6 +509,8 @@
       <button class="order-btn" id="orderBtn" onclick="submitOrder()">✅ Buyurtma berish</button>
     </div>
   </div>
+
+  <!-- Success Screen -->
   <div class="success-screen" id="successScreen">
     <div class="success-icon">🎉</div>
     <div class="success-title">Buyurtma qabul qilindi!</div>
@@ -537,7 +528,6 @@
 </div>
 
 <script>
-// Telegram WebApp init
 const tg = window.Telegram?.WebApp;
 if (tg) { tg.ready(); tg.expand(); }
 
@@ -545,78 +535,77 @@ const BRAND = "🌱Vitaminki_maryam🌱";
 
 const products = [
   // 💊 Yodlar(йод)
-  { id:1,  name:"NEWLINE Iodine",       brand:BRAND, price:150000,                   emoji:"🍋", image:"https://iili.io/BDPYQEu.jpg", cat:"yodlar",   sale:true  },
-  { id:2,  name:"VeNatura iYOT VA SELENYUM TOMCHISI",     brand:BRAND, price:140000,                   emoji:"☀️", image:"https://iili.io/BDPGuGS.jpg", cat:"yodlar",    sale:true  },
-  { id:3,  name:"NBT life Iyotic Damla",            brand:BRAND, price:155000,    emoji:"💊", image:"https://iili.io/BDPhHqQ.jpg", cat:"yodlar",   sale:true  },
-  { id:4,  name:"Swiss KELP (IODINE)",   brand:BRAND, price:160000,                  emoji:"🌈", image:"https://iili.io/BDPwIRt.jpg", cat:"yodlar",   sale:true  },
-  { id:5,  name:"life flo LIQUID IODINE PLUS",              brand:BRAND, price:140000,                   emoji:"🪨", image:"https://iili.io/BDPvfFj.jpg", cat:"yodlar",    sale:true     },
+  { id:1,  name:"NEWLINE Iodine",                           brand:BRAND, price:150000, emoji:"🍋", image:"https://iili.io/BDPYQEu.jpg", cat:"yodlar",    sale:true },
+  { id:2,  name:"VeNatura iYOT VA SELENYUM TOMCHISI",       brand:BRAND, price:140000, emoji:"☀️", image:"https://iili.io/BDPGuGS.jpg", cat:"yodlar",    sale:true },
+  { id:3,  name:"NBT life Iyotic Damla",                    brand:BRAND, price:155000, emoji:"💊", image:"https://iili.io/BDPhHqQ.jpg", cat:"yodlar",    sale:true },
+  { id:4,  name:"Swiss KELP (IODINE)",                      brand:BRAND, price:160000, emoji:"🌈", image:"https://iili.io/BDPwIRt.jpg", cat:"yodlar",    sale:true },
+  { id:5,  name:"life flo LIQUID IODINE PLUS",              brand:BRAND, price:140000, emoji:"🪨", image:"https://iili.io/BDPvfFj.jpg", cat:"yodlar",    sale:true },
 
   // 🦴 Collagen
-  { id:6,  name:"AFNAN Beauty COLLAGEN",      brand:BRAND, price:250000,    emoji:"🔴", image:"https://iili.io/BDPswBV.jpg", cat:"collagenlar",   sale:true  },
-  { id:7,  name:"esila COLLAGEN DETOX",     brand:BRAND, price:170000,                   emoji:"🦷", image:"https://iili.io/BDPQtzG.jpg", cat:"collagenlar",    sale:true  },
-  { id:8,  name:"The COLLAGEN BEAUTY PLUS DAY2DAY",       brand:BRAND, price:600000,                   emoji:"⚪", image:"https://iili.io/BDPbTk7.jpg", cat:"collagenlar",   sale:true  },
-  { id:30,  name:"Swiss JOINT ALP",     brand:BRAND, price:250000,                   emoji:"🦷", image:"https://iili.io/BDi2o5x.jpg", cat:"collagenlar",    sale:true  },
-  { id:31,  name:"NUTRAXIN ARTROFLEX",     brand:BRAND, price:300000,                   emoji:"🦷", image:"https://iili.io/BDiFdP9.jpg", cat:"collagenlar",    sale:true  },
-  { id:32,  name:"COLLABEL Collagen Life Pro",     brand:BRAND, price:130000,                   emoji:"🦷", image:"https://iili.io/BDifXj4.jpg", cat:"collagenlar",    sale:true  },
-  { id:33,  name:"BORK Swiss MARINE COLLAGEN",     brand:BRAND, price:320000,                   emoji:"🦷", image:"https://iili.io/BDiCsP2.jpg", cat:"collagenlar",    sale:true  },
-  { id:34,  name:"Swiss BORK Natural COLLAGEN POWDER+",     brand:BRAND, price:200000,                   emoji:"🦷", image:"https://iili.io/BDiIzmX.jpg", cat:"collagenlar",    sale:true  },
-  { id:35,  name:"Noora Collagen Powder",     brand:BRAND, price:250000,                   emoji:"🦷", image:"https://iili.io/BDiuKSp.jpg", cat:"collagenlar",    sale:true  },
-  { id:36,  name:"California GOLD Nutrition Collagen UP",     brand:BRAND, price:250000,                   emoji:"🦷", image:"https://iili.io/BDiR5w7.jpg", cat:"collagenlar",    sale:true  },
-  { id:37,  name:"OSENDE Multi Plus COLLAGEN",     brand:BRAND, price:380000,                   emoji:"🦷", image:"https://iili.io/BDicGTl.jpg", cat:"collagenlar",    sale:true  },
-  { id:38,  name:"OSENDE COLLAGEN 10,000 mg",     brand:BRAND, price:400000,                   emoji:"🦷", image:"https://iili.io/BDi197s.jpg", cat:"collagenlar",    sale:true  },
-  { id:39,  name:"Kiperin Collagen Peptides",     brand:BRAND, price:380000,                   emoji:"🦷", image:"https://iili.io/BDijB5P.jpg", cat:"collagenlar",    sale:true  },
-  { id:40,  name:"Kiperin Collagen Purple",     brand:BRAND, price:480000,                   emoji:"🦷", image:"https://iili.io/BDijj7S.jpg", cat:"collagenlar",    sale:true  },
- 
+  { id:6,  name:"AFNAN Beauty COLLAGEN",                    brand:BRAND, price:250000, emoji:"🔴", image:"https://iili.io/BDPswBV.jpg", cat:"collagenlar", sale:true },
+  { id:7,  name:"esila COLLAGEN DETOX",                     brand:BRAND, price:170000, emoji:"🦷", image:"https://iili.io/BDPQtzG.jpg", cat:"collagenlar", sale:true },
+  { id:8,  name:"The COLLAGEN BEAUTY PLUS DAY2DAY",         brand:BRAND, price:600000, emoji:"⚪", image:"https://iili.io/BDPbTk7.jpg", cat:"collagenlar", sale:true },
+  { id:30, name:"Swiss JOINT ALP",                          brand:BRAND, price:250000, emoji:"🦷", image:"https://iili.io/BDi2o5x.jpg", cat:"collagenlar", sale:true },
+  { id:31, name:"NUTRAXIN ARTROFLEX",                       brand:BRAND, price:300000, emoji:"🦷", image:"https://iili.io/BDiFdP9.jpg", cat:"collagenlar", sale:true },
+  { id:32, name:"COLLABEL Collagen Life Pro",               brand:BRAND, price:130000, emoji:"🦷", image:"https://iili.io/BDifXj4.jpg", cat:"collagenlar", sale:true },
+  { id:33, name:"BORK Swiss MARINE COLLAGEN",               brand:BRAND, price:320000, emoji:"🦷", image:"https://iili.io/BDiCsP2.jpg", cat:"collagenlar", sale:true },
+  { id:34, name:"Swiss BORK Natural COLLAGEN POWDER+",      brand:BRAND, price:200000, emoji:"🦷", image:"https://iili.io/BDiIzmX.jpg", cat:"collagenlar", sale:true },
+  { id:35, name:"Noora Collagen Powder",                    brand:BRAND, price:250000, emoji:"🦷", image:"https://iili.io/BDiuKSp.jpg", cat:"collagenlar", sale:true },
+  { id:36, name:"California GOLD Nutrition Collagen UP",    brand:BRAND, price:250000, emoji:"🦷", image:"https://iili.io/BDiR5w7.jpg", cat:"collagenlar", sale:true },
+  { id:37, name:"OSENDE Multi Plus COLLAGEN",               brand:BRAND, price:380000, emoji:"🦷", image:"https://iili.io/BDicGTl.jpg", cat:"collagenlar", sale:true },
+  { id:38, name:"OSENDE COLLAGEN 10,000 mg",                brand:BRAND, price:400000, emoji:"🦷", image:"https://iili.io/BDi197s.jpg", cat:"collagenlar", sale:true },
+  { id:39, name:"Kiperin Collagen Peptides",                brand:BRAND, price:380000, emoji:"🦷", image:"https://iili.io/BDijB5P.jpg", cat:"collagenlar", sale:true },
+  { id:40, name:"Kiperin Collagen Purple",                  brand:BRAND, price:480000, emoji:"🦷", image:"https://iili.io/BDijj7S.jpg", cat:"collagenlar", sale:true },
+
   // 🐟 Omega & Yog'lar
-  { id:9,  name:"Added Attention BURIED TREASURE",                              brand:BRAND, price:380000, emoji:"🐟", image:"https://iili.io/BDgJWSS.jpg", cat:"omega", sale:true  },
-  { id:10, name:"Focusvit Kids",                                brand:BRAND, price:210000, emoji:"💛", image:"https://iili.io/BDr64N2.jpg", cat:"omega", sale:true          },
-  { id:11, name:"OMEGA 3",                                      brand:BRAND, price:270000, emoji:"🦐", image:"https://iili.io/BDrbXAg.jpg", cat:"omega", sale:true  },
-  { id:12, name:"Balen OMEGA 3•6•9 SOFT",                       brand:BRAND, price:250000, emoji:"🦐", image:"https://iili.io/BD4qj2a.jpg", cat:"omega", sale:true  },
-  { id:13, name:"Carlson kid's",                                brand:BRAND, price:330000, emoji:"🦐", image:"https://iili.io/BD4I3ua.jpg", cat:"omega", sale:true  },
-  { id:14, name:"Norwitella Omega-3",                           brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/BD4uZjs.jpg", cat:"omega", sale:true  },
-  { id:15, name:"novomins KIDS OMEGA 3-6-9 + MULTI GUMMIES",   brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4aUnn.jpg", cat:"omega", sale:true  },
-  { id:16, name:"Ausvit Norway Fish Oil",                       brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/BD40dhP.jpg", cat:"omega", sale:true  },
-  { id:17, name:"NORDIC BORK PURE OMEGA-3 NORWAY COD LIVER OIL", brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4Gdj2.jpg", cat:"omega", sale:true},
-  { id:18, name:"Mini Drops DHA",                               brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4MD5G.jpg", cat:"omega", sale:true  },
-  { id:19, name:"Ausvit Focus Formula KIDS",                    brand:BRAND, price:210000, emoji:"🦐", image:"https://iili.io/BD4WL9s.jpg", cat:"omega", sale:true  },
-  { id:20, name:"now Omega-3 Fish Oil",                         brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4hjpa.jpg", cat:"omega", sale:true  },
+  { id:9,  name:"Added Attention BURIED TREASURE",          brand:BRAND, price:380000, emoji:"🐟", image:"https://iili.io/BDgJWSS.jpg", cat:"omega", sale:true },
+  { id:10, name:"Focusvit Kids",                            brand:BRAND, price:210000, emoji:"💛", image:"https://iili.io/BDr64N2.jpg", cat:"omega", sale:true },
+  { id:11, name:"OMEGA 3",                                  brand:BRAND, price:270000, emoji:"🦐", image:"https://iili.io/BDrbXAg.jpg", cat:"omega", sale:true },
+  { id:12, name:"Balen OMEGA 3•6•9 SOFT",                  brand:BRAND, price:250000, emoji:"🦐", image:"https://iili.io/BD4qj2a.jpg", cat:"omega", sale:true },
+  { id:13, name:"Carlson kid's",                            brand:BRAND, price:330000, emoji:"🦐", image:"https://iili.io/BD4I3ua.jpg", cat:"omega", sale:true },
+  { id:14, name:"Norwitella Omega-3",                       brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/BD4uZjs.jpg", cat:"omega", sale:true },
+  { id:15, name:"novomins KIDS OMEGA 3-6-9 + MULTI GUMMIES",brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4aUnn.jpg", cat:"omega", sale:true },
+  { id:16, name:"Ausvit Norway Fish Oil",                   brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/BD40dhP.jpg", cat:"omega", sale:true },
+  { id:17, name:"NORDIC BORK PURE OMEGA-3 NORWAY COD LIVER OIL", brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4Gdj2.jpg", cat:"omega", sale:true },
+  { id:18, name:"Mini Drops DHA",                           brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4MD5G.jpg", cat:"omega", sale:true },
+  { id:19, name:"Ausvit Focus Formula KIDS",                brand:BRAND, price:210000, emoji:"🦐", image:"https://iili.io/BD4WL9s.jpg", cat:"omega", sale:true },
+  { id:20, name:"now Omega-3 Fish Oil",                     brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4hjpa.jpg", cat:"omega", sale:true },
 
   // ☀️ Vitamin D3
-  { id:21, name:"Swiss VITAMIN D3+K2",    brand:BRAND, price:140000,                   emoji:"🌸", image:"https://iili.io/BDLXJTX.jpg", cat:"d3"  , sale:true          },
-  { id:22, name:"NEWLINE VITAMIN D3+K2",        brand:BRAND, price:130000,   emoji:"🍯", image:"https://iili.io/BDLNPse.jpg", cat:"d3", sale:true  },
-  { id:23, name:"now LIQUID VITAMIN D3",      brand:BRAND, price:140000,                  emoji:"🦠", image:"https://iili.io/BDLeboP.jpg", cat:"d3", sale:true },
-  { id:24, name:"Carlson Super Daily D3",      brand:BRAND, price:170000,                  emoji:"🦠", image:"https://iili.io/BDLUran.jpg", cat:"d3", sale:true },
-  { id:25, name:"Carlson Kid's Super Daily D3+K2",      brand:BRAND, price:285000,                  emoji:"🦠", image:"https://iili.io/BDL4R2t.jpg", cat:"d3", sale:true },
-  { id:26, name:"VeNatura D3K2",      brand:BRAND, price:110000,                  emoji:"🦠", image:"https://iili.io/BDLPas4.jpg", cat:"d3", sale:true },
-  { id:27, name:"CALIFORNIA GOLD NUTRITION",      brand:BRAND, price:120000,                  emoji:"🦠", image:"https://iili.io/BDLLM7I.jpg", cat:"d3", sale:true },
-  { id:28, name:"AKSUVITAL VITAMIN D3+K2 5,000 IU",      brand:BRAND, price:150000,                  emoji:"🦠", image:"https://iili.io/BDLQrap.jpg", cat:"d3", sale:true },
-  { id:29, name:"AKSUVITAL VITAMIN D3+K2 10,000 IU",      brand:BRAND, price:170000,                  emoji:"🦠", image:"https://iili.io/BDLtt24.jpg", cat:"d3", sale:true },
-  { id:41, name:"now Vitamin D-3 & K-2",      brand:BRAND, price:160000,                  emoji:"🦠", image:"https://iili.io/BDLmTdv.jpg", cat:"d3", sale:true },
-  { id:42, name:"Solaray Vitamin D3 + K2",      brand:BRAND, price:200000,                  emoji:"🦠", image:"https://iili.io/BDLybzN.jpg", cat:"d3", sale:true },
-  { id:43, name:"now Vitamin D-3 5,000 UI",      brand:BRAND, price:130000,                  emoji:"🦠", image:"https://iili.io/BDQHySs.jpg", cat:"d3", sale:true },
-  { id:44, name:"now Vitamin D-3 10,000 IU",      brand:BRAND, price:160000,                  emoji:"🦠", image:"https://iili.io/BDQdyuf.jpg", cat:"d3", sale:true },
-  { id:45, name:"NEW LINE Vitamin D3+K2",      brand:BRAND, price:200000,                  emoji:"🦠", image:"https://iili.io/BDQFBhx.jpg", cat:"d3", sale:true },
-  { id:46, name:"Mini Drops Vitamin D3",      brand:BRAND, price:125000,                  emoji:"🦠", image:"https://iili.io/BDQKeDJ.jpg", cat:"d3", sale:true },
-  { id:47, name:"Child Life Vitamin D3",      brand:BRAND, price:130000,                  emoji:"🦠", image:"https://iili.io/BDQq9BR.jpg", cat:"d3", sale:true },
-
+  { id:21, name:"Swiss VITAMIN D3+K2",                      brand:BRAND, price:140000, emoji:"🌸", image:"https://iili.io/BDLXJTX.jpg", cat:"d3", sale:true },
+  { id:22, name:"NEWLINE VITAMIN D3+K2",                    brand:BRAND, price:130000, emoji:"🍯", image:"https://iili.io/BDLNPse.jpg", cat:"d3", sale:true },
+  { id:23, name:"now LIQUID VITAMIN D3",                    brand:BRAND, price:140000, emoji:"🦠", image:"https://iili.io/BDLeboP.jpg", cat:"d3", sale:true },
+  { id:24, name:"Carlson Super Daily D3",                   brand:BRAND, price:170000, emoji:"🦠", image:"https://iili.io/BDLUran.jpg", cat:"d3", sale:true },
+  { id:25, name:"Carlson Kid's Super Daily D3+K2",          brand:BRAND, price:285000, emoji:"🦠", image:"https://iili.io/BDL4R2t.jpg", cat:"d3", sale:true },
+  { id:26, name:"VeNatura D3K2",                            brand:BRAND, price:110000, emoji:"🦠", image:"https://iili.io/BDLPas4.jpg", cat:"d3", sale:true },
+  { id:27, name:"CALIFORNIA GOLD NUTRITION",                brand:BRAND, price:120000, emoji:"🦠", image:"https://iili.io/BDLLM7I.jpg", cat:"d3", sale:true },
+  { id:28, name:"AKSUVITAL VITAMIN D3+K2 5,000 IU",        brand:BRAND, price:150000, emoji:"🦠", image:"https://iili.io/BDLQrap.jpg", cat:"d3", sale:true },
+  { id:29, name:"AKSUVITAL VITAMIN D3+K2 10,000 IU",       brand:BRAND, price:170000, emoji:"🦠", image:"https://iili.io/BDLtt24.jpg", cat:"d3", sale:true },
+  { id:41, name:"now Vitamin D-3 & K-2",                   brand:BRAND, price:160000, emoji:"🦠", image:"https://iili.io/BDLmTdv.jpg", cat:"d3", sale:true },
+  { id:42, name:"Solaray Vitamin D3 + K2",                  brand:BRAND, price:200000, emoji:"🦠", image:"https://iili.io/BDLybzN.jpg", cat:"d3", sale:true },
+  { id:43, name:"now Vitamin D-3 5,000 UI",                 brand:BRAND, price:130000, emoji:"🦠", image:"https://iili.io/BDQHySs.jpg", cat:"d3", sale:true },
+  { id:44, name:"now Vitamin D-3 10,000 IU",                brand:BRAND, price:160000, emoji:"🦠", image:"https://iili.io/BDQdyuf.jpg", cat:"d3", sale:true },
+  { id:45, name:"NEW LINE Vitamin D3+K2",                   brand:BRAND, price:200000, emoji:"🦠", image:"https://iili.io/BDQFBhx.jpg", cat:"d3", sale:true },
+  { id:46, name:"Mini Drops Vitamin D3",                    brand:BRAND, price:125000, emoji:"🦠", image:"https://iili.io/BDQKeDJ.jpg", cat:"d3", sale:true },
+  { id:47, name:"Child Life Vitamin D3",                    brand:BRAND, price:130000, emoji:"🦠", image:"https://iili.io/BDQq9BR.jpg", cat:"d3", sale:true },
 
   // 🦷 Calcium
-  { id:48, name:"H&B Calcium   + Magnesium, Zinc & Vitamin D  240 tablets",     brand:BRAND, price:270000,  emoji:"✨", image:"https://iili.io/BDm7z4p.jpg", cat:"calcium",  sale:true  },
-  { id:49, name:"OSTECARE Original 90 Tablets",        brand:BRAND, price:250000,                   emoji:"💇", image:"https://iili.io/BDbDzge.jpg", cat:"calcium",  sale:true          },
-  { id:50, name:"AUSVIT OSTELIN KIDS 150 ml",       brand:BRAND, price:160000,                  emoji:"💧", image:"https://iili.io/BDbmRVV.jpg", cat:"calcium",  sale:true },
-  { id:51, name:"Osteocare Liquid Original",            brand:BRAND, price:180000,                  emoji:"⚡", image:"https://iili.io/BDm9EOu.jpg", cat:"calcium" ,  sale:true            },
-  { id:52, name:"ChildLife Liquid Calcium with Magnesium",            brand:BRAND, price:270000,                  emoji:"⚡", image:"https://iili.io/BDmJh8P.jpg", cat:"calcium"             },
-  { id:53, name:"Kirkland Signature CALCIUM CITRATE + MAGNESIUM + ZINC 500 Tablets",            brand:BRAND, price:400000,                  emoji:"⚡", image:"https://iili.io/BDmKzrv.jpg", cat:"calcium" ,  sale:true             },
-  { id:54, name:"Osteocare PLUS GLUCOSAMINE & CHONDROITIN",            brand:BRAND, price:250000,                  emoji:"⚡", image:"https://iili.io/BDmqKWF.jpg", cat:"calcium"   ,  sale:true           },
-  { id:55, name:"Norwitella Ostevit KIDS bone & growth complex",            brand:BRAND, price:160000,                  emoji:"⚡", image:"https://iili.io/BDmCGV9.jpg", cat:"calcium"  ,  sale:true            },
-  { id:56, name:"now Kids - KID CAL Orange U Delicious",            brand:BRAND, price:240000,                  emoji:"⚡", image:"https://iili.io/BDmoVvj.jpg", cat:"calcium" ,  sale:true            },
-  { id:57, name:"Swiss Bone Care 30 tablets",            brand:BRAND, price:130000,                  emoji:"⚡", image:"https://iili.io/BDmzdOv.jpg", cat:"calcium"  ,  sale:true            },
-  { id:58, name:"Solaray Calcium Citrate 1000 mg",            brand:BRAND, price:200000,                  emoji:"⚡", image:"https://iili.io/BDmIDcF.jpg", cat:"calcium"  ,  sale:true            },
-  
+  { id:48, name:"H&B Calcium + Magnesium, Zinc & Vitamin D 240 tablets", brand:BRAND, price:270000, emoji:"✨", image:"https://iili.io/BDm7z4p.jpg", cat:"calcium", sale:true },
+  { id:49, name:"OSTECARE Original 90 Tablets",             brand:BRAND, price:250000, emoji:"💇", image:"https://iili.io/BDbDzge.jpg", cat:"calcium", sale:true },
+  { id:50, name:"AUSVIT OSTELIN KIDS 150 ml",               brand:BRAND, price:160000, emoji:"💧", image:"https://iili.io/BDbmRVV.jpg", cat:"calcium", sale:true },
+  { id:51, name:"Osteocare Liquid Original",                brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/BDm9EOu.jpg", cat:"calcium", sale:true },
+  { id:52, name:"ChildLife Liquid Calcium with Magnesium",  brand:BRAND, price:270000, emoji:"⚡", image:"https://iili.io/BDmJh8P.jpg", cat:"calcium" },
+  { id:53, name:"Kirkland Signature CALCIUM CITRATE + MAGNESIUM + ZINC 500 Tablets", brand:BRAND, price:400000, emoji:"⚡", image:"https://iili.io/BDmKzrv.jpg", cat:"calcium", sale:true },
+  { id:54, name:"Osteocare PLUS GLUCOSAMINE & CHONDROITIN", brand:BRAND, price:250000, emoji:"⚡", image:"https://iili.io/BDmqKWF.jpg", cat:"calcium", sale:true },
+  { id:55, name:"Norwitella Ostevit KIDS bone & growth complex", brand:BRAND, price:160000, emoji:"⚡", image:"https://iili.io/BDmCGV9.jpg", cat:"calcium", sale:true },
+  { id:56, name:"now Kids - KID CAL Orange U Delicious",    brand:BRAND, price:240000, emoji:"⚡", image:"https://iili.io/BDmoVvj.jpg", cat:"calcium", sale:true },
+  { id:57, name:"Swiss Bone Care 30 tablets",               brand:BRAND, price:130000, emoji:"⚡", image:"https://iili.io/BDmzdOv.jpg", cat:"calcium", sale:true },
+  { id:58, name:"Solaray Calcium Citrate 1000 mg",          brand:BRAND, price:200000, emoji:"⚡", image:"https://iili.io/BDmIDcF.jpg", cat:"calcium", sale:true },
+
   // ⚡ Energiya
-  { id:555, name:"Koenzim Q10",            brand:BRAND, price:168000,                  emoji:"⚡", image:"", cat:"energiya"             },
-  { id:456, name:"L-Karnitin 1000mg",      brand:BRAND, price:115000, oldPrice:145000, emoji:"🔥", image:"", cat:"energiya",  sale:true  },
-  { id:87, name:"Ginseng Ekstrakti",      brand:BRAND, price:125000,                  emoji:"🌿", image:"", cat:"energiya",  isnew:true },
+  { id:555, name:"Koenzim Q10",      brand:BRAND, price:168000,                   emoji:"⚡", image:"", cat:"energiya" },
+  { id:456, name:"L-Karnitin 1000mg",brand:BRAND, price:115000, oldPrice:145000,  emoji:"🔥", image:"", cat:"energiya", sale:true },
+  { id:87,  name:"Ginseng Ekstrakti",brand:BRAND, price:125000,                   emoji:"🌿", image:"", cat:"energiya", isnew:true },
 ];
 
 let cart = {};
@@ -636,11 +625,9 @@ function renderProducts() {
   filtered.forEach(p => {
     const inCart = !!cart[p.id];
 
-    // Card element
     const card = document.createElement('div');
     card.className = 'card';
 
-    // Badge
     if (p.sale) {
       const badge = document.createElement('span');
       badge.className = 'badge';
@@ -653,7 +640,6 @@ function renderProducts() {
       card.appendChild(badge);
     }
 
-    // Image container
     const imgDiv = document.createElement('div');
     imgDiv.className = 'card-img' + (p.image ? ' has-image' : '');
 
@@ -665,10 +651,7 @@ function renderProducts() {
         imgDiv.classList.remove('has-image');
         imgDiv.removeAttribute('data-id');
         imgDiv.onclick = null;
-        imgDiv.innerHTML = '';
-        imgDiv.textContent = p.emoji;
-        const hint = imgDiv.querySelector('.zoom-hint');
-        if (hint) hint.remove();
+        imgDiv.innerHTML = p.emoji;
       });
       imgDiv.appendChild(img);
 
@@ -688,7 +671,6 @@ function renderProducts() {
 
     card.appendChild(imgDiv);
 
-    // Card body
     const body = document.createElement('div');
     body.className = 'card-body';
     body.innerHTML =
@@ -747,9 +729,9 @@ function updateCartUI() {
 }
 
 function renderCartItems() {
-  const items = Object.values(cart);
-  const el   = document.getElementById('cartItems');
-  const form = document.getElementById('orderForm');
+  const items  = Object.values(cart);
+  const el     = document.getElementById('cartItems');
+  const form   = document.getElementById('orderForm');
 
   if (items.length === 0) {
     el.innerHTML = '<div class="empty-cart">🛒 Savat bo\'sh<br><small>Katalogdan mahsulot qo\'shing</small></div>';
@@ -762,7 +744,6 @@ function renderCartItems() {
     const row = document.createElement('div');
     row.className = 'cart-item';
 
-    // Thumbnail
     const thumb = document.createElement('div');
     thumb.className = 'ci-thumb';
 
@@ -779,14 +760,12 @@ function renderCartItems() {
       thumb.textContent = item.emoji;
     }
 
-    // Info
     const info = document.createElement('div');
     info.className = 'ci-info';
     info.innerHTML =
       '<div class="ci-name">' + item.name + '</div>' +
       '<div class="ci-price">' + fmt(item.price) + '</div>';
 
-    // Qty controls
     const qtyDiv = document.createElement('div');
     qtyDiv.className = 'ci-qty';
 
@@ -814,11 +793,8 @@ function renderCartItems() {
     el.appendChild(row);
   });
 
-  const total    = items.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
-  const totalQty = items.reduce(function(s, i) { return s + i.qty; }, 0);
-
+  const total = items.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
   document.getElementById('totalSum').textContent = fmt(total);
-  document.getElementById('deliveryNote').style.display = totalQty >= 3 ? 'block' : 'none';
   form.style.display = 'block';
 }
 
@@ -906,7 +882,6 @@ function closeLightbox() {
   lightboxProductId = null;
 }
 
-// Faqat fon bosilganda yopilsin (ichidagi elementlar emas)
 function lightboxBgClick(e) {
   if (e.target === document.getElementById('lightbox')) {
     closeLightbox();
@@ -921,7 +896,6 @@ function lightboxAddToCart() {
   btn.classList.add('in-cart');
 }
 
-// Escape tugmasi
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeLightbox();
 });
