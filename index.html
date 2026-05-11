@@ -495,7 +495,7 @@
   <button class="cat-btn" onclick="filterCat('yodlar', this)">💊 Yodlar(йод)</button>
   <button class="cat-btn" onclick="filterCat('collagenlar', this)">🦴 Collagen</button>
   <button class="cat-btn" onclick="filterCat('omega', this)">🐟 Omega & Yog'lar</button>
-  <button class="cat-btn" onclick="filterCat('immunitet', this)">🛡️ Immunitet</button>
+  <button class="cat-btn" onclick="filterCat('d3', this)">☀️ Vitamin D3</button>
   <button class="cat-btn" onclick="filterCat('gozallik', this)">✨ Go'zallik</button>
   <button class="cat-btn" onclick="filterCat('energiya', this)">⚡ Energiya</button>
 </div>
@@ -590,20 +590,34 @@ const products = [
   { id:19, name:"Ausvit Focus Formula KIDS",                    brand:BRAND, price:210000, emoji:"🦐", image:"https://iili.io/BD4WL9s.jpg", cat:"omega", sale:true  },
   { id:20, name:"now Omega-3 Fish Oil",                         brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4hjpa.jpg", cat:"omega", sale:true  },
 
-  // 🛡️ Immunitet
-  { id:21, name:"Echinacea Ekstrakti",    brand:BRAND, price:78000,                   emoji:"🌸", image:"", cat:"immunitet"            },
-  { id:22, name:"Propolis + Asal",        brand:BRAND, price:92000,  oldPrice:115000, emoji:"🍯", image:"", cat:"immunitet", sale:true  },
-  { id:23, name:"Probiotik Complex",      brand:BRAND, price:135000,                  emoji:"🦠", image:"", cat:"immunitet", isnew:true },
+  // ☀️ Vitamin D3
+  { id:21, name:"Swiss VITAMIN D3+K2",    brand:BRAND, price:140000,                   emoji:"🌸", image:"https://iili.io/BDLXJTX.jpg", cat:"d3"  , sale:true          },
+  { id:22, name:"NEWLINE VITAMIN D3+K2",        brand:BRAND, price:130000,   emoji:"🍯", image:"https://iili.io/BDLNPse.jpg", cat:"d3", sale:true  },
+  { id:23, name:"now LIQUID VITAMIN D3",      brand:BRAND, price:140000,                  emoji:"🦠", image:"https://iili.io/BDLeboP.jpg", cat:"d3", sale:true },
+  { id:24, name:"Carlson Super Daily D3",      brand:BRAND, price:170000,                  emoji:"🦠", image:"https://iili.io/BDLUran.jpg", cat:"d3", sale:true },
+  { id:25, name:"Carlson Kid's Super Daily D3+K2",      brand:BRAND, price:285000,                  emoji:"🦠", image:"https://iili.io/BDL4R2t.jpg", cat:"d3", sale:true },
+  { id:26, name:"VeNatura D3K2",      brand:BRAND, price:110000,                  emoji:"🦠", image:"https://iili.io/BDLPas4.jpg", cat:"d3", sale:true },
+  { id:27, name:"CALIFORNIA GOLD NUTRITION",      brand:BRAND, price:120000,                  emoji:"🦠", image:"https://iili.io/BDLLM7I.jpg", cat:"d3", sale:true },
+  { id:28, name:"AKSUVITAL VITAMIN D3+K2 5,000 IU",      brand:BRAND, price:150000,                  emoji:"🦠", image:"https://iili.io/BDLQrap.jpg", cat:"d3", sale:true },
+  { id:29, name:"AKSUVITAL VITAMIN D3+K2 10,000 IU",      brand:BRAND, price:170000,                  emoji:"🦠", image:"https://iili.io/BDLtt24.jpg", cat:"d3", sale:true },
+  { id:41, name:"now Vitamin D-3 & K-2",      brand:BRAND, price:160000,                  emoji:"🦠", image:"https://iili.io/BDLmTdv.jpg", cat:"d3", sale:true },
+  { id:42, name:"Solaray Vitamin D3 + K2",      brand:BRAND, price:200000,                  emoji:"🦠", image:"https://iili.io/BDLybzN.jpg", cat:"d3", sale:true },
+  { id:43, name:"now Vitamin D-3 5,000 UI",      brand:BRAND, price:130000,                  emoji:"🦠", image:"https://iili.io/BDQHySs.jpg", cat:"d3", sale:true },
+  { id:44, name:"now Vitamin D-3 10,000 IU",      brand:BRAND, price:160000,                  emoji:"🦠", image:"https://iili.io/BDQdyuf.jpg", cat:"d3", sale:true },
+  { id:45, name:"NEW LINE Vitamin D3+K2",      brand:BRAND, price:200000,                  emoji:"🦠", image:"https://iili.io/BDQFBhx.jpg", cat:"d3", sale:true },
+  { id:46, name:"Mini Drops Vitamin D3",      brand:BRAND, price:125000,                  emoji:"🦠", image:"https://iili.io/BDQKeDJ.jpg", cat:"d3", sale:true },
+  { id:47, name:"Child Life Vitamin D3",      brand:BRAND, price:130000,                  emoji:"🦠", image:"https://iili.io/BDQq9BR.jpg", cat:"d3", sale:true },
+
 
   // ✨ Go'zallik
-  { id:24, name:"Kollagen Peptidlar",     brand:BRAND, price:185000, oldPrice:230000, emoji:"✨", image:"", cat:"gozallik",  sale:true  },
-  { id:25, name:"Biotin 5000 mcg",        brand:BRAND, price:98000,                   emoji:"💇", image:"", cat:"gozallik"             },
-  { id:26, name:"Gialuron Kislota",       brand:BRAND, price:145000,                  emoji:"💧", image:"", cat:"gozallik",  isnew:true },
+  { id:48, name:"Kollagen Peptidlar",     brand:BRAND, price:185000, oldPrice:230000, emoji:"✨", image:"", cat:"gozallik",  sale:true  },
+  { id:567, name:"Biotin 5000 mcg",        brand:BRAND, price:98000,                   emoji:"💇", image:"", cat:"gozallik"             },
+  { id:56, name:"Gialuron Kislota",       brand:BRAND, price:145000,                  emoji:"💧", image:"", cat:"gozallik",  isnew:true },
 
   // ⚡ Energiya
-  { id:27, name:"Koenzim Q10",            brand:BRAND, price:168000,                  emoji:"⚡", image:"", cat:"energiya"             },
-  { id:28, name:"L-Karnitin 1000mg",      brand:BRAND, price:115000, oldPrice:145000, emoji:"🔥", image:"", cat:"energiya",  sale:true  },
-  { id:29, name:"Ginseng Ekstrakti",      brand:BRAND, price:125000,                  emoji:"🌿", image:"", cat:"energiya",  isnew:true },
+  { id:57, name:"Koenzim Q10",            brand:BRAND, price:168000,                  emoji:"⚡", image:"", cat:"energiya"             },
+  { id:456, name:"L-Karnitin 1000mg",      brand:BRAND, price:115000, oldPrice:145000, emoji:"🔥", image:"", cat:"energiya",  sale:true  },
+  { id:87, name:"Ginseng Ekstrakti",      brand:BRAND, price:125000,                  emoji:"🌿", image:"", cat:"energiya",  isnew:true },
 ];
 
 let cart = {};
