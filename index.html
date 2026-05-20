@@ -2,25 +2,27 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>🌱Vitaminki_maryam🌱 – Katalog</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f4faf4;
-    --surface: #ffffff;
-    --text: #1a2e1a;
-    --muted: #6b8c6b;
-    --accent: #3a8c4a;
-    --accent2: #c8e6c9;
-    --accent-light: #e8f5e9;
-    --border: #d4e8d4;
-    --danger: #c0392b;
+    /* Telegram Theme Variables with Fallbacks */
+    --bg: var(--tg-theme-secondary-bg-color, #f4faf4);
+    --surface: var(--tg-theme-bg-color, #ffffff);
+    --text: var(--tg-theme-text-color, #1a2e1a);
+    --muted: var(--tg-theme-hint-color, #6b8c6b);
+    --accent: var(--tg-theme-button-color, #3a8c4a);
+    --accent-text: var(--tg-theme-button-text-color, #ffffff);
+    --accent-light: rgba(58, 140, 74, 0.1);
+    --border: var(--tg-theme-secondary-bg-color, #d4e8d4);
+    --danger: #e74c3c;
     --gold: #f4a62a;
+    --shadow: rgba(0, 0, 0, 0.08);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
     font-family: 'DM Sans', sans-serif;
@@ -28,10 +30,14 @@
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
+    padding-bottom: 20px;
   }
 
+  /* ── Header (Glassmorphism) ── */
   .header {
-    background: var(--surface);
+    background: rgba(var(--surface), 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     padding: 12px 16px;
     position: sticky;
@@ -40,46 +46,64 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-shadow: 0 4px 20px var(--shadow);
   }
   .logo {
     font-family: 'Playfair Display', serif;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--accent);
     display: flex;
     align-items: center;
-    gap: 4px;
-    line-height: 1.2;
+    gap: 6px;
   }
-  .logo-leaf { font-size: 17px; }
   .logo-name { color: var(--text); }
   .logo-name span { color: var(--accent); font-style: italic; }
 
   .cart-btn {
     background: var(--accent);
-    color: white;
+    color: var(--accent-text);
     border: none;
     border-radius: 20px;
-    padding: 7px 14px;
+    padding: 8px 16px;
     font-size: 13px;
-    font-family: 'DM Sans', sans-serif;
     font-weight: 500;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 6px;
-    transition: background 0.2s;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(58, 140, 74, 0.3);
   }
-  .cart-btn:hover { background: #2e7a3a; }
+  .cart-btn:active { transform: scale(0.95); }
   .cart-count {
-    background: white;
+    background: var(--surface);
     color: var(--accent);
     border-radius: 50%;
-    width: 18px; height: 18px;
-    font-size: 11px;
+    width: 20px; height: 20px;
+    font-size: 12px;
     font-weight: 700;
     display: flex; align-items: center; justify-content: center;
   }
+
+  /* ── Search & Categories ── */
+  .search-container {
+    padding: 12px 16px 0;
+    background: var(--surface);
+  }
+  .search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--accent); }
 
   .categories {
     display: flex;
@@ -93,847 +117,532 @@
   .categories::-webkit-scrollbar { display: none; }
   .cat-btn {
     white-space: nowrap;
-    padding: 7px 16px;
+    padding: 8px 18px;
     border-radius: 20px;
-    border: 1.5px solid var(--border);
-    background: transparent;
-    color: var(--muted);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
     font-size: 13px;
     font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
   }
   .cat-btn.active {
     background: var(--accent);
     border-color: var(--accent);
-    color: white;
+    color: var(--accent-text);
   }
 
+  /* ── Product Grid ── */
   .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 12px;
-    padding: 14px 12px;
+    padding: 16px;
   }
-
   .card {
     background: var(--surface);
-    border-radius: 14px;
+    border-radius: 16px;
     overflow: hidden;
     border: 1px solid var(--border);
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.2s, box-shadow 0.2s;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px var(--shadow);
   }
-  .card:active { transform: scale(0.97); }
+  .card:active { transform: scale(0.98); }
 
   .card-img {
     width: 100%;
     aspect-ratio: 1;
-    background: var(--accent2);
+    background: var(--bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
-    overflow: hidden;
+    font-size: 50px;
     position: relative;
+    overflow: hidden;
   }
   .card-img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
+    transition: transform 0.3s;
   }
-  .card-body { padding: 10px 10px 12px; }
+  .card:hover .card-img img { transform: scale(1.05); }
+  
+  .card-body { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; }
   .card-name {
     font-family: 'Playfair Display', serif;
     font-size: 14px;
     font-weight: 600;
     line-height: 1.3;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
+    flex-grow: 1;
   }
-  .card-brand {
-    font-size: 10px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    letter-spacing: 0.3px;
-  }
-  .card-price {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--accent);
-  }
-  .card-old-price {
-    font-size: 12px;
-    color: var(--muted);
-    text-decoration: line-through;
-    margin-left: 4px;
-  }
+  .card-brand { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+  .price-wrap { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .card-price { font-size: 16px; font-weight: 700; color: var(--text); }
+  
   .add-btn {
     width: 100%;
-    margin-top: 8px;
-    padding: 8px;
-    border: 1.5px solid var(--accent);
-    border-radius: 8px;
-    background: transparent;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent-light);
     color: var(--accent);
     font-size: 13px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.18s;
+    transition: all 0.2s;
   }
-  .add-btn.in-cart {
-    background: var(--accent);
-    color: white;
-  }
-  .badge {
-    position: absolute;
-    top: 8px; left: 8px;
-    background: var(--danger);
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 10px;
-    z-index: 2;
-  }
-  .badge-new {
-    position: absolute;
-    top: 8px; left: 8px;
-    background: var(--gold);
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 10px;
-    z-index: 2;
-  }
+  .add-btn.in-cart { background: var(--accent); color: var(--accent-text); }
+  .add-btn:active { transform: translateY(2px); }
 
-  .card-img.has-image { cursor: zoom-in; }
-  .zoom-hint {
-    position: absolute;
-    bottom: 6px; right: 6px;
-    font-size: 14px;
-    background: rgba(0,0,0,0.35);
-    border-radius: 6px;
-    padding: 2px 5px;
-    opacity: 0.85;
-    pointer-events: none;
-  }
+  .badge { position: absolute; top: 10px; left: 10px; background: var(--danger); color: white; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 8px; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+  .zoom-hint { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); border-radius: 8px; padding: 4px; font-size: 12px; color: white; pointer-events: none; }
 
   /* ── Lightbox ── */
   .lightbox {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 20px;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.22s ease, visibility 0.22s ease;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    z-index: 999; display: flex; align-items: center; justify-content: center; flex-direction: column;
+    padding: 20px; opacity: 0; visibility: hidden; transition: 0.3s ease;
   }
-  .lightbox.open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: all;
-  }
-  .lightbox-img {
-    max-width: 100%;
-    max-height: 75vh;
-    border-radius: 16px;
-    object-fit: contain;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    animation: lbZoomIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  @keyframes lbZoomIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to   { transform: scale(1);   opacity: 1; }
-  }
-  .lightbox-name {
-    color: white;
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 16px;
-    text-align: center;
-  }
-  .lightbox-brand {
-    color: #a0c8a0;
-    font-size: 13px;
-    margin-top: 4px;
-    margin-bottom: 20px;
-  }
-  .lightbox-close {
-    position: absolute;
-    top: 16px; right: 16px;
-    background: rgba(255,255,255,0.15);
-    border: none;
-    color: white;
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    backdrop-filter: blur(4px);
-    transition: background 0.2s;
-    z-index: 1;
-  }
-  .lightbox-close:hover { background: rgba(255,255,255,0.3); }
-  .lightbox-add {
-    padding: 12px 32px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    font-size: 15px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .lightbox-add:hover { background: #2e7a3a; }
-  .lightbox-add.in-cart { background: #27ae60; }
+  .lightbox.open { opacity: 1; visibility: visible; }
+  .lightbox-img { max-width: 100%; max-height: 60vh; border-radius: 20px; object-fit: contain; transform: scale(0.9); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .lightbox.open .lightbox-img { transform: scale(1); }
+  .lightbox-info { background: var(--surface); padding: 20px; border-radius: 20px; width: 100%; max-width: 400px; margin-top: 20px; text-align: center; }
+  .lightbox-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+  .lightbox-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); border: none; color: white; width: 44px; height: 44px; border-radius: 50%; font-size: 18px; cursor: pointer; }
 
   /* ── Cart Panel ── */
-  .overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 200;
-  }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; backdrop-filter: blur(2px); }
   .overlay.open { display: block; }
-
   .cart-panel {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: var(--surface);
-    border-radius: 24px 24px 0 0;
-    padding: 20px 16px 32px;
-    z-index: 201;
-    max-height: 85vh;
-    overflow-y: auto;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-radius: 24px 24px 0 0;
+    padding: 20px 20px 30px; z-index: 201; max-height: 90vh; overflow-y: auto;
+    transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
   }
   .cart-panel.open { transform: translateY(0); }
+  .panel-handle { width: 40px; height: 5px; background: var(--border); border-radius: 3px; margin: 0 auto 20px; }
+  .panel-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; margin-bottom: 20px; }
 
-  .panel-handle {
-    width: 36px; height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin: 0 auto 16px;
-  }
-  .panel-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 16px;
-  }
-
-  .cart-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .ci-thumb {
-    width: 52px; height: 52px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background: var(--accent2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px;
-  }
-  .ci-img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 10px;
-  }
+  .cart-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .ci-thumb { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; background: var(--bg); }
   .ci-info { flex: 1; }
-  .ci-name { font-size: 14px; font-weight: 500; }
-  .ci-price { font-size: 13px; color: var(--accent); }
-  .ci-qty { display: flex; align-items: center; gap: 8px; }
-  .qty-btn {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: transparent;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--text);
-  }
-  .qty-num { font-size: 14px; font-weight: 500; min-width: 20px; text-align: center; }
+  .ci-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .ci-price { font-size: 14px; color: var(--accent); font-weight: 600; }
+  .ci-qty { display: flex; align-items: center; gap: 12px; background: var(--bg); border-radius: 20px; padding: 4px; }
+  .qty-btn { width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--surface); font-size: 16px; font-weight: 600; color: var(--text); cursor: pointer; box-shadow: 0 2px 5px var(--shadow); }
+  .qty-num { font-size: 14px; font-weight: 600; min-width: 20px; text-align: center; }
 
-  .empty-cart {
-    text-align: center;
-    padding: 40px 0;
-    color: var(--muted);
-    font-size: 15px;
-  }
-
-  .order-form { margin-top: 16px; }
-  .form-label {
-    font-size: 12px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-    display: block;
-  }
+  /* ── Forms & Buttons ── */
+  .order-form { margin-top: 24px; }
   .form-input {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-size: 14px;
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    margin-bottom: 10px;
-    outline: none;
-    transition: border-color 0.2s;
+    width: 100%; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 12px;
+    font-size: 15px; font-family: inherit; background: var(--bg); color: var(--text); margin-bottom: 12px;
+    transition: 0.2s;
   }
-  .form-input:focus { border-color: var(--accent); }
-
-  .total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0 6px;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .total-sum {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--accent);
-  }
-
+  .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+  .total-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; font-size: 18px; font-weight: 500; }
+  .total-sum { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--accent); }
   .order-btn {
-    width: 100%;
-    padding: 15px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    font-size: 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-    letter-spacing: 0.3px;
+    width: 100%; padding: 16px; background: var(--accent); color: var(--accent-text); border: none;
+    border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(58,140,74,0.3);
   }
-  .order-btn:disabled { background: var(--muted); cursor: not-allowed; }
-  .order-btn:hover:not(:disabled) { background: #2e7a3a; }
 
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 40px 20px;
+  /* ── Toast Notification ── */
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+    background: var(--text); color: var(--surface); padding: 12px 24px; border-radius: 30px;
+    font-size: 14px; font-weight: 500; z-index: 1000; opacity: 0; transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px;
   }
-  .success-screen.show { display: block; }
-  .success-icon { font-size: 60px; margin-bottom: 16px; }
-  .success-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .success-text { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+  .empty-state text { display: block; font-size: 50px; margin-bottom: 10px; }
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
   <div class="logo">
-    <span class="logo-leaf">🌱</span>
-    <span class="logo-name">Vitaminki_<span>maryam</span></span>
-    <span class="logo-leaf">🌱</span>
+    <span>🌱</span><span class="logo-name">Vitaminki_<span>maryam</span></span><span>🌱</span>
   </div>
   <button class="cart-btn" onclick="toggleCart()">
     🛒 Savat <span class="cart-count" id="cartCount">0</span>
   </button>
 </div>
 
-<!-- Categories -->
-<div class="categories">
-  <button class="cat-btn active" onclick="filterCat('all', this)">Barchasi</button>
-  <button class="cat-btn" onclick="filterCat('yodlar', this)">💊 Yodlar(йод)</button>
-  <button class="cat-btn" onclick="filterCat('collagenlar', this)">🦴 Collagen</button>
-  <button class="cat-btn" onclick="filterCat('omega', this)">🐟 Omega & Yog'lar</button>
-  <button class="cat-btn" onclick="filterCat('d3', this)">☀️ Vitamin D3</button>
-  <button class="cat-btn" onclick="filterCat('calcium', this)">🦷 Calcium</button>
-  <button class="cat-btn" onclick="filterCat('gozallik', this)">💖 Go'zallik</button>
-  <button class="cat-btn" onclick="filterCat('jigar', this)">🫀Jigar</button>
-  <button class="cat-btn" onclick="filterCat('qon', this)">🩸Gemoglabin & Qon</button>
-  <button class="cat-btn" onclick="filterCat('magniy', this)">💆🏻‍♀️ Magniy</button>
-  <button class="cat-btn" onclick="filterCat('complex', this)">🛡️Complex </button>
+<div class="search-container">
+  <input type="text" id="searchInput" class="search-input" placeholder="🔍 Mahsulot qidirish..." oninput="filterProducts()">
 </div>
 
-<!-- Product Grid -->
+<div class="categories" id="categories">
+  </div>
+
 <div class="grid" id="productGrid"></div>
 
-<!-- Cart Overlay -->
-<div class="overlay" id="overlay" onclick="toggleCart()"></div>
+<div id="toast" class="toast">✅ Savatga qo'shildi!</div>
 
-<!-- Cart Panel -->
+<div class="overlay" id="overlay" onclick="toggleCart()"></div>
 <div class="cart-panel" id="cartPanel">
   <div class="panel-handle"></div>
-
-  <!-- Cart Content -->
   <div id="cartContent">
     <div class="panel-title">🛒 Savatcham</div>
-    <!-- Cart items rendered here -->
     <div id="cartItems"></div>
-
-    <!-- Order Form -->
     <div class="order-form" id="orderForm" style="display:none;">
-      <div class="total-row">
-        <span>Jami:</span>
-        <span class="total-sum" id="totalSum">0 so'm</span>
-      </div>
-      <label class="form-label">Telefon raqam *</label>
-      <input class="form-input" id="phoneInput" type="tel" placeholder="+998 90 000 00 00">
-      <label class="form-label">Manzil *</label>
-      <input class="form-input" id="addressInput" type="text" placeholder="Shahar, ko'cha, uy raqami">
-      <label class="form-label">Izoh (ixtiyoriy)</label>
-      <input class="form-input" id="commentInput" type="text" placeholder="Qo'shimcha ma'lumot...">
-      <button class="order-btn" id="orderBtn" onclick="submitOrder()">✅ Buyurtma berish</button>
+      <div class="total-row"><span>Jami:</span><span class="total-sum" id="totalSum">0 so'm</span></div>
+      <input class="form-input" id="phoneInput" type="tel" placeholder="📞 Telefon raqam (masalan: +99890...)">
+      <input class="form-input" id="addressInput" type="text" placeholder="📍 Manzil (Shahar, ko'cha, uy)">
+      <input class="form-input" id="commentInput" type="text" placeholder="📝 Izoh (ixtiyoriy)">
+      <button class="order-btn" onclick="submitOrder()">✅ Buyurtma berish</button>
     </div>
   </div>
-
-  <!-- Success Screen -->
-  <div class="success-screen" id="successScreen">
-    <div class="success-icon">🎉</div>
-    <div class="success-title">Buyurtma qabul qilindi!</div>
-    <div class="success-text">Menejer tez orada siz bilan bog'lanadi.<br>Sog'lom va baquvvat bo'ling! 🌱💚</div>
+  <div class="empty-state" id="successScreen" style="display: none;">
+    <text>🎉</text>
+    <h2>Buyurtma qabul qilindi!</h2>
+    <p style="margin-top:10px; line-height: 1.5;">Menejer tez orada siz bilan bog'lanadi.<br>Sog'lom va baquvvat bo'ling! 🌱💚</p>
   </div>
 </div>
 
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="lightboxBgClick(event)">
+<div class="lightbox" id="lightbox" onclick="if(event.target === this) closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <img class="lightbox-img" id="lightboxImg" src="" alt="">
-  <div class="lightbox-name" id="lightboxName"></div>
-  <div class="lightbox-brand">🌱Vitaminki_maryam🌱</div>
-  <button class="lightbox-add" id="lightboxAddBtn" onclick="lightboxAddToCart()">+ Savatga qo'shish</button>
+  <div class="lightbox-info">
+    <div class="lightbox-name" id="lightboxName"></div>
+    <div style="color: var(--muted); margin-bottom: 16px; font-size: 13px;">🌱Vitaminki_maryam🌱</div>
+    <button class="order-btn" id="lightboxAddBtn" onclick="lightboxAddToCart()">+ Savatga qo'shish</button>
+  </div>
 </div>
 
 <script>
+// Telegram Web App init
 const tg = window.Telegram?.WebApp;
-if (tg) { tg.ready(); tg.expand(); }
+if (tg) {
+  tg.ready();
+  tg.expand();
+  // Set header color based on theme
+  tg.setHeaderColor('secondary_bg_color');
+}
 
 const BRAND = "🌱Vitaminki_maryam🌱";
 
-const products = [
-  // 💊 Yodlar(йод)
-  { id:1,  name:"NEWLINE Iodine",                           brand:BRAND, price:150000, emoji:"🍋", image:"https://iili.io/BDPYQEu.jpg", cat:"yodlar",    sale:true },
-  { id:2,  name:"VeNatura iYOT VA SELENYUM TOMCHISI",       brand:BRAND, price:140000, emoji:"☀️", image:"https://iili.io/BDPGuGS.jpg", cat:"yodlar",    sale:true },
-  { id:3,  name:"NBT life Iyotic Damla",                    brand:BRAND, price:155000, emoji:"💊", image:"https://iili.io/BDPhHqQ.jpg", cat:"yodlar",    sale:true },
-  { id:4,  name:"Swiss KELP (IODINE)",                      brand:BRAND, price:160000, emoji:"🌈", image:"https://iili.io/BDPwIRt.jpg", cat:"yodlar",    sale:true },
-  { id:5,  name:"life flo LIQUID IODINE PLUS",              brand:BRAND, price:140000, emoji:"🪨", image:"https://iili.io/BDPvfFj.jpg", cat:"yodlar",    sale:true },
-
-  // 🦴 Collagen
-  { id:6,  name:"AFNAN Beauty COLLAGEN",                    brand:BRAND, price:250000, emoji:"🔴", image:"https://iili.io/BDPswBV.jpg", cat:"collagenlar", sale:true },
-  { id:7,  name:"esila COLLAGEN DETOX",                     brand:BRAND, price:170000, emoji:"🦷", image:"https://iili.io/BDPQtzG.jpg", cat:"collagenlar", sale:true },
-  { id:8,  name:"The COLLAGEN BEAUTY PLUS DAY2DAY",         brand:BRAND, price:600000, emoji:"⚪", image:"https://iili.io/BDPbTk7.jpg", cat:"collagenlar", sale:true },
-  { id:30, name:"Swiss JOINT ALP",                          brand:BRAND, price:250000, emoji:"🦷", image:"https://iili.io/BDi2o5x.jpg", cat:"collagenlar", sale:true },
-  { id:31, name:"NUTRAXIN ARTROFLEX",                       brand:BRAND, price:300000, emoji:"🦷", image:"https://iili.io/BDiFdP9.jpg", cat:"collagenlar", sale:true },
-  { id:32, name:"COLLABEL Collagen Life Pro",               brand:BRAND, price:130000, emoji:"🦷", image:"https://iili.io/BDifXj4.jpg", cat:"collagenlar", sale:true },
-  { id:33, name:"BORK Swiss MARINE COLLAGEN",               brand:BRAND, price:320000, emoji:"🦷", image:"https://iili.io/BDiCsP2.jpg", cat:"collagenlar", sale:true },
-  { id:34, name:"Swiss BORK Natural COLLAGEN POWDER+",      brand:BRAND, price:200000, emoji:"🦷", image:"https://iili.io/BDiIzmX.jpg", cat:"collagenlar", sale:true },
-  { id:35, name:"Noora Collagen Powder",                    brand:BRAND, price:250000, emoji:"🦷", image:"https://iili.io/BDiuKSp.jpg", cat:"collagenlar", sale:true },
-  { id:36, name:"California GOLD Nutrition Collagen UP",    brand:BRAND, price:250000, emoji:"🦷", image:"https://iili.io/BDiR5w7.jpg", cat:"collagenlar", sale:true },
-  { id:37, name:"OSENDE Multi Plus COLLAGEN",               brand:BRAND, price:380000, emoji:"🦷", image:"https://iili.io/BDicGTl.jpg", cat:"collagenlar", sale:true },
-  { id:38, name:"OSENDE COLLAGEN 10,000 mg",                brand:BRAND, price:400000, emoji:"🦷", image:"https://iili.io/BDi197s.jpg", cat:"collagenlar", sale:true },
-  { id:39, name:"Kiperin Collagen Peptides",                brand:BRAND, price:380000, emoji:"🦷", image:"https://iili.io/BDijB5P.jpg", cat:"collagenlar", sale:true },
-  { id:40, name:"Kiperin Collagen Purple",                  brand:BRAND, price:480000, emoji:"🦷", image:"https://iili.io/BDijj7S.jpg", cat:"collagenlar", sale:true },
-
-  // 🐟 Omega & Yog'lar
-  { id:9,  name:"Added Attention BURIED TREASURE",          brand:BRAND, price:380000, emoji:"🐟", image:"https://iili.io/BDgJWSS.jpg", cat:"omega", sale:true },
-  { id:10, name:"Focusvit Kids",                            brand:BRAND, price:210000, emoji:"💛", image:"https://iili.io/BDr64N2.jpg", cat:"omega", sale:true },
-  { id:11, name:"OMEGA 3",                                  brand:BRAND, price:270000, emoji:"🦐", image:"https://iili.io/BDrbXAg.jpg", cat:"omega", sale:true },
-  { id:12, name:"Balen OMEGA 3•6•9 SOFT",                  brand:BRAND, price:250000, emoji:"🦐", image:"https://iili.io/BD4qj2a.jpg", cat:"omega", sale:true },
-  { id:13, name:"Carlson kid's",                            brand:BRAND, price:330000, emoji:"🦐", image:"https://iili.io/BD4I3ua.jpg", cat:"omega", sale:true },
-  { id:14, name:"Norwitella Omega-3",                       brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/BD4uZjs.jpg", cat:"omega", sale:true },
-  { id:15, name:"novomins KIDS OMEGA 3-6-9 + MULTI GUMMIES",brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4aUnn.jpg", cat:"omega", sale:true },
-  { id:16, name:"Ausvit Norway Fish Oil",                   brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/BD40dhP.jpg", cat:"omega", sale:true },
-  { id:17, name:"NORDIC BORK PURE OMEGA-3 NORWAY COD LIVER OIL", brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4Gdj2.jpg", cat:"omega", sale:true },
-  { id:18, name:"Mini Drops DHA",                           brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4MD5G.jpg", cat:"omega", sale:true },
-  { id:19, name:"Ausvit Focus Formula KIDS",                brand:BRAND, price:210000, emoji:"🦐", image:"https://iili.io/BD4WL9s.jpg", cat:"omega", sale:true },
-  { id:20, name:"now Omega-3 Fish Oil",                     brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4hjpa.jpg", cat:"omega", sale:true },
-
-  // ☀️ Vitamin D3
-  { id:21, name:"Swiss VITAMIN D3+K2",                      brand:BRAND, price:140000, emoji:"🌸", image:"https://iili.io/BDLXJTX.jpg", cat:"d3", sale:true },
-  { id:22, name:"NEWLINE VITAMIN D3+K2",                    brand:BRAND, price:130000, emoji:"🍯", image:"https://iili.io/BDLNPse.jpg", cat:"d3", sale:true },
-  { id:23, name:"now LIQUID VITAMIN D3",                    brand:BRAND, price:140000, emoji:"🦠", image:"https://iili.io/BDLeboP.jpg", cat:"d3", sale:true },
-  { id:24, name:"Carlson Super Daily D3",                   brand:BRAND, price:170000, emoji:"🦠", image:"https://iili.io/BDLUran.jpg", cat:"d3", sale:true },
-  { id:25, name:"Carlson Kid's Super Daily D3+K2",          brand:BRAND, price:285000, emoji:"🦠", image:"https://iili.io/BDL4R2t.jpg", cat:"d3", sale:true },
-  { id:26, name:"VeNatura D3K2",                            brand:BRAND, price:110000, emoji:"🦠", image:"https://iili.io/BDLPas4.jpg", cat:"d3", sale:true },
-  { id:27, name:"CALIFORNIA GOLD NUTRITION",                brand:BRAND, price:120000, emoji:"🦠", image:"https://iili.io/BDLLM7I.jpg", cat:"d3", sale:true },
-  { id:28, name:"AKSUVITAL VITAMIN D3+K2 5,000 IU",        brand:BRAND, price:150000, emoji:"🦠", image:"https://iili.io/BDLQrap.jpg", cat:"d3", sale:true },
-  { id:29, name:"AKSUVITAL VITAMIN D3+K2 10,000 IU",       brand:BRAND, price:170000, emoji:"🦠", image:"https://iili.io/BDLtt24.jpg", cat:"d3", sale:true },
-  { id:41, name:"now Vitamin D-3 & K-2",                   brand:BRAND, price:160000, emoji:"🦠", image:"https://iili.io/BDLmTdv.jpg", cat:"d3", sale:true },
-  { id:42, name:"Solaray Vitamin D3 + K2",                  brand:BRAND, price:200000, emoji:"🦠", image:"https://iili.io/BDLybzN.jpg", cat:"d3", sale:true },
-  { id:43, name:"now Vitamin D-3 5,000 UI",                 brand:BRAND, price:130000, emoji:"🦠", image:"https://iili.io/BDQHySs.jpg", cat:"d3", sale:true },
-  { id:44, name:"now Vitamin D-3 10,000 IU",                brand:BRAND, price:160000, emoji:"🦠", image:"https://iili.io/BDQdyuf.jpg", cat:"d3", sale:true },
-  { id:45, name:"NEW LINE Vitamin D3+K2",                   brand:BRAND, price:200000, emoji:"🦠", image:"https://iili.io/BDQFBhx.jpg", cat:"d3", sale:true },
-  { id:46, name:"Mini Drops Vitamin D3",                    brand:BRAND, price:125000, emoji:"🦠", image:"https://iili.io/BDQKeDJ.jpg", cat:"d3", sale:true },
-  { id:47, name:"Child Life Vitamin D3",                    brand:BRAND, price:130000, emoji:"🦠", image:"https://iili.io/BDQq9BR.jpg", cat:"d3", sale:true },
-
-  // 🦷 Calcium
-  { id:48, name:"H&B Calcium + Magnesium, Zinc & Vitamin D 240 tablets", brand:BRAND, price:270000, emoji:"✨", image:"https://iili.io/BDm7z4p.jpg", cat:"calcium", sale:true },
-  { id:49, name:"OSTECARE Original 90 Tablets",             brand:BRAND, price:250000, emoji:"💇", image:"https://iili.io/BDbDzge.jpg", cat:"calcium", sale:true },
-  { id:50, name:"AUSVIT OSTELIN KIDS 150 ml",               brand:BRAND, price:160000, emoji:"💧", image:"https://iili.io/BDbmRVV.jpg", cat:"calcium", sale:true },
-  { id:51, name:"Osteocare Liquid Original",                brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/BDm9EOu.jpg", cat:"calcium", sale:true },
-  { id:52, name:"ChildLife Liquid Calcium with Magnesium",  brand:BRAND, price:270000, emoji:"⚡", image:"https://iili.io/BDmJh8P.jpg", cat:"calcium" },
-  { id:53, name:"Kirkland Signature CALCIUM CITRATE + MAGNESIUM + ZINC 500 Tablets", brand:BRAND, price:400000, emoji:"⚡", image:"https://iili.io/BDmKzrv.jpg", cat:"calcium", sale:true },
-  { id:54, name:"Osteocare PLUS GLUCOSAMINE & CHONDROITIN", brand:BRAND, price:250000, emoji:"⚡", image:"https://iili.io/BDmqKWF.jpg", cat:"calcium", sale:true },
-  { id:55, name:"Norwitella Ostevit KIDS bone & growth complex", brand:BRAND, price:160000, emoji:"⚡", image:"https://iili.io/BDmCGV9.jpg", cat:"calcium", sale:true },
-  { id:56, name:"now Kids - KID CAL Orange U Delicious",    brand:BRAND, price:240000, emoji:"⚡", image:"https://iili.io/BDmoVvj.jpg", cat:"calcium", sale:true },
-  { id:57, name:"Swiss Bone Care 30 tablets",               brand:BRAND, price:130000, emoji:"⚡", image:"https://iili.io/BDmzdOv.jpg", cat:"calcium", sale:true },
-  { id:58, name:"Solaray Calcium Citrate 1000 mg",          brand:BRAND, price:200000, emoji:"⚡", image:"https://iili.io/BDmIDcF.jpg", cat:"calcium", sale:true },
-  { id:59, name:"Swiss Move Up Step Two 60 Tablets",          brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/BbKFJgS.jpg", cat:"calcium", sale:true },
-
-  // 💖 Go'zallik
-  { id:60, name:"CHLOROPHYLLIN ICHKI DEZODORANT TABIIY TOZALOVCHI VA DETOKS EFFEKT 40 kapsula",      brand:BRAND, price:100000,                   emoji:"⚡", image:"https://iili.io/BbFx0aR.jpg", cat:"gozallik", sale:true },
-  { id:61, name:"now Psyllium Husk Caps 500 mg",brand:BRAND, price:200000,   emoji:"🔥", image:"https://iili.io/BbFjeLX.jpg", cat:"gozallik", sale:true },
-  { id:62,  name:"now Whole Psyllium Husks Powder",brand:BRAND, price:250000,                   emoji:"🌿", image:"https://iili.io/BbFeku4.jpg", cat:"gozallik", sale:true },
-  { id:63,  name:"Norwitella INOSITOL 60 tablets 1000 mg",brand:BRAND, price:170000,                   emoji:"🌿", image:"https://iili.io/BbFS7xR.jpg", cat:"gozallik", sale:true },
-  { id:96,  name:"BERBERINE 500 mg",brand:BRAND, price:190000,                   emoji:"🌿", image:"https://iili.io/BpljQXn.jpg", cat:"gozallik", sale:true },
-  { id:97,  name:"BERBERINE from Indian Barberry 500 mg",brand:BRAND, price:250000,                   emoji:"🌿", image:"https://iili.io/BplNIa4.jpg", cat:"gozallik", sale:true },
-  { id:98,  name:"INOBALANS 60 kapsula",brand:BRAND, price:200000,                   emoji:"🌿", image:"https://iili.io/BplOydv.jpg", cat:"gozallik", sale:true },
-
-
-  
-  // 🫀Jigar
-  { id:64, name:"Collagen Life ARTICHOKE HERBAL TEA & PASTE ",      brand:BRAND, price:280000,                   emoji:"⚡", image:"https://iili.io/BbFL4I9.jpg", cat:"jigar" },
-  { id:65, name:"VITAUCT Гепатроп 350mg",      brand:BRAND, price:230000,                   emoji:"⚡", image:"https://iili.io/BbFDK2j.jpg", cat:"jigar" },
-  { id:66, name:"Swiss MILK THISTLE COMPLEX",      brand:BRAND, price:150000,                   emoji:"⚡", image:"https://iili.io/BbK9PQ2.jpg", cat:"jigar" },
-  
-  // 🩸Gemoglabin & Qon
-  { id:67, name:"Feroglobin LIQUID",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/Bm90rap.jpg", cat:"qon" },
-  { id:68, name:"Swiss LIPOSOMAL IRON+HERBS LIQUID",      brand:BRAND, price:160000,                   emoji:"⚡", image:"https://iili.io/Bm9GNuS.jpg", cat:"qon" },
-  { id:69, name:"Esila Harnup Pekmezi",      brand:BRAND, price:240000,                   emoji:"⚡", image:"https://iili.io/Bm9UTMv.jpg", cat:"qon" },
-  { id:70, name:"Keçi Boynuzu Özü 700 g",      brand:BRAND, price:240000,                   emoji:"⚡", image:"https://iili.io/Bm9UEoG.jpg", cat:"qon" },
-
-
-
-
-
-  
-  // 💆🏻‍♀️ Magniy
-  { id:71, name:"MAGNESIUM VITAMIN B6 100 tablets",      brand:BRAND, price:200000,                   emoji:"⚡", image:"https://iili.io/BbFGqOX.jpg", cat:"magniy" },
-  { id:94, name:"Swiss Bork Magnesium Complex + Vitamin B6 (P5P)",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbFGX5P.jpg", cat:"magniy" },
-  { id:73, name:"now Ashwagandha 450 mg",      brand:BRAND, price:160000,                   emoji:"⚡", image:"https://iili.io/BbFMZwF.jpg", cat:"magniy" },
-  { id:74, name:"Swiss Bork Magnesium Complex for Children 150 ml",      brand:BRAND, price:150000,                   emoji:"⚡", image:"https://iili.io/BbFVWDF.jpg", cat:"magniy" },
-
-
-
-      
-
-  // 🛡️Complex
-  { id:75, name:"Swiss B-COMPLEX SYRUP 150 ml",      brand:BRAND, price:150000,                   emoji:"⚡", image:"https://iili.io/Bbyjg1e.jpg", cat:"complex" },
-  { id:76, name:"Swiss BROMELAIN complex 60 plant",      brand:BRAND, price:200000,                   emoji:"⚡", image:"https://iili.io/BbyOXrF.jpg", cat:"complex" },
-  { id:77, name:"NEW LINE VITAMIN C 150 ml",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/Bby8Eyg.jpg", cat:"complex" },
-  { id:78, name:"ChildLife Echinacea 30 ml",      brand:BRAND, price:150000,                   emoji:"⚡", image:"https://iili.io/BbyUW1p.jpg", cat:"complex" },
-  { id:79, name:"ChildLife Zinc Plus 118 ml",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbyrfR9.jpg", cat:"complex" },
-  { id:80, name:"ChildLife Multi Vitamin & Mineral 237 ml",      brand:BRAND, price:240000,                   emoji:"⚡", image:"https://iili.io/Bby4spt.jpg", cat:"complex" },
-  { id:81, name:"Life Extension BioActive Complete B-Complex",      brand:BRAND, price:160000,                   emoji:"⚡", image:"https://iili.io/BbyiIhF.jpg", cat:"complex" },
-  { id:82, name:"NutriBiotic Vitamin C 1000 mg kapsula",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbyQABe.jpg", cat:"complex" },
-  { id:83, name:"Mini Drops Immune Plus 50 ml",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbytWdJ.jpg", cat:"complex" },
-  { id:84, name:"Norwitella Multivit KIDS 150 ml",      brand:BRAND, price:160000,                   emoji:"⚡", image:"https://iili.io/BbybRtV.jpg", cat:"complex" },
-  { id:93, name:"Uzmax PLUS Multivitamin 60 kapsula",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbyyuAG.jpg", cat:"complex" },
-  { id:85, name:"NewLine GINKGO BILOBA ",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/Bm9H6FI.jpg", cat:"complex" },
-  { id:86, name:"Swiss GENIUS KIDS",      brand:BRAND, price:160000,                   emoji:"⚡", image:"https://iili.io/Bm92nv1.jpg", cat:"complex" },
-  { id:87, name:"Wellkid Multi-Vitamin Liquid",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/Bm9o8tS.jpg", cat:"complex" },
-  { id:88, name:"WellBaby Multi-Vitamin Liquid",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/Bm9uOjR.jpg", cat:"complex" },
-  { id:89, name:"Bio360 microbiotics KIDZ PRO-5",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/Bm97H9n.jpg", cat:"complex" },
-  { id:90, name:"Swiss-VIDELIB 30 kapsula",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/Bm9YWmu.jpg", cat:"complex" },
-  { id:91, name:"now Sports L-ARGININE 1000 mg",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/Bm96J5B.jpg", cat:"complex" },
-  { id:92, name:"Medicago TUSIMED",      brand:BRAND, price:140000,                   emoji:"⚡", image:"https://iili.io/Bm9iMiu.jpg", cat:"complex" },
-  { id:95, name:"L-LYSINE MONOLAURIN",      brand:BRAND, price:165000,                   emoji:"⚡", image:"https://iili.io/BplMl71.jpg", cat:"complex" },
-  { id:99, name:"SARIMSOQ",      brand:BRAND, price:75000,                   emoji:"⚡", image:"https://iili.io/Bp0xVDX.jpg", cat:"complex" },
-
-  
+const categories = [
+  { id: 'all', name: 'Barchasi' },
+  { id: 'yodlar', name: '💊 Yodlar(йод)' },
+  { id: 'collagenlar', name: '🦴 Collagen' },
+  { id: 'omega', name: '🐟 Omega & Yog\'lar' },
+  { id: 'd3', name: '☀️ Vitamin D3' },
+  { id: 'calcium', name: '🦷 Calcium' },
+  { id: 'gozallik', name: '💖 Go\'zallik' },
+  { id: 'jigar', name: '🫀Jigar' },
+  { id: 'qon', name: '🩸Gemoglabin & Qon' },
+  { id: 'magniy', name: '💆🏻‍♀️ Magniy' },
+  { id: 'complex', name: '🛡️Complex' }
 ];
 
-let cart = {};
+// Product Data (Sizning ma'lumotlaringiz, qisqartirilmagan)
+const products = [
+  { id:1, name:"NEWLINE Iodine", brand:BRAND, price:150000, emoji:"🍋", image:"https://iili.io/BDPYQEu.jpg", cat:"yodlar", sale:true },
+  { id:2, name:"VeNatura iYOT VA SELENYUM TOMCHISI", brand:BRAND, price:140000, emoji:"☀️", image:"https://iili.io/BDPGuGS.jpg", cat:"yodlar", sale:true },
+  { id:3, name:"NBT life Iyotic Damla", brand:BRAND, price:155000, emoji:"💊", image:"https://iili.io/BDPhHqQ.jpg", cat:"yodlar", sale:true },
+  { id:4, name:"Swiss KELP (IODINE)", brand:BRAND, price:160000, emoji:"🌈", image:"https://iili.io/BDPwIRt.jpg", cat:"yodlar", sale:true },
+  { id:5, name:"life flo LIQUID IODINE PLUS", brand:BRAND, price:140000, emoji:"🪨", image:"https://iili.io/BDPvfFj.jpg", cat:"yodlar", sale:true },
+  { id:6, name:"AFNAN Beauty COLLAGEN", brand:BRAND, price:250000, emoji:"🔴", image:"https://iili.io/BDPswBV.jpg", cat:"collagenlar", sale:true },
+  { id:7, name:"esila COLLAGEN DETOX", brand:BRAND, price:170000, emoji:"🦷", image:"https://iili.io/BDPQtzG.jpg", cat:"collagenlar", sale:true },
+  { id:8, name:"The COLLAGEN BEAUTY PLUS DAY2DAY", brand:BRAND, price:600000, emoji:"⚪", image:"https://iili.io/BDPbTk7.jpg", cat:"collagenlar", sale:true },
+  { id:30, name:"Swiss JOINT ALP", brand:BRAND, price:250000, emoji:"🦷", image:"https://iili.io/BDi2o5x.jpg", cat:"collagenlar", sale:true },
+  { id:31, name:"NUTRAXIN ARTROFLEX", brand:BRAND, price:300000, emoji:"🦷", image:"https://iili.io/BDiFdP9.jpg", cat:"collagenlar", sale:true },
+  { id:32, name:"COLLABEL Collagen Life Pro", brand:BRAND, price:130000, emoji:"🦷", image:"https://iili.io/BDifXj4.jpg", cat:"collagenlar", sale:true },
+  { id:33, name:"BORK Swiss MARINE COLLAGEN", brand:BRAND, price:320000, emoji:"🦷", image:"https://iili.io/BDiCsP2.jpg", cat:"collagenlar", sale:true },
+  { id:34, name:"Swiss BORK Natural COLLAGEN POWDER+", brand:BRAND, price:200000, emoji:"🦷", image:"https://iili.io/BDiIzmX.jpg", cat:"collagenlar", sale:true },
+  { id:35, name:"Noora Collagen Powder", brand:BRAND, price:250000, emoji:"🦷", image:"https://iili.io/BDiuKSp.jpg", cat:"collagenlar", sale:true },
+  { id:36, name:"California GOLD Nutrition Collagen UP", brand:BRAND, price:250000, emoji:"🦷", image:"https://iili.io/BDiR5w7.jpg", cat:"collagenlar", sale:true },
+  { id:37, name:"OSENDE Multi Plus COLLAGEN", brand:BRAND, price:380000, emoji:"🦷", image:"https://iili.io/BDicGTl.jpg", cat:"collagenlar", sale:true },
+  { id:38, name:"OSENDE COLLAGEN 10,000 mg", brand:BRAND, price:400000, emoji:"🦷", image:"https://iili.io/BDi197s.jpg", cat:"collagenlar", sale:true },
+  { id:39, name:"Kiperin Collagen Peptides", brand:BRAND, price:380000, emoji:"🦷", image:"https://iili.io/BDijB5P.jpg", cat:"collagenlar", sale:true },
+  { id:40, name:"Kiperin Collagen Purple", brand:BRAND, price:480000, emoji:"🦷", image:"https://iili.io/BDijj7S.jpg", cat:"collagenlar", sale:true },
+  { id:9, name:"Added Attention BURIED TREASURE", brand:BRAND, price:380000, emoji:"🐟", image:"https://iili.io/BDgJWSS.jpg", cat:"omega", sale:true },
+  { id:10, name:"Focusvit Kids", brand:BRAND, price:210000, emoji:"💛", image:"https://iili.io/BDr64N2.jpg", cat:"omega", sale:true },
+  { id:11, name:"OMEGA 3", brand:BRAND, price:270000, emoji:"🦐", image:"https://iili.io/BDrbXAg.jpg", cat:"omega", sale:true },
+  { id:12, name:"Balen OMEGA 3•6•9 SOFT", brand:BRAND, price:250000, emoji:"🦐", image:"https://iili.io/BD4qj2a.jpg", cat:"omega", sale:true },
+  { id:13, name:"Carlson kid's", brand:BRAND, price:330000, emoji:"🦐", image:"https://iili.io/BD4I3ua.jpg", cat:"omega", sale:true },
+  { id:14, name:"Norwitella Omega-3", brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/BD4uZjs.jpg", cat:"omega", sale:true },
+  { id:15, name:"novomins KIDS OMEGA 3-6-9 + MULTI GUMMIES", brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4aUnn.jpg", cat:"omega", sale:true },
+  { id:16, name:"Ausvit Norway Fish Oil", brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/BD40dhP.jpg", cat:"omega", sale:true },
+  { id:17, name:"NORDIC BORK PURE OMEGA-3 NORWAY COD LIVER OIL", brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4Gdj2.jpg", cat:"omega", sale:true },
+  { id:18, name:"Mini Drops DHA", brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4MD5G.jpg", cat:"omega", sale:true },
+  { id:19, name:"Ausvit Focus Formula KIDS", brand:BRAND, price:210000, emoji:"🦐", image:"https://iili.io/BD4WL9s.jpg", cat:"omega", sale:true },
+  { id:20, name:"now Omega-3 Fish Oil", brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4hjpa.jpg", cat:"omega", sale:true },
+  { id:21, name:"Swiss VITAMIN D3+K2", brand:BRAND, price:140000, emoji:"🌸", image:"https://iili.io/BDLXJTX.jpg", cat:"d3", sale:true },
+  { id:22, name:"NEWLINE VITAMIN D3+K2", brand:BRAND, price:130000, emoji:"🍯", image:"https://iili.io/BDLNPse.jpg", cat:"d3", sale:true },
+  { id:23, name:"now LIQUID VITAMIN D3", brand:BRAND, price:140000, emoji:"🦠", image:"https://iili.io/BDLeboP.jpg", cat:"d3", sale:true },
+  { id:24, name:"Carlson Super Daily D3", brand:BRAND, price:170000, emoji:"🦠", image:"https://iili.io/BDLUran.jpg", cat:"d3", sale:true },
+  { id:25, name:"Carlson Kid's Super Daily D3+K2", brand:BRAND, price:285000, emoji:"🦠", image:"https://iili.io/BDL4R2t.jpg", cat:"d3", sale:true },
+  { id:26, name:"VeNatura D3K2", brand:BRAND, price:110000, emoji:"🦠", image:"https://iili.io/BDLPas4.jpg", cat:"d3", sale:true },
+  { id:27, name:"CALIFORNIA GOLD NUTRITION", brand:BRAND, price:120000, emoji:"🦠", image:"https://iili.io/BDLLM7I.jpg", cat:"d3", sale:true },
+  { id:28, name:"AKSUVITAL VITAMIN D3+K2 5,000 IU", brand:BRAND, price:150000, emoji:"🦠", image:"https://iili.io/BDLQrap.jpg", cat:"d3", sale:true },
+  { id:29, name:"AKSUVITAL VITAMIN D3+K2 10,000 IU", brand:BRAND, price:170000, emoji:"🦠", image:"https://iili.io/BDLtt24.jpg", cat:"d3", sale:true },
+  { id:41, name:"now Vitamin D-3 & K-2", brand:BRAND, price:160000, emoji:"🦠", image:"https://iili.io/BDLmTdv.jpg", cat:"d3", sale:true },
+  { id:42, name:"Solaray Vitamin D3 + K2", brand:BRAND, price:200000, emoji:"🦠", image:"https://iili.io/BDLybzN.jpg", cat:"d3", sale:true },
+  { id:43, name:"now Vitamin D-3 5,000 UI", brand:BRAND, price:130000, emoji:"🦠", image:"https://iili.io/BDQHySs.jpg", cat:"d3", sale:true },
+  { id:44, name:"now Vitamin D-3 10,000 IU", brand:BRAND, price:160000, emoji:"🦠", image:"https://iili.io/BDQdyuf.jpg", cat:"d3", sale:true },
+  { id:45, name:"NEW LINE Vitamin D3+K2", brand:BRAND, price:200000, emoji:"🦠", image:"https://iili.io/BDQFBhx.jpg", cat:"d3", sale:true },
+  { id:46, name:"Mini Drops Vitamin D3", brand:BRAND, price:125000, emoji:"🦠", image:"https://iili.io/BDQKeDJ.jpg", cat:"d3", sale:true },
+  { id:47, name:"Child Life Vitamin D3", brand:BRAND, price:130000, emoji:"🦠", image:"https://iili.io/BDQq9BR.jpg", cat:"d3", sale:true },
+  { id:48, name:"H&B Calcium + Magnesium", brand:BRAND, price:270000, emoji:"✨", image:"https://iili.io/BDm7z4p.jpg", cat:"calcium", sale:true },
+  { id:49, name:"OSTECARE Original 90 Tablets", brand:BRAND, price:250000, emoji:"💇", image:"https://iili.io/BDbDzge.jpg", cat:"calcium", sale:true },
+  { id:50, name:"AUSVIT OSTELIN KIDS 150 ml", brand:BRAND, price:160000, emoji:"💧", image:"https://iili.io/BDbmRVV.jpg", cat:"calcium", sale:true },
+  { id:51, name:"Osteocare Liquid Original", brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/BDm9EOu.jpg", cat:"calcium", sale:true },
+  { id:52, name:"ChildLife Liquid Calcium", brand:BRAND, price:270000, emoji:"⚡", image:"https://iili.io/BDmJh8P.jpg", cat:"calcium" },
+  { id:53, name:"Kirkland CALCIUM CITRATE", brand:BRAND, price:400000, emoji:"⚡", image:"https://iili.io/BDmKzrv.jpg", cat:"calcium", sale:true },
+  { id:54, name:"Osteocare PLUS GLUCOSAMINE", brand:BRAND, price:250000, emoji:"⚡", image:"https://iili.io/BDmqKWF.jpg", cat:"calcium", sale:true },
+  { id:55, name:"Norwitella Ostevit KIDS", brand:BRAND, price:160000, emoji:"⚡", image:"https://iili.io/BDmCGV9.jpg", cat:"calcium", sale:true },
+  { id:56, name:"now Kids - KID CAL", brand:BRAND, price:240000, emoji:"⚡", image:"https://iili.io/BDmoVvj.jpg", cat:"calcium", sale:true },
+  { id:57, name:"Swiss Bone Care 30 tablets", brand:BRAND, price:130000, emoji:"⚡", image:"https://iili.io/BDmzdOv.jpg", cat:"calcium", sale:true },
+  { id:58, name:"Solaray Calcium Citrate 1000 mg", brand:BRAND, price:200000, emoji:"⚡", image:"https://iili.io/BDmIDcF.jpg", cat:"calcium", sale:true },
+  { id:59, name:"Swiss Move Up Step Two", brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/BbKFJgS.jpg", cat:"calcium", sale:true },
+  { id:60, name:"CHLOROPHYLLIN", brand:BRAND, price:100000, emoji:"⚡", image:"https://iili.io/BbFx0aR.jpg", cat:"gozallik", sale:true },
+  { id:61, name:"now Psyllium Husk Caps", brand:BRAND, price:200000, emoji:"🔥", image:"https://iili.io/BbFjeLX.jpg", cat:"gozallik", sale:true },
+  { id:62, name:"now Whole Psyllium", brand:BRAND, price:250000, emoji:"🌿", image:"https://iili.io/BbFeku4.jpg", cat:"gozallik", sale:true },
+  { id:63, name:"Norwitella INOSITOL", brand:BRAND, price:170000, emoji:"🌿", image:"https://iili.io/BbFS7xR.jpg", cat:"gozallik", sale:true },
+  { id:96, name:"BERBERINE 500 mg", brand:BRAND, price:190000, emoji:"🌿", image:"https://iili.io/BpljQXn.jpg", cat:"gozallik", sale:true },
+  { id:97, name:"BERBERINE Indian Barberry", brand:BRAND, price:250000, emoji:"🌿", image:"https://iili.io/BplNIa4.jpg", cat:"gozallik", sale:true },
+  { id:98, name:"INOBALANS 60 kapsula", brand:BRAND, price:200000, emoji:"🌿", image:"https://iili.io/BplOydv.jpg", cat:"gozallik", sale:true },
+  { id:64, name:"ARTICHOKE HERBAL TEA", brand:BRAND, price:280000, emoji:"⚡", image:"https://iili.io/BbFL4I9.jpg", cat:"jigar" },
+  { id:65, name:"VITAUCT Гепатроп", brand:BRAND, price:230000, emoji:"⚡", image:"https://iili.io/BbFDK2j.jpg", cat:"jigar" },
+  { id:66, name:"Swiss MILK THISTLE", brand:BRAND, price:150000, emoji:"⚡", image:"https://iili.io/BbK9PQ2.jpg", cat:"jigar" },
+  { id:67, name:"Feroglobin LIQUID", brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/Bm90rap.jpg", cat:"qon" },
+  { id:68, name:"Swiss LIPOSOMAL IRON", brand:BRAND, price:160000, emoji:"⚡", image:"https://iili.io/Bm9GNuS.jpg", cat:"qon" },
+  { id:69, name:"Esila Harnup Pekmezi", brand:BRAND, price:240000, emoji:"⚡", image:"https://iili.io/Bm9UTMv.jpg", cat:"qon" },
+  { id:70, name:"Keçi Boynuzu Özü 700 g", brand:BRAND, price:240000, emoji:"⚡", image:"https://iili.io/Bm9UEoG.jpg", cat:"qon" },
+  { id:71, name:"MAGNESIUM VITAMIN B6", brand:BRAND, price:200000, emoji:"⚡", image:"https://iili.io/BbFGqOX.jpg", cat:"magniy" },
+  { id:94, name:"Swiss Bork Magnesium B6", brand:BRAND, price:170000, emoji:"⚡", image:"https://iili.io/BbFGX5P.jpg", cat:"magniy" },
+  { id:73, name:"now Ashwagandha 450 mg", brand:BRAND, price:160000, emoji:"⚡", image:"https://iili.io/BbFMZwF.jpg", cat:"magniy" },
+  { id:74, name:"Swiss Bork Mag Kids", brand:BRAND, price:150000, emoji:"⚡", image:"https://iili.io/BbFVWDF.jpg", cat:"magniy" },
+  { id:75, name:"Swiss B-COMPLEX", brand:BRAND, price:150000, emoji:"⚡", image:"https://iili.io/Bbyjg1e.jpg", cat:"complex" },
+  { id:76, name:"Swiss BROMELAIN", brand:BRAND, price:200000, emoji:"⚡", image:"https://iili.io/BbyOXrF.jpg", cat:"complex" },
+  { id:77, name:"NEW LINE VITAMIN C", brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/Bby8Eyg.jpg", cat:"complex" },
+  { id:78, name:"ChildLife Echinacea", brand:BRAND, price:150000, emoji:"⚡", image:"https://iili.io/BbyUW1p.jpg", cat:"complex" },
+  { id:79, name:"ChildLife Zinc Plus", brand:BRAND, price:170000, emoji:"⚡", image:"https://iili.io/BbyrfR9.jpg", cat:"complex" },
+  { id:80, name:"ChildLife Multi Vitamin", brand:BRAND, price:240000, emoji:"⚡", image:"https://iili.io/Bby4spt.jpg", cat:"complex" },
+  { id:81, name:"Life Extension B-Complex", brand:BRAND, price:160000, emoji:"⚡", image:"https://iili.io/BbyiIhF.jpg", cat:"complex" },
+  { id:82, name:"NutriBiotic Vitamin C", brand:BRAND, price:170000, emoji:"⚡", image:"https://iili.io/BbyQABe.jpg", cat:"complex" },
+  { id:83, name:"Mini Drops Immune Plus", brand:BRAND, price:170000, emoji:"⚡", image:"https://iili.io/BbytWdJ.jpg", cat:"complex" },
+  { id:84, name:"Norwitella Multivit KIDS", brand:BRAND, price:160000, emoji:"⚡", image:"https://iili.io/BbybRtV.jpg", cat:"complex" },
+  { id:93, name:"Uzmax PLUS Multivitamin", brand:BRAND, price:170000, emoji:"⚡", image:"https://iili.io/BbyyuAG.jpg", cat:"complex" },
+  { id:85, name:"NewLine GINKGO BILOBA", brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/Bm9H6FI.jpg", cat:"complex" },
+  { id:86, name:"Swiss GENIUS KIDS", brand:BRAND, price:160000, emoji:"⚡", image:"https://iili.io/Bm92nv1.jpg", cat:"complex" },
+  { id:87, name:"Wellkid Multi-Vitamin", brand:BRAND, price:170000, emoji:"⚡", image:"https://iili.io/Bm9o8tS.jpg", cat:"complex" },
+  { id:88, name:"WellBaby Multi-Vitamin", brand:BRAND, price:170000, emoji:"⚡", image:"https://iili.io/Bm9uOjR.jpg", cat:"complex" },
+  { id:89, name:"Bio360 KIDZ PRO-5", brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/Bm97H9n.jpg", cat:"complex" },
+  { id:90, name:"Swiss-VIDELIB", brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/Bm9YWmu.jpg", cat:"complex" },
+  { id:91, name:"now L-ARGININE", brand:BRAND, price:180000, emoji:"⚡", image:"https://iili.io/Bm96J5B.jpg", cat:"complex" },
+  { id:92, name:"Medicago TUSIMED", brand:BRAND, price:140000, emoji:"⚡", image:"https://iili.io/Bm9iMiu.jpg", cat:"complex" },
+  { id:95, name:"L-LYSINE MONOLAURIN", brand:BRAND, price:165000, emoji:"⚡", image:"https://iili.io/BplMl71.jpg", cat:"complex" },
+  { id:99, name:"SARIMSOQ", brand:BRAND, price:75000, emoji:"⚡", image:"https://iili.io/Bp0xVDX.jpg", cat:"complex" }
+];
+
+let cart = JSON.parse(localStorage.getItem('vitaminki_cart')) || {};
 let currentCat = 'all';
 
-function fmt(n) {
-  return n.toLocaleString('uz-UZ') + " so'm";
+function fmt(n) { return n.toLocaleString('uz-UZ') + " so'm"; }
+
+// Savatni xotiraga saqlash
+function saveCart() { localStorage.setItem('vitaminki_cart', JSON.stringify(cart)); }
+
+// Toast Xabarnoma
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  if(window.navigator && window.navigator.vibrate) navigator.vibrate(50);
+  setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-// ── Render Products ──────────────────────────────────────────────────────────
-function renderProducts() {
-  const grid = document.getElementById('productGrid');
-  const filtered = currentCat === 'all' ? products : products.filter(p => p.cat === currentCat);
+// Kategoriyalarni chizish
+function renderCategories() {
+  const catContainer = document.getElementById('categories');
+  catContainer.innerHTML = categories.map(c => 
+    `<button class="cat-btn ${currentCat === c.id ? 'active' : ''}" onclick="filterCat('${c.id}')">${c.name}</button>`
+  ).join('');
+}
 
-  grid.innerHTML = '';
-
-  filtered.forEach(p => {
-    const inCart = !!cart[p.id];
-
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    if (p.sale) {
-      const badge = document.createElement('span');
-      badge.className = 'badge';
-      badge.textContent = 'SALE';
-      card.appendChild(badge);
-    } else if (p.isnew) {
-      const badge = document.createElement('span');
-      badge.className = 'badge-new';
-      badge.textContent = 'YANGI';
-      card.appendChild(badge);
-    }
-
-    const imgDiv = document.createElement('div');
-    imgDiv.className = 'card-img' + (p.image ? ' has-image' : '');
-
-    if (p.image) {
-      const img = document.createElement('img');
-      img.src = p.image;
-      img.alt = p.name;
-      img.addEventListener('error', function() {
-        imgDiv.classList.remove('has-image');
-        imgDiv.removeAttribute('data-id');
-        imgDiv.onclick = null;
-        imgDiv.innerHTML = p.emoji;
-      });
-      imgDiv.appendChild(img);
-
-      const hint = document.createElement('span');
-      hint.className = 'zoom-hint';
-      hint.textContent = '🔍';
-      imgDiv.appendChild(hint);
-
-      imgDiv.style.cursor = 'zoom-in';
-      imgDiv.dataset.id = p.id;
-      imgDiv.addEventListener('click', function() {
-        openLightbox(p.id);
-      });
-    } else {
-      imgDiv.textContent = p.emoji;
-    }
-
-    card.appendChild(imgDiv);
-
-    const body = document.createElement('div');
-    body.className = 'card-body';
-    body.innerHTML =
-      '<div class="card-name">' + p.name + '</div>' +
-      '<div class="card-brand">' + p.brand + '</div>' +
-      '<div>' +
-        '<span class="card-price">' + fmt(p.price) + '</span>' +
-        (p.oldPrice ? '<span class="card-old-price">' + fmt(p.oldPrice) + '</span>' : '') +
-      '</div>';
-
-    const addBtn = document.createElement('button');
-    addBtn.className = 'add-btn' + (inCart ? ' in-cart' : '');
-    addBtn.textContent = inCart ? '✓ Savatda' : '+ Savatga';
-    addBtn.addEventListener('click', function() {
-      addToCart(p.id);
-    });
-
-    body.appendChild(addBtn);
-    card.appendChild(body);
-    grid.appendChild(card);
+// Mahsulotlarni filtrlash va chizish
+function filterProducts() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = products.filter(p => {
+    const matchCat = currentCat === 'all' || p.cat === currentCat;
+    const matchSearch = p.name.toLowerCase().includes(query);
+    return matchCat && matchSearch;
   });
-}
 
-// ── Filter ───────────────────────────────────────────────────────────────────
-function filterCat(cat, btn) {
-  currentCat = cat;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderProducts();
-}
-
-// ── Cart ─────────────────────────────────────────────────────────────────────
-function addToCart(id) {
-  if (cart[id]) {
-    cart[id].qty++;
-  } else {
-    const p = products.find(x => x.id === id);
-    cart[id] = Object.assign({}, p, { qty: 1 });
+  const grid = document.getElementById('productGrid');
+  
+  if(filtered.length === 0) {
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--muted);">Hech narsa topilmadi 😔</div>`;
+    return;
   }
+
+  grid.innerHTML = filtered.map(p => {
+    const inCart = !!cart[p.id];
+    return `
+      <div class="card">
+        ${p.sale ? `<span class="badge">SALE</span>` : ''}
+        <div class="card-img" ${p.image ? `style="cursor:zoom-in" onclick="openLightbox(${p.id})"` : ''}>
+          ${p.image 
+            ? `<img src="${p.image}" alt="${p.name}" onerror="this.outerHTML='${p.emoji}'"><span class="zoom-hint">🔍</span>` 
+            : p.emoji}
+        </div>
+        <div class="card-body">
+          <div class="card-name">${p.name}</div>
+          <div class="card-brand">${p.brand}</div>
+          <div class="price-wrap">
+            <span class="card-price">${fmt(p.price)}</span>
+          </div>
+          <button class="add-btn ${inCart ? 'in-cart' : ''}" onclick="addToCart(${p.id})">
+            ${inCart ? '✓ Savatda' : '+ Savatga'}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function filterCat(cat) {
+  currentCat = cat;
+  renderCategories();
+  filterProducts();
+}
+
+// Savat mantig'i
+function addToCart(id) {
+  if (cart[id]) cart[id].qty++;
+  else {
+    const p = products.find(x => x.id === id);
+    cart[id] = { ...p, qty: 1 };
+  }
+  saveCart();
   updateCartUI();
-  renderProducts();
+  filterProducts();
+  showToast("✅ Savatga qo'shildi!");
 }
 
 function changeQty(id, delta) {
   if (!cart[id]) return;
   cart[id].qty += delta;
   if (cart[id].qty <= 0) delete cart[id];
+  saveCart();
   updateCartUI();
-  renderProducts();
+  filterProducts();
   renderCartItems();
 }
 
 function updateCartUI() {
-  const total = Object.values(cart).reduce(function(s, i) { return s + i.qty; }, 0);
+  const total = Object.values(cart).reduce((s, i) => s + i.qty, 0);
   document.getElementById('cartCount').textContent = total;
+  
+  if(tg && tg.MainButton) {
+    if(total > 0) {
+      tg.MainButton.setText(`🛒 Savatga o'tish (${total})`);
+      tg.MainButton.show();
+      tg.MainButton.onClick(toggleCart);
+    } else {
+      tg.MainButton.hide();
+    }
+  }
 }
 
 function renderCartItems() {
-  const items  = Object.values(cart);
-  const el     = document.getElementById('cartItems');
-  const form   = document.getElementById('orderForm');
+  const items = Object.values(cart);
+  const el = document.getElementById('cartItems');
+  const form = document.getElementById('orderForm');
 
   if (items.length === 0) {
-    el.innerHTML = '<div class="empty-cart">🛒 Savat bo\'sh<br><small>Katalogdan mahsulot qo\'shing</small></div>';
+    el.innerHTML = '<div class="empty-state"><text>🛒</text>Savat bo\'sh<br><small>Katalogdan mahsulot qo\'shing</small></div>';
     form.style.display = 'none';
     return;
   }
 
-  el.innerHTML = '';
-  items.forEach(function(item) {
-    const row = document.createElement('div');
-    row.className = 'cart-item';
+  el.innerHTML = items.map(item => `
+    <div class="cart-item">
+      <img class="ci-thumb" src="${item.image || ''}" onerror="this.style.display='none'">
+      <div class="ci-info">
+        <div class="ci-name">${item.name}</div>
+        <div class="ci-price">${fmt(item.price)}</div>
+      </div>
+      <div class="ci-qty">
+        <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+        <span class="qty-num">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+      </div>
+    </div>
+  `).join('');
 
-    const thumb = document.createElement('div');
-    thumb.className = 'ci-thumb';
-
-    if (item.image) {
-      const img = document.createElement('img');
-      img.className = 'ci-img';
-      img.src = item.image;
-      img.alt = item.name;
-      img.addEventListener('error', function() {
-        thumb.textContent = item.emoji;
-      });
-      thumb.appendChild(img);
-    } else {
-      thumb.textContent = item.emoji;
-    }
-
-    const info = document.createElement('div');
-    info.className = 'ci-info';
-    info.innerHTML =
-      '<div class="ci-name">' + item.name + '</div>' +
-      '<div class="ci-price">' + fmt(item.price) + '</div>';
-
-    const qtyDiv = document.createElement('div');
-    qtyDiv.className = 'ci-qty';
-
-    const minusBtn = document.createElement('button');
-    minusBtn.className = 'qty-btn';
-    minusBtn.textContent = '−';
-    minusBtn.addEventListener('click', function() { changeQty(item.id, -1); });
-
-    const qtyNum = document.createElement('span');
-    qtyNum.className = 'qty-num';
-    qtyNum.textContent = item.qty;
-
-    const plusBtn = document.createElement('button');
-    plusBtn.className = 'qty-btn';
-    plusBtn.textContent = '+';
-    plusBtn.addEventListener('click', function() { changeQty(item.id, +1); });
-
-    qtyDiv.appendChild(minusBtn);
-    qtyDiv.appendChild(qtyNum);
-    qtyDiv.appendChild(plusBtn);
-
-    row.appendChild(thumb);
-    row.appendChild(info);
-    row.appendChild(qtyDiv);
-    el.appendChild(row);
-  });
-
-  const total = items.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
-  document.getElementById('totalSum').textContent = fmt(total);
+  const totalSum = items.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('totalSum').textContent = fmt(totalSum);
   form.style.display = 'block';
 }
 
 function toggleCart() {
-  const panel   = document.getElementById('cartPanel');
+  const panel = document.getElementById('cartPanel');
   const overlay = document.getElementById('overlay');
-  const isOpen  = panel.classList.contains('open');
-  if (!isOpen) renderCartItems();
+  if (!panel.classList.contains('open')) renderCartItems();
   panel.classList.toggle('open');
   overlay.classList.toggle('open');
 }
 
-// ── Submit Order ──────────────────────────────────────────────────────────────
+// Buyurtma berish
 function submitOrder() {
-  const phone   = document.getElementById('phoneInput').value.trim();
+  const phone = document.getElementById('phoneInput').value.trim();
   const address = document.getElementById('addressInput').value.trim();
 
   if (!phone || !address) {
-    if (tg) {
-      tg.showAlert("Iltimos, telefon raqam va manzilni kiriting!");
-    } else {
-      alert("Iltimos, telefon raqam va manzilni kiriting!");
-    }
+    if (tg) tg.showAlert("Iltimos, telefon raqam va manzilni kiriting!");
+    else alert("Iltimos, telefon raqam va manzilni kiriting!");
     return;
   }
 
-  const items = Object.values(cart).map(function(i) {
-    return { id: i.id, name: i.name, price: i.price, qty: i.qty, image: i.image || '' };
-  });
-  const total = items.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
+  const items = Object.values(cart).map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty }));
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
 
   const data = JSON.stringify({
-    items: items,
-    total: total,
-    phone: phone,
-    address: address,
+    items, total, phone, address,
     comment: document.getElementById('commentInput').value.trim()
   });
 
-  if (tg) {
-    tg.sendData(data);
-  } else {
-    console.log("Order data:", data);
-  }
+  if (tg) tg.sendData(data);
+  else console.log("Order data:", data);
 
   document.getElementById('cartContent').style.display = 'none';
-  document.getElementById('successScreen').classList.add('show');
+  document.getElementById('successScreen').style.display = 'block';
 
   cart = {};
+  saveCart();
   updateCartUI();
-  renderProducts();
+  filterProducts();
 
-  if (tg) {
-    setTimeout(function() { tg.close(); }, 3000);
-  }
+  if (tg) setTimeout(() => tg.close(), 3000);
 }
 
-// ── Lightbox ──────────────────────────────────────────────────────────────────
-let lightboxProductId = null;
-
+// Lightbox (Rasm kattalashtirish)
+let currentLightboxId = null;
 function openLightbox(id) {
-  const p = products.find(function(x) { return x.id === id; });
+  const p = products.find(x => x.id === id);
   if (!p || !p.image) return;
-  lightboxProductId = id;
-
+  currentLightboxId = id;
+  
   document.getElementById('lightboxImg').src = p.image;
   document.getElementById('lightboxName').textContent = p.name;
-
+  
   const btn = document.getElementById('lightboxAddBtn');
-  if (cart[id]) {
-    btn.textContent = '✓ Savatda';
-    btn.classList.add('in-cart');
-  } else {
-    btn.textContent = "+ Savatga qo'shish";
-    btn.classList.remove('in-cart');
-  }
-
+  btn.textContent = cart[id] ? '✓ Savatda' : "+ Savatga qo'shish";
+  
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -941,29 +650,18 @@ function openLightbox(id) {
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
-  lightboxProductId = null;
-}
-
-function lightboxBgClick(e) {
-  if (e.target === document.getElementById('lightbox')) {
-    closeLightbox();
-  }
+  currentLightboxId = null;
 }
 
 function lightboxAddToCart() {
-  if (!lightboxProductId) return;
-  addToCart(lightboxProductId);
-  const btn = document.getElementById('lightboxAddBtn');
-  btn.textContent = '✓ Savatda';
-  btn.classList.add('in-cart');
+  if (currentLightboxId) addToCart(currentLightboxId);
+  closeLightbox();
 }
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeLightbox();
-});
-
-// ── Init ──────────────────────────────────────────────────────────────────────
-renderProducts();
+// Boshlang'ich yuklash
+renderCategories();
+filterProducts();
+updateCartUI();
 </script>
 </body>
 </html>
