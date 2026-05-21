@@ -482,6 +482,7 @@
   <button class="cat-btn" onclick="filterCat('complex', this)">🛡️Complex </button>
   <button class="cat-btn" onclick="filterCat('gijja', this)">🪱Gijja </button>
   <button class="cat-btn" onclick="filterCat('gummies', this)">🍭Gummies </button>
+  <button class="cat-btn" onclick="filterCat('mini', this)">⭐️Mini Drops </button>
 
 </div>
 
@@ -575,7 +576,6 @@ const products = [
   { id:15, name:"novomins KIDS OMEGA 3-6-9 + MULTI GUMMIES",brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4aUnn.jpg", cat:"omega", sale:true },
   { id:16, name:"Ausvit Norway Fish Oil",                   brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/BD40dhP.jpg", cat:"omega", sale:true },
   { id:17, name:"NORDIC BORK PURE OMEGA-3 NORWAY COD LIVER OIL", brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4Gdj2.jpg", cat:"omega", sale:true },
-  { id:18, name:"Mini Drops DHA",                           brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4MD5G.jpg", cat:"omega", sale:true },
   { id:19, name:"Ausvit Focus Formula KIDS",                brand:BRAND, price:210000, emoji:"🦐", image:"https://iili.io/BD4WL9s.jpg", cat:"omega", sale:true },
   { id:20, name:"now Omega-3 Fish Oil",                     brand:BRAND, price:180000, emoji:"🦐", image:"https://iili.io/BD4hjpa.jpg", cat:"omega", sale:true },
   { id:145, name:"now Sunflower Liquid Lecithin",                     brand:BRAND, price:300000, emoji:"🦐", image:"https://iili.io/C9TD6U7.jpg", cat:"omega", sale:true },
@@ -595,7 +595,6 @@ const products = [
   { id:43, name:"now Vitamin D-3 5,000 UI",                 brand:BRAND, price:130000, emoji:"🦠", image:"https://iili.io/BDQHySs.jpg", cat:"d3", sale:true },
   { id:44, name:"now Vitamin D-3 10,000 IU",                brand:BRAND, price:160000, emoji:"🦠", image:"https://iili.io/BDQdyuf.jpg", cat:"d3", sale:true },
   { id:45, name:"NEW LINE Vitamin D3+K2",                   brand:BRAND, price:200000, emoji:"🦠", image:"https://iili.io/BDQFBhx.jpg", cat:"d3", sale:true },
-  { id:46, name:"Mini Drops Vitamin D3",                    brand:BRAND, price:125000, emoji:"🦠", image:"https://iili.io/BDQKeDJ.jpg", cat:"d3", sale:true },
   { id:47, name:"Child Life Vitamin D3",                    brand:BRAND, price:130000, emoji:"🦠", image:"https://iili.io/BDQq9BR.jpg", cat:"d3", sale:true },
   { id:144, name:"Wonlab Vitamin D3 + K2",                    brand:BRAND, price:200000, emoji:"🦠", image:"https://iili.io/C9TMWoN.jpg", cat:"d3", sale:true },
 
@@ -682,7 +681,6 @@ const products = [
   { id:80, name:"ChildLife Multi Vitamin & Mineral 237 ml",      brand:BRAND, price:240000,                   emoji:"⚡", image:"https://iili.io/Bby4spt.jpg", cat:"complex" },
   { id:81, name:"Life Extension BioActive Complete B-Complex",      brand:BRAND, price:160000,                   emoji:"⚡", image:"https://iili.io/BbyiIhF.jpg", cat:"complex" },
   { id:82, name:"NutriBiotic Vitamin C 1000 mg kapsula",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbyQABe.jpg", cat:"complex" },
-  { id:83, name:"Mini Drops Immune Plus 50 ml",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbytWdJ.jpg", cat:"complex" },
   { id:84, name:"Norwitella Multivit KIDS 150 ml",      brand:BRAND, price:160000,                   emoji:"⚡", image:"https://iili.io/BbybRtV.jpg", cat:"complex" },
   { id:93, name:"Uzmax PLUS Multivitamin 60 kapsula",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbyyuAG.jpg", cat:"complex" },
   { id:85, name:"NewLine GINKGO BILOBA ",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/Bm9H6FI.jpg", cat:"complex" },
@@ -747,6 +745,17 @@ const products = [
     { id:157, name:"novomis Kids Focus Gummies",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/C9MggjI.jpg", cat:"gummies" },
     { id:158, name:"novomis Kids Night-Time Gummies",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/C9MrhAl.jpg", cat:"gummies" },
     { id:159, name:"novomis Kids Omega 3-6-9 +Multi Gummies",      brand:BRAND, price:180000,                   emoji:"⚡", image:"https://iili.io/C9M4r1n.jpg", cat:"gummies" },
+
+ //⭐️Mini Drops
+    { id:170, name:"Mini Drops Bed Time",      brand:BRAND, price:160000,                   emoji:"⚡", image:"https://iili.io/C9Vqu0F.jpg", cat:"mini" },
+    { id:171, name:"Mini Drops Multivitamin",      brand:BRAND, price:145000,                   emoji:"⚡", image:"https://iili.io/C9VBII4.jpg", cat:"mini" },
+    { id:172, name:"Mini Drops Daily Microbiotic",      brand:BRAND, price:220000,                   emoji:"⚡", image:"https://iili.io/C9Vn75u.jpg", cat:"mini" },
+    { id:83, name:"Mini Drops Immune Plus 50 ml",      brand:BRAND, price:170000,                   emoji:"⚡", image:"https://iili.io/BbytWdJ.jpg", cat:"mini" },
+    { id:46, name:"Mini Drops Vitamin D3",                    brand:BRAND, price:125000, emoji:"🦠", image:"https://iili.io/BDQKeDJ.jpg", cat:"mini" },
+    { id:18, name:"Mini Drops DHA",                           brand:BRAND, price:160000, emoji:"🦐", image:"https://iili.io/BD4MD5G.jpg", cat:"mini"  },
+
+
+
 
   
 ];
