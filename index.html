@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>🌱Vitaminki_maryam🌱 – Katalog</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -21,13 +21,16 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
+  html, body { width: 100%; height: 100%; }
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* ── Header ── */
@@ -80,16 +83,6 @@
   .location-bar.loading .loc-text { color: #aaa; font-style: italic; }
   .location-bar.error .loc-text { color: #e07070; }
   .location-bar.ok .loc-text { color: var(--accent); font-weight: 500; }
-  .loc-retry {
-    background: none;
-    border: none;
-    color: var(--accent);
-    font-size: 11px;
-    cursor: pointer;
-    padding: 0;
-    text-decoration: underline;
-    flex-shrink: 0;
-  }
 
   /* Search */
   .search-wrap {
@@ -141,7 +134,6 @@
   }
   .search-clear.visible { display: flex; }
 
-  /* No results */
   .no-results {
     text-align: center;
     padding: 60px 20px;
@@ -168,7 +160,7 @@
     transition: background 0.2s;
     flex-shrink: 0;
   }
-  .cart-btn:hover { background: #2e7a3a; }
+  .cart-btn:active { background: #2e7a3a; }
   .cart-count {
     background: white;
     color: var(--accent);
@@ -221,6 +213,7 @@
     border: 1px solid var(--border);
     transition: transform 0.15s, box-shadow 0.15s;
     position: relative;
+    cursor: pointer;
   }
   .card:active { transform: scale(0.97); }
 
@@ -260,12 +253,6 @@
     font-weight: 500;
     color: var(--accent);
   }
-  .card-old-price {
-    font-size: 12px;
-    color: var(--muted);
-    text-decoration: line-through;
-    margin-left: 4px;
-  }
   .add-btn {
     width: 100%;
     margin-top: 8px;
@@ -295,29 +282,6 @@
     border-radius: 10px;
     z-index: 2;
   }
-  .badge-new {
-    position: absolute;
-    top: 8px; left: 8px;
-    background: var(--gold);
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 10px;
-    z-index: 2;
-  }
-
-  .card-img.has-image { cursor: zoom-in; }
-  .zoom-hint {
-    position: absolute;
-    bottom: 6px; right: 6px;
-    font-size: 14px;
-    background: rgba(0,0,0,0.35);
-    border-radius: 6px;
-    padding: 2px 5px;
-    opacity: 0.85;
-    pointer-events: none;
-  }
 
   /* ── Lightbox ── */
   .lightbox {
@@ -342,15 +306,9 @@
   }
   .lightbox-img {
     max-width: 100%;
-    max-height: 75vh;
+    max-height: 60vh;
     border-radius: 16px;
     object-fit: contain;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    animation: lbZoomIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  @keyframes lbZoomIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to   { transform: scale(1);   opacity: 1; }
   }
   .lightbox-name {
     color: white;
@@ -359,12 +317,6 @@
     font-weight: 600;
     margin-top: 16px;
     text-align: center;
-  }
-  .lightbox-brand {
-    color: #a0c8a0;
-    font-size: 13px;
-    margin-top: 4px;
-    margin-bottom: 20px;
   }
   .lightbox-close {
     position: absolute;
@@ -377,25 +329,8 @@
     font-size: 20px;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    backdrop-filter: blur(4px);
-    transition: background 0.2s;
     z-index: 1;
   }
-  .lightbox-close:hover { background: rgba(255,255,255,0.3); }
-  .lightbox-add {
-    padding: 12px 32px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    font-size: 15px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .lightbox-add:hover { background: #2e7a3a; }
-  .lightbox-add.in-cart { background: #27ae60; }
 
   /* ── Cart Panel ── */
   .overlay {
@@ -454,7 +389,6 @@
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 10px;
   }
   .ci-info { flex: 1; }
   .ci-name { font-size: 14px; font-weight: 500; }
@@ -503,35 +437,6 @@
   }
   .form-input:focus { border-color: var(--accent); }
 
-  /* Location row in order form */
-  .location-order-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--accent-light);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 14px;
-    margin-bottom: 10px;
-    font-size: 13px;
-    color: var(--text);
-  }
-  .location-order-row .loc-status { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .get-loc-btn {
-    margin-left: auto;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 12px;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .get-loc-btn:disabled { background: var(--muted); cursor: default; }
-
   .total-row {
     display: flex;
     justify-content: space-between;
@@ -562,7 +467,7 @@
     letter-spacing: 0.3px;
   }
   .order-btn:disabled { background: var(--muted); cursor: not-allowed; }
-  .order-btn:hover:not(:disabled) { background: #2e7a3a; }
+  .order-btn:active:not(:disabled) { background: #2e7a3a; }
 
   .success-screen {
     display: none;
@@ -578,15 +483,6 @@
     margin-bottom: 8px;
   }
   .success-text { color: var(--muted); font-size: 14px; line-height: 1.6; }
-
-  /* Search highlight */
-  mark {
-    background: rgba(58,140,74,0.18);
-    color: var(--accent);
-    border-radius: 2px;
-    padding: 0 1px;
-    font-style: normal;
-  }
 </style>
 </head>
 <body>
@@ -599,7 +495,7 @@
       <span class="logo-name">Vitaminki_<span>maryam</span></span>
       <span class="logo-leaf">🌱</span>
     </div>
-    <button class="cart-btn" onclick="toggleCart()">
+    <button class="cart-btn" id="cartOpenBtn">
       🛒 Savat <span class="cart-count" id="cartCount">0</span>
     </button>
   </div>
@@ -618,182 +514,101 @@
       id="searchInput"
       type="text"
       placeholder="Mahsulot qidiring…"
-      oninput="handleSearch(this.value)"
       autocomplete="off"
     >
-    <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+    <button class="search-clear" id="searchClear">✕</button>
   </div>
 </div>
 
 <!-- Categories -->
 <div class="categories" id="categoriesBar">
-  <button class="cat-btn active" onclick="filterCat('all', this)">Barchasi</button>
-  <button class="cat-btn" onclick="filterCat('yodlar', this)">💊 Yodlar(йод)</button>
-  <button class="cat-btn" onclick="filterCat('collagenlar', this)">🦴 Collagen</button>
-  <button class="cat-btn" onclick="filterCat('omega', this)">🐟 Omega & Yog'lar</button>
-  <button class="cat-btn" onclick="filterCat('d3', this)">☀️ Vitamin D3</button>
-  <button class="cat-btn" onclick="filterCat('calcium', this)">🦷 Calcium</button>
-  <button class="cat-btn" onclick="filterCat('gozallik', this)">💖 Go'zallik</button>
-  <button class="cat-btn" onclick="filterCat('jigar', this)">🫀Jigar</button>
-  <button class="cat-btn" onclick="filterCat('qon', this)">🩸Gemoglabin & Qon</button>
-  <button class="cat-btn" onclick="filterCat('magniy', this)">💆🏻‍♀️ Magniy</button>
-  <button class="cat-btn" onclick="filterCat('complex', this)">🛡️Complex</button>
-  <button class="cat-btn" onclick="filterCat('gijja', this)">🪱Gijja</button>
-  <button class="cat-btn" onclick="filterCat('gummies', this)">🍭Gummies</button>
-  <button class="cat-btn" onclick="filterCat('mini', this)">⭐️Mini Drops</button>
-  <button class="cat-btn" onclick="filterCat('sogliq', this)">❤️‍🩹Sog'liq</button>
+  <button class="cat-btn active" data-cat="all">Barchasi</button>
+  <button class="cat-btn" data-cat="yodlar">💊 Йод</button>
+  <button class="cat-btn" data-cat="collagenlar">🦴 Collagen</button>
+  <button class="cat-btn" data-cat="omega">🐟 Omega</button>
+  <button class="cat-btn" data-cat="d3">☀️ D3</button>
+  <button class="cat-btn" data-cat="calcium">🦷 Calcium</button>
+  <button class="cat-btn" data-cat="gozallik">💖 Go'zallik</button>
+  <button class="cat-btn" data-cat="complex">🛡️ Complex</button>
+  <button class="cat-btn" data-cat="magniy">💆 Magniy</button>
 </div>
 
 <!-- Product Grid -->
 <div class="grid" id="productGrid"></div>
 <div class="no-results" id="noResults">
   <div class="no-results-icon">🔍</div>
-  <div>"<span id="noResultsQuery"></span>" bo'yicha hech narsa topilmadi</div>
-  <div style="font-size:12px;margin-top:8px;color:#aaa;">Boshqa so'z bilan qidiring</div>
+  <div>Mahsulot topilmadi</div>
 </div>
 
 <!-- Cart Overlay -->
-<div class="overlay" id="overlay" onclick="toggleCart()"></div>
+<div class="overlay" id="overlay"></div>
 
 <!-- Cart Panel -->
 <div class="cart-panel" id="cartPanel">
   <div class="panel-handle"></div>
-
-  <!-- Cart Content -->
   <div id="cartContent">
     <div class="panel-title">🛒 Savatcham</div>
     <div id="cartItems"></div>
-
-    <!-- Order Form -->
     <div class="order-form" id="orderForm" style="display:none;">
       <div class="total-row">
         <span>Jami:</span>
         <span class="total-sum" id="totalSum">0 so'm</span>
       </div>
-
-      <label class="form-label">Telefon raqam *</label>
+      <label class="form-label">Telefon *</label>
       <input class="form-input" id="phoneInput" type="tel" placeholder="+998 90 000 00 00">
-
       <label class="form-label">Manzil *</label>
-      <input class="form-input" id="addressInput" type="text" placeholder="Shahar, ko'cha, uy raqami">
-
-      <!-- Location row -->
-      <label class="form-label">Joylashuv (GPS)</label>
-      <div class="location-order-row" id="locationOrderRow">
-        <div>
-          <div id="locationOrderText">📍 Aniqlanmadi</div>
-          <div class="loc-status" id="locationOrderStatus">Sotuvchiga aniq manzil yuborish uchun ruxsat bering</div>
-        </div>
-        <button class="get-loc-btn" id="getLocBtn" onclick="requestLocation()">📡 Aniqlash</button>
-      </div>
-
-      <label class="form-label">Izoh (ixtiyoriy)</label>
-      <input class="form-input" id="commentInput" type="text" placeholder="Qo'shimcha ma'lumot...">
-      <button class="order-btn" id="orderBtn" onclick="submitOrder()">✅ Buyurtma berish</button>
+      <input class="form-input" id="addressInput" type="text" placeholder="Shahar, ko'cha...">
+      <button class="order-btn" id="orderBtn">✅ Buyurtma berish</button>
     </div>
   </div>
-
-  <!-- Success Screen -->
   <div class="success-screen" id="successScreen">
     <div class="success-icon">🎉</div>
     <div class="success-title">Buyurtma qabul qilindi!</div>
-    <div class="success-text">Menejer tez orada siz bilan bog'lanadi.<br>Sog'lom va baquvvat bo'ling! 🌱💚</div>
+    <div class="success-text">Menejer tez orada siz bilan bog'lanadi.</div>
   </div>
 </div>
 
 <!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="lightboxBgClick(event)">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
   <img class="lightbox-img" id="lightboxImg" src="" alt="">
   <div class="lightbox-name" id="lightboxName"></div>
-  <div class="lightbox-brand">🌱Vitaminki_maryam🌱</div>
-  <button class="lightbox-add" id="lightboxAddBtn" onclick="lightboxAddToCart()">+ Savatga qo'shish</button>
 </div>
 
 <script>
-// ── TELEGRAM & GLOBALS ──────────────────────────────────────
+// ── TELEGRAM INITIALIZATION ──────────────────────────────────────
 const tg = window.Telegram?.WebApp;
-if (tg) { 
-  tg.ready(); 
-  tg.expand(); 
+if (tg) {
+  tg.ready();
+  tg.expand();
+  tg.setHeaderColor('#f4faf4');
+  tg.setBackgroundColor('#f4faf4');
 }
 
 const BRAND = "🌱Vitaminki_maryam🌱";
 let userLocation = {};
-
-// ── GEOLOCATION ─────────────────────────────────────────
-function requestLocation() {
-  const bar       = document.getElementById('locationBar');
-  const barText   = document.getElementById('locationText');
-  const orderText = document.getElementById('locationOrderText');
-  const orderStat = document.getElementById('locationOrderStatus');
-  const btn       = document.getElementById('getLocBtn');
-
-  bar.className = 'location-bar loading';
-  barText.textContent = 'Joylashuv aniqlanmoqda…';
-  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
-
-  if (!navigator.geolocation) {
-    bar.className = 'location-bar error';
-    barText.textContent = 'GPS qo\'llab-quvvatlanmaydi';
-    if (orderStat) orderStat.textContent = 'Qurilmangiz GPS ni qo\'llab-quvvatlamaydi';
-    if (btn) { btn.disabled = false; btn.textContent = '📡 Aniqlash'; }
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      const lat = Number(pos.coords.latitude.toFixed(6));
-      const lng = Number(pos.coords.longitude.toFixed(6));
-      const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
-
-      userLocation = { lat, lng, mapsUrl };
-
-      bar.className = 'location-bar ok';
-      barText.textContent = '📍 ' + lat + ', ' + lng;
-      if (orderText) orderText.textContent = '📍 ' + lat + ', ' + lng;
-      if (orderStat) orderStat.textContent = '✅ Joylashuv tayyor – buyurtmada yuboriladi';
-      if (btn) { btn.disabled = false; btn.textContent = '🔄 Yangilash'; }
-    },
-    (err) => {
-      bar.className = 'location-bar error';
-      let msg = 'Joylashuv aniqlanmadi';
-      if (err.code === 1) msg = 'Ruxsat berilmadi';
-      else if (err.code === 2) msg = 'GPS signal yo\'q';
-      else if (err.code === 3) msg = 'Vaqt tugadi';
-      barText.textContent = msg;
-      if (orderStat) orderStat.textContent = msg + ' — ixtiyoriy';
-      if (btn) { btn.disabled = false; btn.textContent = '📡 Qayta'; }
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-  );
-}
-
-// Auto-request on load
-window.addEventListener('load', function() { 
-  requestLocation(); 
-});
-
-// ── PRODUCTS ────────────────────────────────────────────────────────────
-const products = [
-  // 💊 Yodlar(йод)
-  { id:1,  name:"NEWLINE Iodine",                           brand:BRAND, price:150000, emoji:"🍋", image:"https://iili.io/BDPYQEu.jpg", cat:"yodlar",    sale:true },
-  { id:2,  name:"VeNatura iYOT VA SELENYUM TOMCHISI",       brand:BRAND, price:140000, emoji:"☀️", image:"https://iili.io/BDPGuGS.jpg", cat:"yodlar",    sale:true },
-  { id:3,  name:"NBT life Iyotic Damla",                    brand:BRAND, price:155000, emoji:"💊", image:"https://iili.io/BDPhHqQ.jpg", cat:"yodlar",    sale:true },
-  { id:4,  name:"Swiss KELP (IODINE)",                      brand:BRAND, price:160000, emoji:"🌈", image:"https://iili.io/BDPwIRt.jpg", cat:"yodlar",    sale:true },
-  { id:5,  name:"life flo LIQUID IODINE PLUS",              brand:BRAND, price:140000, emoji:"🪨", image:"https://iili.io/BDPvfFj.jpg", cat:"yodlar",    sale:true },
-  { id:143,name:"KAL Kelp Iodine",                          brand:BRAND, price:160000, emoji:"🪨", image:"https://iili.io/C9upKrl.jpg", cat:"yodlar",    sale:true },
-];
-
-// Placeholder for remaining products - use original data
 let currentCategory = 'all';
 let currentSearch = '';
 let cart = [];
 
-// ── DOM ELEMENTS ────────────────────────────────────────────────────────────
+// ── PRODUCTS ─────────────────────────────────────────────────────
+const products = [
+  { id:1,  name:"NEWLINE Iodine",                           brand:BRAND, price:150000, image:"https://iili.io/BDPYQEu.jpg", cat:"yodlar",    sale:true },
+  { id:2,  name:"VeNatura iYOT VA SELENYUM TOMCHISI",       brand:BRAND, price:140000, image:"https://iili.io/BDPGuGS.jpg", cat:"yodlar",    sale:true },
+  { id:3,  name:"NBT life Iyotic Damla",                    brand:BRAND, price:155000, image:"https://iili.io/BDPhHqQ.jpg", cat:"yodlar",    sale:true },
+  { id:6,  name:"AFNAN Beauty COLLAGEN",                    brand:BRAND, price:250000, image:"https://iili.io/BDPswBV.jpg", cat:"collagenlar", sale:true },
+  { id:7,  name:"esila COLLAGEN DETOX",                     brand:BRAND, price:170000, image:"https://iili.io/BDPQtzG.jpg", cat:"collagenlar", sale:true },
+  { id:9,  name:"Added Attention BURIED TREASURE",          brand:BRAND, price:380000, image:"https://iili.io/BDgJWSS.jpg", cat:"omega", sale:true },
+  { id:21, name:"Swiss VITAMIN D3+K2",                      brand:BRAND, price:140000, image:"https://iili.io/BDLXJTX.jpg", cat:"d3", sale:true },
+  { id:48, name:"H&B Calcium + Magnesium",                  brand:BRAND, price:270000, image:"https://iili.io/BDm7z4p.jpg", cat:"calcium", sale:true },
+  { id:60, name:"CHLOROPHYLLIN ICHKI DEZODORANT",           brand:BRAND, price:100000, image:"https://iili.io/BbFx0aR.jpg", cat:"gozallik", sale:true },
+  { id:71, name:"MAGNESIUM VITAMIN B6",                     brand:BRAND, price:200000, image:"https://iili.io/BbFGqOX.jpg", cat:"magniy", sale:true },
+  { id:75, name:"Swiss B-COMPLEX SYRUP",                    brand:BRAND, price:150000, image:"https://iili.io/Bbyjg1e.jpg", cat:"complex", sale:true },
+];
+
+// ── DOM ELEMENTS ─────────────────────────────────────────────────
 const productGrid = document.getElementById('productGrid');
 const noResults = document.getElementById('noResults');
-const noResultsQuery = document.getElementById('noResultsQuery');
 const searchInput = document.getElementById('searchInput');
 const searchClear = document.getElementById('searchClear');
 const cartCount = document.getElementById('cartCount');
@@ -801,32 +616,48 @@ const cartPanel = document.getElementById('cartPanel');
 const overlay = document.getElementById('overlay');
 const cartItems = document.getElementById('cartItems');
 const orderForm = document.getElementById('orderForm');
+const orderBtn = document.getElementById('orderBtn');
 const successScreen = document.getElementById('successScreen');
 const cartContent = document.getElementById('cartContent');
+const cartOpenBtn = document.getElementById('cartOpenBtn');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxName = document.getElementById('lightboxName');
+const lightboxClose = document.getElementById('lightboxClose');
 
-// ── SEARCH FUNCTIONALITY ────────────────────────────────────────────────────────────
-function handleSearch(value) {
-  currentSearch = value.toLowerCase();
-  searchClear.classList.toggle('visible', value.length > 0);
-  renderProducts();
+// ── GEOLOCATION ──────────────────────────────────────────────────
+function requestLocation() {
+  const bar = document.getElementById('locationBar');
+  const barText = document.getElementById('locationText');
+  
+  bar.className = 'location-bar loading';
+  barText.textContent = 'Joylashuv aniqlanmoqda…';
+
+  if (!navigator.geolocation) {
+    bar.className = 'location-bar error';
+    barText.textContent = 'GPS qo\'llab-quvvatlanmaydi';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const lat = Number(pos.coords.latitude.toFixed(6));
+      const lng = Number(pos.coords.longitude.toFixed(6));
+      userLocation = { lat, lng };
+      bar.className = 'location-bar ok';
+      barText.textContent = '📍 ' + lat + ', ' + lng;
+    },
+    (err) => {
+      bar.className = 'location-bar error';
+      barText.textContent = 'Joylashuv aniqlanmadi';
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+  );
 }
 
-function clearSearch() {
-  searchInput.value = '';
-  currentSearch = '';
-  searchClear.classList.remove('visible');
-  renderProducts();
-}
+window.addEventListener('load', requestLocation);
 
-// ── CATEGORY FILTERING ──────────────────────────────────────────────────────────
-function filterCat(cat, btn) {
-  currentCategory = cat;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderProducts();
-}
-
-// ── PRODUCT RENDERING ──────────────────────────────────────────────────────────
+// ── RENDER PRODUCTS ──────────────────────────────────────────────
 function renderProducts() {
   let filtered = products.filter(p => {
     const matchCat = currentCategory === 'all' || p.cat === currentCategory;
@@ -840,62 +671,47 @@ function renderProducts() {
 
   if (filtered.length === 0) {
     noResults.classList.add('show');
-    noResultsQuery.textContent = currentSearch || 'Category';
     return;
   }
 
   noResults.classList.remove('show');
 
   filtered.forEach(product => {
+    const inCart = cart.some(item => item.id === product.id);
     const card = document.createElement('div');
     card.className = 'card';
-    
-    const inCart = cart.some(item => item.id === product.id);
-    
     card.innerHTML = `
-      <div class="card-img has-image" onclick="openLightbox(${product.id})">
+      <div class="card-img" onclick="openLightbox(${product.id})">
         <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">
-        <span class="zoom-hint">🔍</span>
         ${product.sale ? `<div class="badge">SALE</div>` : ''}
       </div>
       <div class="card-body">
-        <div class="card-name">${highlightSearch(product.name)}</div>
+        <div class="card-name">${product.name}</div>
         <div class="card-brand">${product.brand}</div>
         <div class="card-price">${product.price.toLocaleString()} so'm</div>
-        <button class="add-btn ${inCart ? 'in-cart' : ''}" onclick="toggleCart(${product.id})">
+        <button class="add-btn ${inCart ? 'in-cart' : ''}" onclick="toggleProductCart(${product.id}, event)">
           ${inCart ? '✓ Savatda' : '+ Qo\'shish'}
         </button>
       </div>
     `;
-    
     productGrid.appendChild(card);
   });
 }
 
-function highlightSearch(text) {
-  if (!currentSearch) return text;
-  const regex = new RegExp(`(${currentSearch})`, 'gi');
-  return text.replace(regex, '<mark>$1</mark>');
-}
-
-// ── CART FUNCTIONALITY ──────────────────────────────────────────────────────────
-function toggleCart(productId = null) {
-  if (productId !== null) {
-    const product = products.find(p => p.id === productId);
-    const existing = cart.find(item => item.id === productId);
-    
-    if (existing) {
-      existing.qty++;
-    } else {
-      cart.push({ ...product, qty: 1 });
-    }
-    
-    renderProducts();
-    updateCartUI();
+// ── CART MANAGEMENT ──────────────────────────────────────────────
+function toggleProductCart(id, event) {
+  event.stopPropagation();
+  const product = products.find(p => p.id === id);
+  const existing = cart.find(item => item.id === id);
+  
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...product, qty: 1 });
   }
   
-  cartPanel.classList.toggle('open');
-  overlay.classList.toggle('open');
+  renderProducts();
+  updateCartUI();
 }
 
 function updateCartUI() {
@@ -941,7 +757,7 @@ function updateQty(id, change) {
   }
 }
 
-// ── LIGHTBOX FUNCTIONALITY ──────────────────────────────────────────────────────────
+// ── LIGHTBOX ─────────────────────────────────────────────────────
 let currentLightboxId = null;
 
 function openLightbox(id) {
@@ -949,38 +765,26 @@ function openLightbox(id) {
   if (!product) return;
   
   currentLightboxId = id;
-  document.getElementById('lightboxImg').src = product.image;
-  document.getElementById('lightboxName').textContent = product.name;
-  
-  const inCart = cart.some(item => item.id === id);
-  const btn = document.getElementById('lightboxAddBtn');
-  btn.textContent = inCart ? '✓ Savatda' : '+ Savatga qo\'shish';
-  btn.classList.toggle('in-cart', inCart);
-  
-  document.getElementById('lightbox').classList.add('open');
+  lightboxImg.src = product.image;
+  lightboxName.textContent = product.name;
+  lightbox.classList.add('open');
 }
 
 function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
+  lightbox.classList.remove('open');
   currentLightboxId = null;
 }
 
-function lightboxBgClick(event) {
-  if (event.target.id === 'lightbox') closeLightbox();
+// ── CART PANEL ───────────────────────────────────────────────────
+function toggleCartPanel() {
+  cartPanel.classList.toggle('open');
+  overlay.classList.toggle('open');
 }
 
-function lightboxAddToCart() {
-  if (currentLightboxId !== null) {
-    toggleCart(currentLightboxId);
-    closeLightbox();
-  }
-}
-
-// ── ORDER SUBMISSION ────────────────────────────────────────────────────────────
+// ── ORDER SUBMISSION ─────────────────────────────────────────────
 function submitOrder() {
   const phone = document.getElementById('phoneInput').value.trim();
   const address = document.getElementById('addressInput').value.trim();
-  const comment = document.getElementById('commentInput').value.trim();
   
   if (!phone || !address) {
     alert('Telefon va manzilni to\'ldiring');
@@ -991,20 +795,20 @@ function submitOrder() {
     timestamp: new Date().toISOString(),
     phone,
     address,
-    comment,
     location: userLocation,
-    items: cart,
+    items: cart.map(({ id, name, price, qty }) => ({ id, name, price, qty })),
     total: cart.reduce((sum, item) => sum + item.price * item.qty, 0)
   };
   
   console.log('Order:', orderData);
   
-  // Send to Telegram bot or API
+  // Send to Telegram
   if (tg) {
     tg.sendData(JSON.stringify(orderData));
+  } else {
+    alert('Order placed: ' + JSON.stringify(orderData));
   }
   
-  // Show success
   cartContent.style.display = 'none';
   successScreen.classList.add('show');
   
@@ -1019,14 +823,43 @@ function submitOrder() {
     successScreen.classList.remove('show');
     renderProducts();
     updateCartUI();
-    
     document.getElementById('phoneInput').value = '';
     document.getElementById('addressInput').value = '';
-    document.getElementById('commentInput').value = '';
   }, 2000);
 }
 
-// ── INITIALIZATION ──────────────────────────────────────────────────────────
+// ── EVENT LISTENERS ──────────────────────────────────────────────
+searchInput.addEventListener('input', (e) => {
+  currentSearch = e.target.value.toLowerCase();
+  searchClear.classList.toggle('visible', currentSearch.length > 0);
+  renderProducts();
+});
+
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  currentSearch = '';
+  searchClear.classList.remove('visible');
+  renderProducts();
+});
+
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCategory = btn.dataset.cat;
+    renderProducts();
+  });
+});
+
+cartOpenBtn.addEventListener('click', toggleCartPanel);
+overlay.addEventListener('click', toggleCartPanel);
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) closeLightbox();
+});
+orderBtn.addEventListener('click', submitOrder);
+
+// ── INITIALIZATION ───────────────────────────────────────────────
 renderProducts();
 updateCartUI();
 </script>
