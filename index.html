@@ -740,13 +740,30 @@ function requestLocation() {
   }
 
   navigator.geolocation.getCurrentPosition(
-    function(pos) {
-      const lat = Number(pos.coords.latitude.toFixed(6));
-      const lng = Number(pos.coords.longitude.toFixed(6));
-      const mapsUrl = 'https://yandex.com/maps/?pt=' + lng + ',' + lat + '&z=17&l=map';
+  (pos) => {
 
-      userLocation = { lat: lat, lng: lng, mapsUrl: mapsUrl, address: lat + ', ' + lng };
+    const lat = Number(pos.coords.latitude.toFixed(6));
+    const lng = Number(pos.coords.longitude.toFixed(6));
 
+    const mapsUrl =
+      `https://www.google.com/maps?q=${lat},${lng}`;
+
+    userLocation = {
+      lat,
+      lng,
+      mapsUrl
+    };
+
+  },
+  (err) => {
+    console.log(err);
+  },
+  {
+    enableHighAccuracy: true,
+    timeout: 15000,
+    maximumAge: 0
+  }
+);
       // Header bar
       bar.className = 'location-bar ok';
       barText.textContent = '📍 ' + lat + ', ' + lng;
