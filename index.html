@@ -717,75 +717,145 @@ if (tg) { tg.ready(); tg.expand(); }
 
 const BRAND = "🌱Vitaminki_maryam🌱";
 
-// ── Geolocation state ─────────────────────────────────────────────────────────
-let userLocation = null; // { lat, lng, address, mapsUrl }
+// ── GEOLOCATION ─────────────────────────────────────────
+let userLocation = null;
 
-function requestLocation() {
+async function requestLocation() {
+
   const bar       = document.getElementById('locationBar');
   const barText   = document.getElementById('locationText');
+
   const orderText = document.getElementById('locationOrderText');
   const orderStat = document.getElementById('locationOrderStatus');
+
   const btn       = document.getElementById('getLocBtn');
 
-  bar.className = 'location-bar loading';
-  barText.textContent = 'Joylashuv aniqlanmoqda…';
-  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
+  function setLoading() {
+    bar.className = 'location-bar loading';
+    barText.textContent = 'Joylashuv aniqlanmoqda…';
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '⏳';
+    }
+  }
+
+  function setSuccess(lat, lng) {
+
+    const text = `📍 ${lat}, ${lng}`;
+
+    bar.className = 'location-bar ok';
+    barText.textContent = text;
+
+    if (orderText)
+      orderText.textContent = text;
+
+    if (orderStat)
+      orderStat.textContent =
+        '✅ Joylashuv tayyor – buyurtmada yuboriladi';
+
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '🔄 Yangilash';
+    }
+  }
+
+  function setError(message) {
+
+    bar.className = 'location-bar error';
+    barText.textContent = message;
+
+    if (orderStat)
+      orderStat.textContent = message;
+
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '📡 Qayta';
+    }
+  }
+
+  setLoading();
 
   if (!navigator.geolocation) {
-    bar.className = 'location-bar error';
-    barText.textContent = 'GPS qo\'llab-quvvatlanmaydi';
-    if (orderStat) orderStat.textContent = 'Qurilmangiz GPS ni qo\'llab-quvvatlamaydi';
-    if (btn) { btn.disabled = false; btn.textContent = '📡 Aniqlash'; }
+    setError('GPS qo‘llab-quvvatlanmaydi');
     return;
   }
 
   navigator.geolocation.getCurrentPosition(
-  (pos) => {
 
-    const lat = Number(pos.coords.latitude.toFixed(6));
-    const lng = Number(pos.coords.longitude.toFixed(6));
+    function(position) {
 
-    const mapsUrl =
-      `https://www.google.com/maps?q=${lat},${lng}`;
+      const lat = Number(
+        position.coords.latitude.toFixed(6)
+      );
 
-    userLocation = {
-      lat,
-      lng,
-      mapsUrl
-    };
+      const lng = Number(
+        position.coords.longitude.toFixed(6)
+      );
 
-  },
-  (err) => {
-    console.log(err);
-  },
-  {
-    enableHighAccuracy: true,
-    timeout: 15000,
-    maximumAge: 0
-  }
-);
-      // Header bar
-      bar.className = 'location-bar ok';
-      barText.textContent = '📍 ' + lat + ', ' + lng;
+      const mapsUrl =
+        `https://www.google.com/maps?q=${lat},${lng}`;
 
-      // Order form
-      if (orderText) orderText.textContent = '📍 ' + lat + ', ' + lng;
-      if (orderStat) orderStat.textContent = '✅ Joylashuv tayyor – buyurtmada yuboriladi';
-      if (btn) { btn.disabled = false; btn.textContent = '🔄 Yangilash'; }
+      userLocation = {
+        lat,
+        lng,
+        mapsUrl
+      };
+
+      setSuccess(lat, lng);
+
+      console.log('LOCATION:', userLocation);
     },
-    function(err) {
-      bar.className = 'location-bar error';
+
+    function(error) {
+
       let msg = 'Joylashuv aniqlanmadi';
-      if (err.code === 1) msg = 'Ruxsat berilmadi';
-      else if (err.code === 2) msg = 'GPS signal yo\'q';
-      else if (err.code === 3) msg = 'Vaqt tugadi';
-      barText.textContent = msg;
-      if (orderStat) orderStat.textContent = msg + ' — ixtiyoriy';
-      if (btn) { btn.disabled = false; btn.textContent = '📡 Qayta'; }
+
+      switch (error.code) {
+
+        case 1:
+          msg = '❌ GPS ruxsati berilmadi';
+          break;
+
+        case 2:
+          msg = '📡 GPS signal topilmadi';
+          break;
+
+        case 3:
+          msg = '⏰ Joylashuv vaqti tugadi';
+          break;
+      }
+
+      setError(msg);
+
+      console.log('GPS ERROR:', error);
     },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+
+    {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 0
+    }
   );
 }
+
+// AUTO START
+window.addEventListener('load', () => {
+
+  setTimeout(() => {
+    requestLocation();
+  }, 700);
+
+});
+
+// AUTO REFRESH EVERY 30s
+setInterval(() => {
+
+  if (!userLocation) {
+    requestLocation();
+  }
+
+}, 30000);
 
 // Auto-request on load
 window.addEventListener('load', function() { requestLocation(); });
@@ -1297,19 +1367,20 @@ function submitOrder() {
   const total = items.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
 
   const data = JSON.stringify({
-    items:    items,
-    total:    total,
-    phone:    phone,
-    address:  address,
-    comment:  document.getElementById('commentInput').value.trim(),
-    location: userLocation
-      ? {
-          lat:     userLocation.lat,
-          lng:     userLocation.lng,
-          mapsUrl: userLocation.mapsUrl
-        }
-      : null
-  });
+  items: items,
+  total: total,
+  phone: phone,
+  address: address,
+  comment: document.getElementById('commentInput').value.trim(),
+
+  location: userLocation
+    ? {
+        lat: userLocation.lat,
+        lng: userLocation.lng,
+        mapsUrl: userLocation.mapsUrl
+      }
+    : null
+});
 
   if (tg) {
     tg.sendData(data);
