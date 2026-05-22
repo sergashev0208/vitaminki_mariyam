@@ -1366,21 +1366,23 @@ function submitOrder() {
   });
   const total = items.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
 
-  const data = JSON.stringify({
-  items: items,
-  total: total,
-  phone: phone,
-  address: address,
-  comment: document.getElementById('commentInput').value.trim(),
+  function sendOrder() {
+  Telegram.WebApp.sendData(JSON.stringify({
+    items: cart,
+    total: totalPrice,
+    phone: phoneInput.value,
+    address: addressInput.value,
 
-  location: userLocation
-    ? {
-        lat: userLocation.lat,
-        lng: userLocation.lng,
-        mapsUrl: userLocation.mapsUrl
-      }
-    : null
-});
+    location: {
+      lat: currentLat,
+      lng: currentLng,
+      accuracy: accuracy,
+      address: addressInput.value,
+      source: "web_app",
+      timestamp: Date.now()
+    }
+  }));
+}
 
   if (tg) {
     tg.sendData(data);
