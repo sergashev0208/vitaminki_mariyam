@@ -739,10 +739,9 @@ function requestLocation() {
 window.addEventListener('load', function() { requestLocation(); });
 
 // BASE URL
-const BASE = "https://wsrv.nl/?url=https://api.telegram.org/file/bot8800801432:AAGAYyt-M117UqBdwkBqfUkJ7M5VqavEqnU/photos/";
-const SUFFIX = "&w=400&q=85&output=jpg";
-function img(n) { return BASE + "file_" + n + ".jpg" + SUFFIX; }
-
+function img(n) {
+  return "https://api.telegram.org/file/bot8800801432:AAGAYyt-M117UqBdwkBqfUkJ7M5VqavEqnU/photos/file_" + n + ".jpg";
+}
 const products = [
   // 💊 Yodlar
   { id:1,   name:"NEWLINE Iodine",                                       brand:BRAND, price:150000, emoji:"🍋", image:img(0),   cat:"yodlar",     sale:true },
