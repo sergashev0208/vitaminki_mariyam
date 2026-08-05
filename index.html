@@ -657,7 +657,7 @@
     justify-content: center;
     height: 38px;
   }
-  .payment-logo-wrap svg { width: auto; height: 100%; max-width: 110px; }
+  .payment-logo-wrap svg, .payment-logo-wrap img { width: auto; height: 100%; max-width: 110px; object-fit: contain; }
   .payment-label {
     font-size: 11px;
     color: var(--muted);
@@ -809,15 +809,7 @@
           <div class="payment-card" id="paymeCard" onclick="selectPayment('payme')">
             <span class="pay-check">✓</span>
             <div class="payment-logo-wrap">
-              <!-- Payme SVG Logo -->
-              <svg viewBox="0 0 120 40" xmlns="https://iili.io/CgvdmFe.png">
-                <rect width="120" height="40" rx="8" fill="#00AAFF"/>
-                <circle cx="20" cy="20" r="11" fill="white"/>
-                <circle cx="20" cy="20" r="7" fill="#00AAFF"/>
-                <circle cx="20" cy="20" r="3.5" fill="white"/>
-                <text x="37" y="15" font-family="Arial,sans-serif" font-weight="800" font-size="13" fill="white">payme</text>
-                <text x="37" y="30" font-family="Arial,sans-serif" font-weight="400" font-size="9" fill="rgba(255,255,255,0.85)">to'lov tizimi</text>
-              </svg>
+              <img src="https://iili.io/CgvdmFe.png" alt="Payme">
             </div>
             <span class="payment-label">Payme</span>
           </div>
@@ -826,14 +818,7 @@
           <div class="payment-card" id="clickCard" onclick="selectPayment('click')">
             <span class="pay-check">✓</span>
             <div class="payment-logo-wrap">
-              <!-- Click SVG Logo -->
-              <svg viewBox="0 0 120 40" xmlns="https://iili.io/CgvdxQS.png">
-                <rect width="120" height="40" rx="8" fill="#00C896"/>
-                <rect x="8" y="8" width="24" height="24" rx="5" fill="white"/>
-                <text x="10.5" y="25" font-family="Arial,sans-serif" font-weight="900" font-size="15" fill="#00C896">✓</text>
-                <text x="38" y="16" font-family="Arial,sans-serif" font-weight="900" font-size="14" fill="white">CLICK</text>
-                <text x="38" y="30" font-family="Arial,sans-serif" font-weight="400" font-size="9" fill="rgba(255,255,255,0.85)">to'lov tizimi</text>
-              </svg>
+              <img src="https://iili.io/CgvdxQS.png" alt="Click">
             </div>
             <span class="payment-label">Click</span>
           </div>
