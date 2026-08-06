@@ -6,6 +6,8 @@
 <title>🌱Vitaminki_maryam🌱 – Katalog</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root {
     --bg: #f4faf4;
@@ -599,6 +601,179 @@
     padding: 0 1px;
     font-style: normal;
   }
+
+  /* ─── Location menu (bosilganda chiqadigan popover) ───────────────────── */
+  .location-bar { cursor: pointer; user-select: none; }
+  .location-bar .loc-arrow { font-size: 9px; color: var(--muted); margin-left: 1px; }
+
+  .location-menu {
+    display: none;
+    position: absolute;
+    top: 52px;
+    left: 16px;
+    z-index: 200;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.16);
+    overflow: hidden;
+    min-width: 210px;
+  }
+  .location-menu.open { display: block; }
+  .location-menu button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+  }
+  .location-menu button:not(:last-child) { border-bottom: 1px solid var(--border); }
+  .location-menu button:active { background: var(--accent-light); }
+  .location-menu button.danger { color: var(--danger); }
+
+  /* ─── Xarita orqali manzil tanlash modali ─────────────────────────────── */
+  .map-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .map-modal.open { display: flex; }
+  .map-sheet {
+    background: var(--surface);
+    width: 100%;
+    max-width: 480px;
+    border-radius: 20px 20px 0 0;
+    padding: 16px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .map-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .map-sheet-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .map-close-btn {
+    background: var(--accent-light);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+  .map-search-wrap { position: relative; margin-bottom: 8px; }
+  .map-search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+  }
+  .map-search-input:focus { border-color: var(--accent); }
+  .map-search-results {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-top: 4px;
+    max-height: 190px;
+    overflow-y: auto;
+    z-index: 10;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+  .map-search-results.open { display: block; }
+  .map-search-result-item {
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+  }
+  .map-search-result-item:last-child { border-bottom: none; }
+  .map-search-result-item:active { background: var(--accent-light); }
+
+  .map-current-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px;
+    background: var(--accent-light);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+
+  #pickerMap {
+    width: 100%;
+    height: 300px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    background: var(--accent-light);
+  }
+  .custom-pin {
+    font-size: 30px;
+    line-height: 1;
+    filter: drop-shadow(0 3px 3px rgba(0,0,0,0.35));
+  }
+
+  .map-address-preview {
+    font-size: 13px;
+    color: var(--text);
+    background: var(--accent-light);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    min-height: 20px;
+  }
+  .map-address-preview.loading { color: var(--muted); font-style: italic; }
+
+  .map-confirm-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .map-confirm-btn:disabled { background: var(--muted); cursor: default; }
 </style>
 </head>
 <body>
@@ -615,9 +790,14 @@
     </button>
   </div>
 
-  <div class="location-bar loading" id="locationBar">
+  <div class="location-bar loading" id="locationBar" onclick="toggleLocationMenu(event)">
     <span class="loc-icon">📍</span>
     <span class="loc-text" id="locationText">Joylashuv aniqlanmoqda…</span>
+    <span class="loc-arrow">▾</span>
+  </div>
+  <div class="location-menu" id="locationMenu">
+    <button onclick="event.stopPropagation(); closeLocationMenu(); openMapPicker();">🗺️ Xaritadan tanlash</button>
+    <button class="danger" id="deleteLocBtn" style="display:none;" onclick="event.stopPropagation(); closeLocationMenu(); deleteLocation();">🗑️ Manzilni o'chirish</button>
   </div>
 
   <div class="search-wrap">
@@ -681,7 +861,8 @@
           <div id="locationOrderText">📍 Aniqlanmadi</div>
           <div class="loc-status" id="locationOrderStatus">Sotuvchiga aniq manzil yuborish uchun ruxsat bering</div>
         </div>
-        <button class="get-loc-btn" id="getLocBtn" onclick="requestLocation()">📡 Aniqlash</button>
+        <button class="get-loc-btn" id="getLocBtn" onclick="openMapPicker()">🗺️ Tanlash</button>
+        <button class="get-loc-btn" id="delLocBtn2" style="display:none;background:var(--danger);" onclick="deleteLocation()">🗑️</button>
       </div>
       <label class="form-label">Izoh (ixtiyoriy)</label>
       <input class="form-input" id="commentInput" type="text" placeholder="Qo'shimcha ma'lumot...">
@@ -692,6 +873,23 @@
     <div class="success-icon">🎉</div>
     <div class="success-title">Buyurtma qabul qilindi!</div>
     <div class="success-text">Menejer tez orada siz bilan bog'lanadi.<br>Sog'lom va baquvvat bo'ling! 🌱💚</div>
+  </div>
+</div>
+
+<div class="map-modal" id="mapModal">
+  <div class="map-sheet" onclick="event.stopPropagation()">
+    <div class="map-sheet-header">
+      <div class="map-sheet-title">📍 Manzilni xaritadan tanlang</div>
+      <button class="map-close-btn" onclick="closeMapPicker()">✕</button>
+    </div>
+    <div class="map-search-wrap">
+      <input class="map-search-input" id="mapSearchInput" type="text" placeholder="Joy nomini yozing (masalan: Chilonzor, Yunusobod)…" oninput="handleMapSearch(this.value)" autocomplete="off">
+      <div class="map-search-results" id="mapSearchResults"></div>
+    </div>
+    <button class="map-current-btn" onclick="useCurrentGpsInPicker()">📡 Joriy joylashuvimni ishlatish</button>
+    <div id="pickerMap"></div>
+    <div class="map-address-preview" id="mapAddressPreview">Xaritada nuqtani suring yoki manzilni qidiring</div>
+    <button class="map-confirm-btn" id="mapConfirmBtn" onclick="confirmMapLocation()" disabled>✅ Ushbu manzilni tanlash</button>
   </div>
 </div>
 
@@ -712,52 +910,247 @@ const BRAND = "🌱Vitaminki_maryam🌱";
 
 let userLocation = null;
 
-function requestLocation() {
+// ─── Reverse/forward geocoding (OpenStreetMap Nominatim, bepul, kalitsiz) ───
+async function reverseGeocode(lat, lng) {
+  try {
+    const res = await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + lat + '&lon=' + lng + '&zoom=18&addressdetails=1&accept-language=uz');
+    const data = await res.json();
+    return formatAddress(data);
+  } catch (e) {
+    return null;
+  }
+}
+
+function formatAddress(data) {
+  if (!data) return null;
+  const a = data.address || {};
+  const parts = [];
+  const road = a.road || a.pedestrian || a.footway;
+  if (road) parts.push(road + (a.house_number ? ' ' + a.house_number : ''));
+  const area = a.suburb || a.neighbourhood || a.quarter || a.city_district;
+  if (area) parts.push(area);
+  const city = a.city || a.town || a.village || a.county;
+  if (city) parts.push(city);
+  if (parts.length === 0 && data.display_name) {
+    return data.display_name.split(',').slice(0, 3).join(',').trim();
+  }
+  return parts.join(', ');
+}
+
+// ─── Joylashuvni saqlash va UI ni yangilash ──────────────────────────────
+function setLocation(lat, lng, address) {
+  const mapsUrl = 'https://yandex.com/maps/?pt=' + lng + ',' + lat + '&z=17&l=map';
+  userLocation = { lat: String(lat), lng: String(lng), mapsUrl: mapsUrl, address: address || (lat + ', ' + lng) };
+  updateLocationUI();
+}
+
+function deleteLocation() {
+  userLocation = null;
+  updateLocationUI();
+}
+
+function updateLocationUI() {
   const bar       = document.getElementById('locationBar');
   const barText   = document.getElementById('locationText');
   const orderText = document.getElementById('locationOrderText');
   const orderStat = document.getElementById('locationOrderStatus');
-  const btn       = document.getElementById('getLocBtn');
+  const menuDel   = document.getElementById('deleteLocBtn');
+  const rowDel    = document.getElementById('delLocBtn2');
+
+  if (userLocation) {
+    bar.className = 'location-bar ok';
+    barText.textContent = '📍 ' + userLocation.address;
+    if (orderText) orderText.textContent = '📍 ' + userLocation.address;
+    if (orderStat) orderStat.textContent = '✅ Manzil tayyor – buyurtmada yuboriladi';
+    if (menuDel) menuDel.style.display = 'flex';
+    if (rowDel) rowDel.style.display = 'inline-block';
+  } else {
+    bar.className = 'location-bar error';
+    barText.textContent = 'Manzil tanlanmagan — bosing';
+    if (orderText) orderText.textContent = '📍 Aniqlanmadi';
+    if (orderStat) orderStat.textContent = 'Sotuvchiga aniq manzil yuborish uchun tanlang';
+    if (menuDel) menuDel.style.display = 'none';
+    if (rowDel) rowDel.style.display = 'none';
+  }
+}
+
+// ─── Sahifa ochilganda avtomatik GPS orqali aniqlash ────────────────────
+function autoDetectLocation() {
+  const bar     = document.getElementById('locationBar');
+  const barText = document.getElementById('locationText');
 
   bar.className = 'location-bar loading';
   barText.textContent = 'Joylashuv aniqlanmoqda…';
-  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
 
   if (!navigator.geolocation) {
     bar.className = 'location-bar error';
-    barText.textContent = 'GPS qo\'llab-quvvatlanmaydi';
-    if (orderStat) orderStat.textContent = 'Qurilmangiz GPS ni qo\'llab-quvvatlamaydi';
-    if (btn) { btn.disabled = false; btn.textContent = '📡 Aniqlash'; }
+    barText.textContent = 'Manzil tanlanmagan — bosing';
     return;
   }
 
   navigator.geolocation.getCurrentPosition(
-    function(pos) {
+    async function(pos) {
       const lat = pos.coords.latitude.toFixed(6);
       const lng = pos.coords.longitude.toFixed(6);
-      const mapsUrl = 'https://yandex.com/maps/?pt=' + lng + ',' + lat + '&z=17&l=map';
-      userLocation = { lat: lat, lng: lng, mapsUrl: mapsUrl, address: lat + ', ' + lng };
-      bar.className = 'location-bar ok';
-      barText.textContent = '📍 ' + lat + ', ' + lng;
-      if (orderText) orderText.textContent = '📍 ' + lat + ', ' + lng;
-      if (orderStat) orderStat.textContent = '✅ Joylashuv tayyor – buyurtmada yuboriladi';
-      if (btn) { btn.disabled = false; btn.textContent = '🔄 Yangilash'; }
+      const address = await reverseGeocode(lat, lng);
+      setLocation(lat, lng, address);
     },
-    function(err) {
+    function() {
       bar.className = 'location-bar error';
-      let msg = 'Joylashuv aniqlanmadi';
-      if (err.code === 1) msg = 'Ruxsat berilmadi';
-      else if (err.code === 2) msg = 'GPS signal yo\'q';
-      else if (err.code === 3) msg = 'Vaqt tugadi';
-      barText.textContent = msg;
-      if (orderStat) orderStat.textContent = msg + ' — ixtiyoriy';
-      if (btn) { btn.disabled = false; btn.textContent = '📡 Qayta'; }
+      barText.textContent = 'Manzil tanlanmagan — bosing';
     },
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
   );
 }
 
-window.addEventListener('load', function() { requestLocation(); });
+window.addEventListener('load', function() { autoDetectLocation(); });
+
+// ─── Location bar bosilganda chiqadigan menyu (o'chirish / xaritadan tanlash) ───
+function toggleLocationMenu(e) {
+  if (e) e.stopPropagation();
+  document.getElementById('locationMenu').classList.toggle('open');
+}
+function closeLocationMenu() {
+  document.getElementById('locationMenu').classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('locationMenu');
+  const bar  = document.getElementById('locationBar');
+  if (menu && menu.classList.contains('open') && !menu.contains(e.target) && !bar.contains(e.target)) {
+    menu.classList.remove('open');
+  }
+});
+
+// ─── Xarita orqali aniq manzil tanlash (Leaflet + OpenStreetMap) ────────
+let pickerMap = null;
+let pickerMarker = null;
+let pickerSelected = null;
+let mapSearchDebounce = null;
+
+function openMapPicker() {
+  document.getElementById('mapModal').classList.add('open');
+  document.getElementById('mapConfirmBtn').disabled = true;
+  document.getElementById('mapSearchResults').classList.remove('open');
+  document.getElementById('mapSearchInput').value = '';
+  const preview = document.getElementById('mapAddressPreview');
+  preview.textContent = 'Xaritada nuqtani suring yoki manzilni qidiring';
+  preview.className = 'map-address-preview';
+  pickerSelected = null;
+
+  setTimeout(function() {
+    const startLat = userLocation ? parseFloat(userLocation.lat) : 41.311081;
+    const startLng = userLocation ? parseFloat(userLocation.lng) : 69.240562;
+
+    if (!pickerMap) {
+      pickerMap = L.map('pickerMap', { zoomControl: true }).setView([startLat, startLng], 15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+      }).addTo(pickerMap);
+
+      const icon = L.divIcon({ className: 'custom-pin', html: '📍', iconSize: [30, 30], iconAnchor: [15, 28] });
+      pickerMarker = L.marker([startLat, startLng], { draggable: true, icon: icon }).addTo(pickerMap);
+
+      pickerMarker.on('dragend', function() {
+        const p = pickerMarker.getLatLng();
+        handlePickedPoint(p.lat, p.lng);
+      });
+      pickerMap.on('click', function(e) {
+        pickerMarker.setLatLng(e.latlng);
+        handlePickedPoint(e.latlng.lat, e.latlng.lng);
+      });
+    } else {
+      pickerMap.setView([startLat, startLng], 15);
+      pickerMarker.setLatLng([startLat, startLng]);
+    }
+    pickerMap.invalidateSize();
+
+    if (userLocation) {
+      handlePickedPoint(startLat, startLng, userLocation.address);
+    }
+  }, 100);
+}
+
+function closeMapPicker() {
+  document.getElementById('mapModal').classList.remove('open');
+}
+
+async function handlePickedPoint(lat, lng, knownAddress) {
+  const preview = document.getElementById('mapAddressPreview');
+  const confirmBtn = document.getElementById('mapConfirmBtn');
+  pickerSelected = { lat: lat.toFixed(6), lng: lng.toFixed(6), address: knownAddress || null };
+  confirmBtn.disabled = false;
+
+  if (knownAddress) {
+    preview.textContent = '📍 ' + knownAddress;
+    preview.className = 'map-address-preview';
+    return;
+  }
+  preview.textContent = 'Manzil aniqlanmoqda…';
+  preview.className = 'map-address-preview loading';
+  const address = await reverseGeocode(lat.toFixed(6), lng.toFixed(6));
+  pickerSelected.address = address || (lat.toFixed(6) + ', ' + lng.toFixed(6));
+  preview.textContent = '📍 ' + pickerSelected.address;
+  preview.className = 'map-address-preview';
+}
+
+function useCurrentGpsInPicker() {
+  if (!navigator.geolocation) {
+    if (tg) tg.showAlert('GPS qo\'llab-quvvatlanmaydi'); else alert('GPS qo\'llab-quvvatlanmaydi');
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    const lat = pos.coords.latitude, lng = pos.coords.longitude;
+    pickerMap.setView([lat, lng], 16);
+    pickerMarker.setLatLng([lat, lng]);
+    handlePickedPoint(lat, lng);
+  }, function() {
+    if (tg) tg.showAlert('Joylashuvni aniqlab bo\'lmadi'); else alert('Joylashuvni aniqlab bo\'lmadi');
+  }, { enableHighAccuracy: true, timeout: 10000 });
+}
+
+function confirmMapLocation() {
+  if (!pickerSelected) return;
+  setLocation(pickerSelected.lat, pickerSelected.lng, pickerSelected.address);
+  closeMapPicker();
+}
+
+function handleMapSearch(q) {
+  clearTimeout(mapSearchDebounce);
+  const results = document.getElementById('mapSearchResults');
+  if (!q || q.trim().length < 3) { results.classList.remove('open'); results.innerHTML = ''; return; }
+  mapSearchDebounce = setTimeout(async function() {
+    try {
+      const res = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&accept-language=uz&countrycodes=uz&q=' + encodeURIComponent(q));
+      const data = await res.json();
+      renderMapSearchResults(data);
+    } catch (e) {
+      results.classList.remove('open');
+    }
+  }, 400);
+}
+
+function renderMapSearchResults(list) {
+  const results = document.getElementById('mapSearchResults');
+  results.innerHTML = '';
+  if (!list || !list.length) { results.classList.remove('open'); return; }
+  list.forEach(function(item) {
+    const div = document.createElement('div');
+    div.className = 'map-search-result-item';
+    div.textContent = item.display_name;
+    div.onclick = function() {
+      const lat = parseFloat(item.lat), lng = parseFloat(item.lon);
+      pickerMap.setView([lat, lng], 16);
+      pickerMarker.setLatLng([lat, lng]);
+      const shortAddr = formatAddress(item) || item.display_name;
+      handlePickedPoint(lat, lng, shortAddr);
+      results.classList.remove('open');
+      document.getElementById('mapSearchInput').value = item.display_name.split(',').slice(0, 2).join(',');
+    };
+    results.appendChild(div);
+  });
+  results.classList.add('open');
+}
 
 // ─── CATEGORY BG COLORS for emoji placeholder ───────────────────────────────
 const CAT_BG = {
@@ -1271,14 +1664,7 @@ function renderCartItems() {
   document.getElementById('totalSum').textContent = fmt(total);
   form.style.display = 'block';
 
-  if (userLocation) {
-    const ot = document.getElementById('locationOrderText');
-    const os = document.getElementById('locationOrderStatus');
-    if (ot) ot.textContent = '📍 ' + userLocation.lat + ', ' + userLocation.lng;
-    if (os) os.textContent = '✅ Joylashuv tayyor – buyurtmada yuboriladi';
-    const btn = document.getElementById('getLocBtn');
-    if (btn) { btn.textContent = '🔄 Yangilash'; btn.disabled = false; }
-  }
+  updateLocationUI();
 }
 
 function toggleCart() {
@@ -1311,7 +1697,7 @@ function submitOrder() {
     phone:    phone,
     address:  address,
     comment:  document.getElementById('commentInput').value.trim(),
-    location: userLocation ? { lat: userLocation.lat, lng: userLocation.lng, mapsUrl: userLocation.mapsUrl } : null
+    location: userLocation ? { lat: userLocation.lat, lng: userLocation.lng, mapsUrl: userLocation.mapsUrl, address: userLocation.address } : null
   });
 
   if (tg) {
