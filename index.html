@@ -272,12 +272,12 @@
     font-weight: 500;
     color: var(--accent);
   }
-  .card-old-price {
+    .card-old-price {
     font-size: 12px;
     color: var(--muted);
     text-decoration: line-through;
-    margin-left: 4px;
   }
+  .price-box { min-height: 36px; }
   .add-btn {
     width: 100%;
     margin-top: 8px;
@@ -1575,8 +1575,9 @@ function renderProducts() {
     body.innerHTML =
       '<div class="card-name">' + highlightText(p.name, searchQuery) + '</div>' +
       '<div class="card-brand">' + p.brand + '</div>' +
-      '<div><span class="card-price">' + fmt(p.price) + '</span>' +
-      (p.oldPrice ? '<span class="card-old-price">' + fmt(p.oldPrice) + '</span>' : '') +
+            '<div class="price-box">' +
+        (p.oldPrice ? '<div class="card-old-price">' + fmt(p.oldPrice) + '</div>' : '') +
+        '<div class="card-price">' + fmt(p.price) + '</div>' +
       '</div>';
 
     const addBtn = document.createElement('button');
